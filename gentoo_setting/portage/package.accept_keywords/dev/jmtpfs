@@ -1,0 +1,2 @@
+# required by sys-fs/jmtpfs (argument)
+sys-fs/jmtpfs ~amd64

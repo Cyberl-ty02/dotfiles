@@ -1,0 +1,3 @@
+sys-fs/dislocker ~amd64
+sys-firmware/lenovolegionlinux **
+sys-firmware/lenovolegionlinux ~amd64

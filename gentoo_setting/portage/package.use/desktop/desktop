@@ -1,0 +1,15 @@
+app-accessibility/brltty python
+app-accessibility/speech-dispatcher python
+dev-libs/liblouis python
+dev-libs/libpcre2 pcre32
+kde-plasma/kwin lock
+media-libs/freetype
+media-libs/libglvnd X
+media-sound/pulseaudio -daemon
+media-video/pipewire sound-server
+sys-apps/dbus elogind
+sys-auth/pambase elogind
+sys-auth/polkit daemon
+sys-fs/udisks elogind
+x11-libs/cairo X
+x11-libs/libxkbcommon X

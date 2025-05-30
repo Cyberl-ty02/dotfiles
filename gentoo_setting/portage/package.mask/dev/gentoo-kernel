@@ -1,0 +1,4 @@
+sys-kernel/gentoo-kernel::gentoo
+sys-kernel/xanmod-kernel::gentoo-zh
+sys-kernel/xanmod-rt::gentoo-zh
+#sys-kernel/xanmod-kernel

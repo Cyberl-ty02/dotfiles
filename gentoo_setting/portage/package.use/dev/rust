@@ -1,0 +1,3 @@
+dev-lang/rust lto llvm-libunwind rustfmt
+ev-lang/rust rust-analyzer rust-src rustfmt
+virtual/rust lto rustfmt

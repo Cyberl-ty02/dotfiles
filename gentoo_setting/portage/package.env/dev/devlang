@@ -1,0 +1,8 @@
+# dev-lang/perl compiler-clang
+dev-lang/go compiler-clang-linuxkernel
+dev-java/openjdk compiler-clang-linuxkernel
+dev-lang/rust compiler-clang
+net-libs/nodejs compiler-clang
+sys-apps/keyutils compiler-clang
+sys-apps/pnpm compiler-clang
+virtual/rust compiler-clang

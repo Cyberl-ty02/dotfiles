@@ -1,0 +1,12 @@
+# Mihomo Clash
+dev-lang/go compiler-clang
+app-admin/chezmoi compiler-clang-linuxkernel
+app-admin/chezmoi-bin compiler-clang-linuxkernel
+dev-lang/go-bootstrap compiler-clang
+net-proxy/mihomo compiler-clang-linux-kernel
+
+# V2ray
+net-proxy/v2rayA compiler-clang-linuxkernel
+net-proxy/v2raya-bin compiler-clang-linuxkernel
+net-proxy/v2ray compiler-clang-linuxkernel
+net-proxy/Xray compiler-clang-linux-kernel

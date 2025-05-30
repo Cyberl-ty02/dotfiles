@@ -1,0 +1,3 @@
+# required by dev-util/xmake (argument)
+# move dev-util/xmake dev-build/xmake
+dev-build/xmake ~amd64
