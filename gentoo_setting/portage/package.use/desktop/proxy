@@ -1,0 +1,5 @@
+sys-apps/openrc caps
+
+app-alternatives/v2ray-geoip -v2fly loyalsoldier
+app-alternatives/v2ray-geosite -v2fly loyalsoldier
+# net-proxy/v2rayA xray

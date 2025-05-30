@@ -1,0 +1,3 @@
+net-im/tencent-qq bwrap system-vips appindicator liteloader
+media-libs/vips -pdf
+dev-libs/libdbusmenu gtk3

@@ -1,0 +1,2 @@
+mail-client/thunderbird compiler-clang
+www-client/firefox compiler-clang

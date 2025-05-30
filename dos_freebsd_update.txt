@@ -1,0 +1,2 @@
+#13.1 升级至 13.2版
+freebsd-update upgrade -r 13.2-RELEASE

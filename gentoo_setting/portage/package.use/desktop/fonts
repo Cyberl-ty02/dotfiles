@@ -1,0 +1,4 @@
+app-text/ghostscript-gpl cups -l10n_zh-CN
+kde-frameworks/knotifications X
+media-libs/gd fontconfig
+media-fonts/nerd-fonts intelonemono

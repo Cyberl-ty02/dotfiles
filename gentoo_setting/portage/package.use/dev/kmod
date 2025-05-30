@@ -1,0 +1,2 @@
+# Enable secure boot
+sys-apps/kmod pkcs7

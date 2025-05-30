@@ -1,0 +1,3 @@
+# required by net-im/wemeet-3.19.0.401::gentoo-zh
+# required by net-im/wemeet (argument)
+>=dev-qt/qtwayland-5.15.11-r1:5 compositor

@@ -1,0 +1,3 @@
+net-wireless/iwd monitor wired
+net-misc/openssh -bindist
+net-misc/networkmanager elogind iwd

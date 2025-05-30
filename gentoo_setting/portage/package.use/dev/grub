@@ -1,0 +1,2 @@
+# For secure boot
+sys-boot/grub secureboot

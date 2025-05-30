@@ -1,0 +1,3 @@
+# Mask uncessary dev package
+#>=dev-java/openjdk-bin-17.0.12_p7:17
+dev-lang/rust-bin:stable

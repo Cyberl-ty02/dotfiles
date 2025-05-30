@@ -1,0 +1,2 @@
+# Create a file to mask packages of the name app-office/wps-office from an ebuild repository entitled "gentoo"
+app-office/wps-office::gentoo

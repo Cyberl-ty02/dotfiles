@@ -1,0 +1,26 @@
+app-text/doxygen clang
+dev-libs/libzip zstd
+virtual/libusb udev
+media-libs/mesa wayland
+app-text/xmlto text
+dev-qt/qtbase postgres -mysql
+dev-qt/qtprintsupport cups
+dev-qt/qtgui egl jpeg
+dev-qt/qtsql -mysql postgres
+dev-qt/qtcore icu
+kde-apps/ark zip
+kde-apps/kde-apps-meta -*
+kde-apps/kdecore-meta -webengine
+kde-apps/akonadi -mysql -sqlite postgres
+kde-apps/akonadi-config -mysql -sqlite postgres
+kde-plasma/plasma-firewall firewalld -ufw
+kde-plasma/discover flatpak
+kde-frameworks/kwindowsystem X
+kde-frameworks/kconfig qml
+kde-frameworks/kitemmodels qml
+kde-frameworks/prison qml
+kde-frameworks/sonnet qml
+kde-frameworks/kglobalaccel X
+kde-frameworks/kdelibs4support X
+media-video/vlc gstreamer ogg -ffmpeg
+

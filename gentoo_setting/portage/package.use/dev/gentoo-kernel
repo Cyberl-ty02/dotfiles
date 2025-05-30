@@ -1,0 +1,6 @@
+# enable suitable flags
+sys-apps/util-linux pam su tty-helpers unicode verify-sig
+
+sys-kernel/gentoo-kernel  modules-compress modules-sign secureboot
+#sys-kernel/rt-sources build
+sys-kernel/xanmod-kernel clang cjk modules-sign secureboot
