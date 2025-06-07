@@ -1,6 +1,15 @@
+app-text/typst ~amd64
+dev-lang/perl ~amd64
+sys-apps/pnpm ~amd64
+dev-lang/rust ~amd64
+
 dev-python/poetry-core ~amd64
 dev-python/pbs-installer ~amd64
 dev-python/findpython ~amd64
 dev-python/poetry-plugin-export ~amd64
 dev-python/poetry ~amd64
 dev-python/undervolt ~amd64
+
+llvm-core/llvm-toolchain-symlinks ~amd64
+llvm-core/llvm ~amd64
+llvm-core/llvmgold ~amd64
