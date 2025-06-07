@@ -1,4 +1,4 @@
-app-editors/edit compiler-clang-linuxkernel
+#app-editors/edit compiler-clang-linuxkernel
 app-editors/vscode compiler-clang
 app-editors/zed compiler-clang-linuxkernel
 dev-lang/rust compiler-clang-linuxkernel
