@@ -1,2 +1,3 @@
 # For secure boot
 sys-boot/grub secureboot
+sys-kernel/installkernel -dracut uki
