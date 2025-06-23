@@ -44,5 +44,4 @@ appendWindowsPath = true
 # systemd = true
 
 # Additional commands. e.g. Run OpenRC:
-# command = /sbin/openrc default
-systemd=false
+command = /sbin/openrc default
