@@ -1,7 +1,8 @@
 # dev-lang/perl compiler-clang
 dev-build/xmake compiler-clang-linuxkernel
 dev-lang/go compiler-clang-linuxkernel
-dev-java/openjdk compiler-clang-linuxkernel
+dev-java/openjdk compiler-clang
+dev-java/openjdk-bin compiler-clang
 dev-lang/rust compiler-clang
 net-libs/nodejs compiler-clang
 sys-apps/keyutils compiler-clang
