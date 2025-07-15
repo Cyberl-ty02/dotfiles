@@ -8,4 +8,6 @@ sys-apps/openrc compiler-clang
 
 # Lenovo Legion Intel firmware
 dev-python/undervolt compiler-clang
+sys-firmware/intel-microcode compiler-clang-linuxkernel
 sys-firmware/lenovolegionlinux compiler-clang
+sys-kernel/linux-firmware compiler-clang-linuxkernel

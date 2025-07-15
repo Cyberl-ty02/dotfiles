@@ -1,5 +1,9 @@
 app-shells/thefuck ~amd64
 
+sys-fs/dislocker ~amd64
+sys-firmware/lenovolegionlinux **
+sys-firmware/lenovolegionlinux ~amd64
+
 sys-kernel/gentoo-kernel ~amd64
 sys-kernel/rt-sources ~amd64
 sys-kernel/xanmod-kernel ~amd64

@@ -96,6 +96,7 @@ sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim
 sys-devel/gcc
+sys-firmware/intel-microcode
 sys-firmware/lenovolegionlinux
 sys-fs/btrfs-progs
 sys-fs/dislocker
