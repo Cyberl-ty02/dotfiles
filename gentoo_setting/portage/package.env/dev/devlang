@@ -4,6 +4,7 @@ dev-lang/go compiler-clang-linuxkernel
 dev-java/openjdk compiler-clang
 dev-java/openjdk-bin compiler-clang
 dev-lang/rust compiler-clang
+dev-python/uv compiler-clang-linuxkernel
 net-libs/nodejs compiler-clang
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang
