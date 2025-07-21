@@ -13,3 +13,5 @@ dev-python/undervolt ~amd64
 llvm-core/llvm-toolchain-symlinks ~amd64
 llvm-core/llvm ~amd64
 llvm-core/llvmgold ~amd64
+
+virtual/perl-Digest-MD5 ~amd64
