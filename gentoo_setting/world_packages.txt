@@ -6,7 +6,7 @@ app-antivirus/clamav
 app-antivirus/clamtk
 app-arch/p7zip
 app-editors/edit
-app-editors/nano
+app-editors/neovim
 app-editors/vscode
 app-eselect/eselect-repository
 app-i18n/fcitx
@@ -23,7 +23,6 @@ app-misc/yazi
 app-office/wps-office
 app-portage/eix
 app-portage/gentoolkit
-app-portage/kuroo
 app-shells/thefuck
 app-shells/zsh
 app-text/aha
