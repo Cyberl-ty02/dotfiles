@@ -1,0 +1,6 @@
+app-editors/edit ~amd64
+app-editors/vscode ~amd64
+app-editors/zed ~amd64
+dev-lang/rust ~amd64
+dev-util/cargo-about ~amd64
+virtual/rust ~amd64

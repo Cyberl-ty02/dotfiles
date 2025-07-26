@@ -1,0 +1,2 @@
+# Enable extra moudule settings
+x11-drivers/nvidia-drivers dist-kernel

@@ -1,0 +1,4 @@
+# For secure boot
+sys-apps/systemd-utils boot kernel-install
+sys-boot/grub
+sys-kernel/installkernel dracut uki
