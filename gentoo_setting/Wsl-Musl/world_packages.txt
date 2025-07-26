@@ -33,7 +33,6 @@ sys-apps/fd
 sys-apps/pnpm
 sys-apps/ripgrep
 sys-boot/grub
-sys-boot/os-prober
 sys-devel/gcc
 sys-firmware/intel-microcode
 sys-firmware/lenovolegionlinux
