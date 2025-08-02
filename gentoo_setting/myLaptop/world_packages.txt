@@ -67,7 +67,6 @@ media-fonts/noto-cjk
 media-gfx/flameshot
 media-gfx/kphotoalbum
 media-gfx/krita
-media-gfx/plantuml
 media-libs/freetype
 media-libs/mesa
 media-libs/vips

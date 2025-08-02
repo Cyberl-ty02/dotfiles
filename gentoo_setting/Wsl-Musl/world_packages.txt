@@ -24,7 +24,6 @@ dev-util/ccache
 dev-util/pkgconf
 media-fonts/nerdfonts
 media-fonts/noto-cjk
-media-gfx/plantuml
 net-firewall/firewalld
 net-fs/samba
 net-misc/chrony
