@@ -1,0 +1,20 @@
+# For github
+proxy() {
+        export https_proxy="http://127.0.0.1:7890"
+        export http_proxy="http://127.0.0.1:7890"
+        export all_proxy="sock5://127.0.0.1:7890"
+        echo "HTTP Proxy on: 127.0.0.1"
+}
+
+nproxy() {
+        unset http_proxy
+        unset https_proxy
+        unset all_proxy
+        echo "HTTP Proxy off"
+}
+
+# default editor
+export EDITOR="emacs -nw"
+
+# For Vxsrc gui
+export DISPLAY=127.0.0.42:0.0
