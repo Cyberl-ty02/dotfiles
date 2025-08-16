@@ -36,10 +36,10 @@ dev-lang/go
 dev-lang/perl
 dev-libs/openssl
 dev-python/pkgconfig
-dev-python/uv
 dev-python/undervolt
 dev-util/ccache
 dev-util/clinfo
+dev-util/pixi
 dev-util/pkgconf
 dev-util/vulkan-tools
 dev-vcs/git
