@@ -9,6 +9,7 @@ dev-python/findpython ~amd64
 dev-python/poetry-plugin-export ~amd64
 dev-python/poetry ~amd64
 dev-python/undervolt ~amd64
+dev-util/pixi ~amd64
 
 llvm-core/llvm-toolchain-symlinks ~amd64
 llvm-core/llvm ~amd64
