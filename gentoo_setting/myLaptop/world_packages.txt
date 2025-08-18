@@ -5,9 +5,9 @@ app-admin/sysklogd
 app-antivirus/clamav
 app-antivirus/clamtk
 app-arch/p7zip
-app-editors/edit
+app-editors/nano
 app-editors/neovim
-app-editors/vscode
+app-editors/zed
 app-eselect/eselect-repository
 app-i18n/fcitx
 app-i18n/fcitx-configtool
