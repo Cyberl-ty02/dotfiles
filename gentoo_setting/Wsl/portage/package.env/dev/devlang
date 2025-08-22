@@ -9,4 +9,5 @@ dev-python/uv compiler-clang-linuxkernel
 net-libs/nodejs compiler-clang
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang
+sys-devel/gcc compiler-gcc
 virtual/rust compiler-clang
