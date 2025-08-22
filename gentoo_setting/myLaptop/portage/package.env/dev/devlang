@@ -1,8 +1,8 @@
 # dev-lang/perl compiler-clang
 dev-build/xmake compiler-clang-linuxkernel
 dev-lang/go compiler-clang-linuxkernel
-dev-java/openjdk compiler-clang
-dev-java/openjdk-bin compiler-clang
+dev-java/openjdk compiler-gcc
+dev-java/openjdk-bin compiler-gcc
 dev-lang/rust compiler-clang
 dev-lang/perl compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
