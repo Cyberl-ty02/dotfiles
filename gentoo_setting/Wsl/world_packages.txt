@@ -16,6 +16,7 @@ app-shells/zsh
 app-text/typst
 dev-build/ninja
 dev-build/xmake
+dev-db/postgresql
 dev-java/openjdk
 dev-util/ccache
 dev-util/pixi
