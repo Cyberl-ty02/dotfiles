@@ -2,7 +2,6 @@ app-admin/chezmoi-bin
 app-admin/doas
 app-admin/eclean-kernel
 app-admin/sysklogd
-app-editors/neovim
 app-editors/nano
 app-eselect/eselect-repository
 app-misc/cpufetch
@@ -14,7 +13,6 @@ app-portage/eix
 app-portage/gentoolkit
 app-shells/thefuck
 app-shells/zsh
-app-text/tree
 app-text/typst
 dev-build/ninja
 dev-build/xmake
@@ -24,18 +22,8 @@ dev-util/pixi
 dev-util/pkgconf
 media-fonts/nerdfonts
 media-fonts/noto-cjk
-net-firewall/firewalld
-net-fs/samba
-net-misc/chrony
-net-misc/openssh
-sys-apps/fd
 sys-apps/pnpm
-sys-apps/ripgrep
 sys-boot/grub
-sys-devel/gcc
-sys-firmware/intel-microcode
-sys-firmware/lenovolegionlinux
-sys-kernel/dracut
 sys-kernel/genkernel
 sys-kernel/installkernel
 sys-kernel/linux-firmware
