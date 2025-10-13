@@ -17,7 +17,7 @@ app-text/typst
 dev-build/ninja
 dev-build/xmake
 dev-db/postgresql
-dev-java/openjdk
+dev-java/openjdk-bin
 dev-util/ccache
 dev-util/pixi
 dev-util/pkgconf
