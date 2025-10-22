@@ -30,6 +30,7 @@ app-text/typst
 dev-build/ninja
 dev-build/xmake
 dev-java/openjdk-bin
+dev-lang/rust-bin
 dev-libs/openssl
 dev-python/pkgconfig
 dev-python/undervolt
