@@ -24,7 +24,9 @@ dev-util/pixi
 dev-util/pkgconf
 media-fonts/nerdfonts
 media-fonts/noto-cjk
+sys-apps/fd
 sys-apps/pnpm
+sys-apps/ripgrep
 sys-boot/grub
 sys-kernel/genkernel
 sys-kernel/installkernel

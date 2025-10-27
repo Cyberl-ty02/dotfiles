@@ -77,7 +77,9 @@ net-p2p/ktorrent
 net-print/cups-meta
 net-print/gutenprint
 net-wireless/iwd
+sys-apps/fd
 sys-apps/pnpm
+sys-apps/ripgrep
 sys-block/partitionmanager
 sys-boot/efibootmgr
 sys-boot/grub
