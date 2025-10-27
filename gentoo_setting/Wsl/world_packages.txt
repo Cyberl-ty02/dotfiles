@@ -2,7 +2,7 @@ app-admin/chezmoi-bin
 app-admin/doas
 app-admin/eclean-kernel
 app-admin/sysklogd
-app-editors/nano
+app-editors/emacs
 app-eselect/eselect-repository
 app-misc/cpufetch
 app-misc/fastfetch
