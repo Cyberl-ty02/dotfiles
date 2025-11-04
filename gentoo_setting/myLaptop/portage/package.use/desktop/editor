@@ -1,2 +1,2 @@
 app-crypt/gcr gtk
-app-editor/emacs -X
+app-editor/emacs -gui
