@@ -22,6 +22,7 @@ dev-lang/rust-bin
 dev-util/ccache
 dev-util/pixi
 dev-util/pkgconf
+llvm-core/lldb
 media-fonts/nerdfonts
 media-fonts/noto-cjk
 sys-apps/fd
