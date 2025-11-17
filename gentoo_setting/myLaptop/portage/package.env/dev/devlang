@@ -10,7 +10,7 @@ dev-python/uv compiler-clang-linuxkernel
 #llvm-core/lldb compiler-clang-linuxkernel
 #llvm-core/llvm compiler-clang-linuxkernel
 #llvm-core/clang compiler-clang-linuxkernel
-net-libs/nodejs compiler-clang
+net-libs/nodejs compiler-clang-linuxkernel
 sys-apps/keyutils compiler-clang
-sys-apps/pnpm compiler-clang
+sys-apps/pnpm compiler-clang-linuxkernel
 virtual/rust compiler-clang
