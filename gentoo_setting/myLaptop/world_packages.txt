@@ -89,8 +89,6 @@ sys-boot/os-prober
 sys-boot/shim
 sys-firmware/intel-microcode
 sys-firmware/lenovolegionlinux
-sys-fs/btrfs-progs
-sys-fs/dislocker
 sys-fs/genfstab
 sys-kernel/genkernel
 sys-kernel/installkernel
