@@ -5,6 +5,7 @@ dev-java/openjdk compiler-gcc
 dev-java/openjdk-bin compiler-gcc
 dev-lang/rust compiler-clang
 dev-lang/perl compiler-clang-linuxkernel
+dev-python/pyyaml compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
 #llvm-core/lld compiler-clang-linuxkernel
 #llvm-core/lldb compiler-clang-linuxkernel

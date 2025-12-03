@@ -33,6 +33,7 @@ dev-java/openjdk-bin
 dev-lang/rust-bin
 dev-libs/openssl
 dev-python/pkgconfig
+dev-python/pyyaml
 dev-python/undervolt
 dev-util/ccache
 dev-util/clinfo
