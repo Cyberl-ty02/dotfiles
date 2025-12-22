@@ -1,0 +1,22 @@
+# Enable oh my posh theme in git bash
+eval "$(oh-my-posh --init --shell bash --config ~/scoop/apps/oh-my-posh/current/themes/montys.omp.json)"
+
+# For proxy settings
+proxy() {
+        export https_proxy="http://127.0.0.1:7890"
+        export http_proxy="http://127.0.0.1:7890"
+        export all_proxy="sock5://127.0.0.1:7890"
+        echo "HTTP Proxy on: 127.0.0.1"
+}
+
+nproxy() {
+        unset http_proxy
+        unset https_proxy
+        unset all_proxy
+        echo "HTTP Proxy off"
+}
+
+# Aliases
+alias ll="ls -l"
+alias la="ls -la"
+alias l="ls -CF"
