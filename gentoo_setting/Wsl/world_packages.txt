@@ -20,7 +20,6 @@ dev-build/xmake
 dev-db/postgresql
 dev-java/openjdk-bin
 dev-lang/rust-bin
-dev-util/ccache
 dev-util/pixi
 dev-util/pkgconf
 llvm-core/lldb

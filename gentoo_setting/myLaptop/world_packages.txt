@@ -35,7 +35,6 @@ dev-libs/openssl
 dev-python/pkgconfig
 dev-python/pyyaml
 dev-python/undervolt
-dev-util/ccache
 dev-util/clinfo
 dev-util/pixi
 dev-util/pkgconf
