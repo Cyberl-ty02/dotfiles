@@ -5,5 +5,5 @@ networkingMode=mirrored
 dnsTunneling=true
 # 启用 Windows 防火墙规则
 firewall=true
-# 启用自动代理（Clash必须在Windows中设为系统代理）
+# 启用自动代理（Windows中设为系统代理）
 autoProxy=true

@@ -59,6 +59,7 @@ kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
 kde-plasma/print-manager
 llvm-core/lldb
+llvm-core/llvm
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
