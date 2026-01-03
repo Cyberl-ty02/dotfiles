@@ -22,6 +22,7 @@ dev-java/openjdk-bin
 dev-lang/rust-bin
 dev-util/pixi
 dev-util/pkgconf
+llvm-core/lld
 llvm-core/lldb
 llvm-core/llvm
 media-fonts/nerdfonts

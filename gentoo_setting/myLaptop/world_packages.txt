@@ -57,6 +57,7 @@ kde-plasma/discover
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
 kde-plasma/print-manager
+llvm-core/lld
 llvm-core/lldb
 llvm-core/llvm
 mail-client/thunderbird
