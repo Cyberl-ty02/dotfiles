@@ -1,9 +1,11 @@
 [wsl2]
-# 使用镜像网络模式，方便配置代理
-networkingMode=mirrored
+# 方便配置代理
+networkingMode=VirtioProxy
 # 启用 DNS 隧道（可选，但通常推荐）
 dnsTunneling=true
 # 启用 Windows 防火墙规则
 firewall=true
 # 启用自动代理（Windows中设为系统代理）
 autoProxy=true
+#kernel=C:\\Users\\kl00\\scoop\\apps\\xanmod-WSL2\\6.18.2-1.1\\bzImage-x64v3
+#kernelModules=C:\\Users\\kl00\\scoop\\apps\\xanmod-WSL2-addons\\6.18.2-1.1\\bzImage-x64v3-addons.vhdx
