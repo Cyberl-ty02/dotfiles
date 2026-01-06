@@ -4,4 +4,4 @@ permit persist :wheel
 # Allow a user to use the reboot command without a password
 permit nopass kl cmd reboot
 permit nopass kl cmd shutdown
-permit nopass kl cmd eix-sync
+# permit nopass kl cmd eix-sync

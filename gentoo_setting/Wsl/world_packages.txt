@@ -12,6 +12,7 @@ app-misc/yazi
 app-portage/eix
 app-portage/gentoolkit
 dev-python/pyyaml
+dev-python/uv
 app-shells/thefuck
 app-shells/zsh
 app-text/typst
