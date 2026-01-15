@@ -99,7 +99,7 @@ sys-kernel/linux-firmware
 sys-kernel/xanmod-kernel
 sys-process/btop
 sys-process/cronie
-www-client/firefox
+www-client/microsoft-edge
 x11-apps/mesa-progs
 x11-apps/xdpyinfo
 x11-drivers/nvidia-drivers
