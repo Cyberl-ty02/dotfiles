@@ -1,0 +1,4 @@
+# Put this file into /etc/eclean-kernel/eclean-kernel.conf
+# exclude third party scoop kernel in gentoo WSL2.
+[kernel]
+exclude = *-locietta-WSL2-xanmod1
