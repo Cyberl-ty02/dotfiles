@@ -2,12 +2,10 @@
 sys-kernel/gentoo-kernel compiler-clang-linuxkernel
 sys-kernel/xanmod-kernel compiler-clang-linuxkernel
 
-#app-admin/syslog-ng compiler-clang
+app-admin/sysklogd compiler-clang
 virtual/dist-kernel compiler-clang
 sys-apps/openrc compiler-clang
 
 # For Lenovo Legion Usage
-dev-python/undervolt compiler-clang
-sys-firmware/intel-microcode compiler-clang-linuxkernel
-sys-firmware/lenovolegionlinux compiler-clang
+#sys-firmware/intel-microcode compiler-clang-linuxkernel
 sys-kernel/linux-firmware compiler-clang-linuxkernel

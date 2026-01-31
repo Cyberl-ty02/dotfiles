@@ -6,6 +6,7 @@ app-antivirus/clamav
 app-antivirus/clamtk
 app-arch/p7zip
 app-editors/emacs
+app-editors/nano
 app-editors/vscode
 app-eselect/eselect-repository
 app-i18n/fcitx
@@ -34,7 +35,6 @@ dev-lang/rust-bin
 dev-libs/openssl
 dev-python/pkgconfig
 dev-python/pyyaml
-dev-python/undervolt
 dev-python/uv
 dev-util/clinfo
 dev-util/pixi
@@ -73,6 +73,8 @@ media-libs/vips
 media-video/pipewire
 net-firewall/firewalld
 net-im/telegram-desktop-bin
+net-im/tencent-qq
+net-im/wechat
 net-im/wemeet
 net-misc/chrony
 net-misc/networkmanager
@@ -91,9 +93,8 @@ sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim
 sys-firmware/intel-microcode
-sys-firmware/lenovolegionlinux
+sys-fs/btrfs-progs
 sys-fs/genfstab
-sys-kernel/genkernel
 sys-kernel/installkernel
 sys-kernel/linux-firmware
 sys-kernel/xanmod-kernel
