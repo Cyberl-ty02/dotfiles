@@ -1,4 +1,5 @@
 app-text/doxygen clang
+app-text/poppler qt5
 dev-libs/libzip zstd
 virtual/libusb udev
 media-libs/mesa wayland
@@ -22,5 +23,6 @@ kde-frameworks/prison qml
 kde-frameworks/sonnet qml
 kde-frameworks/kglobalaccel X
 kde-frameworks/kdelibs4support X
+media-gfx/kphotoalbum -map
 media-video/vlc gstreamer ogg -ffmpeg
 

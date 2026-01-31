@@ -1,4 +1,5 @@
 # enable suitable flags
+dev-python/undervolt python_targets_python3_12
 sys-apps/util-linux pam su tty-helpers unicode verify-sig
 sys-firmware/lenovolegionlinux dist-kernel modules-sign
 sys-firmware/intel-microcode dist-kernel

@@ -1,4 +1,7 @@
-COMMON_FLAGS="-Os -pipe -flto"
+RESOLVE_MARCH_FLAGS="-march=alderlake -mabm -mno-kl -mno-pconfig -mno-sgx -mno-widekl -mshstk \ 
+--param=l1-cache-line-size=64 --param=l1-cache-size=48 --param=l2-cache-size=36864"
+COMMON_FLAGS="${RESOLVE_MARCH_FLAGS} -Os -pipe -flto"
+
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
 LDFLAGS="-Wl,--as-needed"

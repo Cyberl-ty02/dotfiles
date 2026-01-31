@@ -7,6 +7,8 @@ dev-lang/rust compiler-clang
 dev-lang/perl compiler-clang-linuxkernel
 dev-python/pyyaml compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
+
+# For clang compiler
 llvm-core/lld compiler-clang-linuxkernel
 llvm-core/lldb compiler-clang-linuxkernel
 llvm-core/llvm compiler-clang-linuxkernel
@@ -14,4 +16,8 @@ llvm-core/clang compiler-clang-linuxkernel
 net-libs/nodejs compiler-clang-linuxkernel
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang-linuxkernel
+
+# For lenovo Legion
+sys-devel/gcc compiler-gcc-lenovolegion
+
 virtual/rust compiler-clang

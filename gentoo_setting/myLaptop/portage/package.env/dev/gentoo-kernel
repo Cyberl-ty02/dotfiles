@@ -6,7 +6,7 @@ sys-kernel/xanmod-kernel compiler-clang-linuxkernel
 virtual/dist-kernel compiler-clang
 sys-apps/openrc compiler-clang
 
-# Lenovo Legion Intel firmware
+# For Lenovo Legion Usage
 dev-python/undervolt compiler-clang
 sys-firmware/intel-microcode compiler-clang-linuxkernel
 sys-firmware/lenovolegionlinux compiler-clang
