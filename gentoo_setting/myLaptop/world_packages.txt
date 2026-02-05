@@ -100,7 +100,4 @@ sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
 www-client/firefox
-x11-apps/mesa-progs
-x11-apps/xdpyinfo
 x11-drivers/nvidia-drivers
-x11-misc/sddm
