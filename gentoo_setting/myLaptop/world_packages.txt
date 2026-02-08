@@ -48,6 +48,7 @@ kde-apps/dolphin
 kde-apps/filelight
 kde-apps/gwenview
 kde-apps/incidenceeditor
+kde-apps/kate
 kde-apps/kde-apps-meta
 kde-apps/kfind
 kde-apps/kmahjongg
@@ -82,6 +83,7 @@ net-misc/openssh
 net-p2p/ktorrent
 net-print/cups-meta
 net-print/gutenprint
+net-proxy/flclash-bin
 net-wireless/iwd
 sys-apps/fd
 sys-apps/pnpm
