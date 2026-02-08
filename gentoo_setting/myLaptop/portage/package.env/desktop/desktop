@@ -1,5 +1,7 @@
 app-misc/fastfetch compiler-clang
 dev-python/pillow compiler-clang
+dev-qt/qtbase compiler-clang-linuxkernel
+dev-qt/qtcore compiler-clang-linuxkernel
 media-libs/gstreamer compiler-clang-linuxkernel
 media-libs/mesa compiler-clang-linuxkernel
 media-video/ffmpeg compiler-clang-linuxkernel

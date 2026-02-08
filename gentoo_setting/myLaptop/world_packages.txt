@@ -48,7 +48,6 @@ kde-apps/dolphin
 kde-apps/filelight
 kde-apps/gwenview
 kde-apps/incidenceeditor
-kde-apps/kate
 kde-apps/kde-apps-meta
 kde-apps/kfind
 kde-apps/kmahjongg
