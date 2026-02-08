@@ -1,3 +1,4 @@
+dev-qt/qtwebengine compiler-clang-linuxkernel
 mail-client/thunderbird compiler-clang-linuxkernel
 www-client/firefox compiler-clang-linuxkernel
 www-client/microsoft-edge compiler-clang-linuxkernel
