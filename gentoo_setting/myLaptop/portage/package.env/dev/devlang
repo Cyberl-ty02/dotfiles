@@ -1,12 +1,15 @@
-# dev-lang/perl compiler-clang
+  GNU nano 8.7                                         /etc/portage/package.env/dev/devlang                                          已更改
+dev-lang/perl compiler-clang-linux-kernel
 dev-build/xmake compiler-clang-linuxkernel
 dev-lang/go compiler-clang-linuxkernel
 dev-java/openjdk compiler-gcc
 dev-java/openjdk-bin compiler-gcc
-dev-lang/rust compiler-clang
+dev-lang/rust compiler-clang-linuxkernel
+dev-lang/rust-bin compiler-clang-linuxkernel
 dev-lang/perl compiler-clang-linuxkernel
 dev-python/pyyaml compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
+virtual/rust compiler-clang-linuxkernel
 
 # For clang compiler
 llvm-core/lld compiler-clang-linuxkernel
@@ -19,5 +22,3 @@ sys-apps/pnpm compiler-clang-linuxkernel
 
 # For lenovo Legion
 sys-devel/gcc compiler-gcc-lenovolegion
-
-virtual/rust compiler-clang

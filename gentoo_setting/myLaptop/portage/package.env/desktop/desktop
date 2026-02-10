@@ -1,3 +1,4 @@
+app-antivirus/clamav compiler-clang-linuxkernel
 app-misc/fastfetch compiler-clang
 dev-python/pillow compiler-clang
 dev-qt/qtbase compiler-clang-linuxkernel

@@ -4,6 +4,5 @@ app-editors/neovim compiler-clang-linuxkernel
 app-editors/vscode compiler-clang
 app-editors/zed compiler-clang-linuxkernel
 app-text/typst compiler-clang-linuxkernel
-dev-lang/rust compiler-clang-linuxkernel
 dev-util/cargo-about compiler-clang-linuxkernel
 virtual/rust compiler-clang-linuxkernel
