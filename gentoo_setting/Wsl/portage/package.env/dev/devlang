@@ -19,5 +19,3 @@ net-libs/nodejs compiler-clang-linuxkernel
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang-linuxkernel
 
-# For lenovo Legion
-sys-devel/gcc compiler-gcc-lenovolegion
