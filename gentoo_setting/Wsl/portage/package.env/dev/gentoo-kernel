@@ -1,17 +1,11 @@
-# use special file to ignore third-party kernel
-sys-kernel/* fix-kbuildlinks
-virtual/linux-sources fix-kbuildlinks
-
 # use clang to complie kernels
 sys-kernel/gentoo-kernel compiler-clang-linuxkernel
 sys-kernel/xanmod-kernel compiler-clang-linuxkernel
 
-#app-admin/syslog-ng compiler-clang
+app-admin/sysklogd compiler-clang
 virtual/dist-kernel compiler-clang
 sys-apps/openrc compiler-clang
 
-# Lenovo Legion Intel firmware
-dev-python/undervolt compiler-clang
-sys-firmware/intel-microcode compiler-clang-linuxkernel
-sys-firmware/lenovolegionlinux compiler-clang
+# For Lenovo Legion Usage
+#sys-firmware/intel-microcode compiler-clang-linuxkernel
 sys-kernel/linux-firmware compiler-clang-linuxkernel

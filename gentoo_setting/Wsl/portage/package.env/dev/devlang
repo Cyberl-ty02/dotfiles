@@ -1,18 +1,23 @@
-# dev-lang/perl compiler-clang
+dev-lang/perl compiler-clang-linuxkernel
 dev-build/xmake compiler-clang-linuxkernel
 dev-lang/go compiler-clang-linuxkernel
 dev-java/openjdk compiler-gcc
 dev-java/openjdk-bin compiler-gcc
-dev-lang/rust compiler-clang
+dev-lang/rust compiler-clang-linuxkernel
+dev-lang/rust-bin compiler-clang-linuxkernel
 dev-lang/perl compiler-clang-linuxkernel
 dev-python/pyyaml compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
-#llvm-core/lld compiler-clang-linuxkernel
-#llvm-core/lldb compiler-clang-linuxkernel
-#llvm-core/llvm compiler-clang-linuxkernel
-#llvm-core/clang compiler-clang-linuxkernel
+virtual/rust compiler-clang-linuxkernel
+
+# For clang compiler
+llvm-core/lld compiler-clang-linuxkernel
+llvm-core/lldb compiler-clang-linuxkernel
+llvm-core/llvm compiler-clang-linuxkernel
+llvm-core/clang compiler-clang-linuxkernel
 net-libs/nodejs compiler-clang-linuxkernel
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang-linuxkernel
-sys-devel/gcc compiler-gcc
-virtual/rust compiler-clang
+
+# For lenovo Legion
+sys-devel/gcc compiler-gcc-lenovolegion

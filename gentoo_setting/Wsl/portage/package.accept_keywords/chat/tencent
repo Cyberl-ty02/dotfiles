@@ -1,5 +1,8 @@
+media-libs/libdicom ~amd64
 media-libs/openslide ~amd64
 media-libs/vips ~amd64
 net-im/tencent-qq ~amd64
+net-im/wechat ~amd64
+net-im/wemeet ~amd64
 x11-misc/flatpak-xdg-utils ~amd64
 x11-misc/snapd-xdg-open ~amd64

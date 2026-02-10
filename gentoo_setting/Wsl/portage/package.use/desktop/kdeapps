@@ -1,31 +1,28 @@
-app-text/xmlto text
+app-text/doxygen clang
+app-text/poppler qt5
 dev-libs/libzip zstd
-dev-qt/qtdeclarative opengl
-dev-qt/qt5compat icu qml
-dev-qt/qtbase icu libproxy opengl postgres wayland -mysql
-dev-qt/qtcore icu
-dev-qt/qtgui egl jpeg
-dev-qt/qtmultimedia opengl
+virtual/libusb udev
+media-libs/mesa wayland
+app-text/xmlto text
+dev-qt/qtbase postgres -mysql
 dev-qt/qtprintsupport cups
-dev-qt/qttools opengl
-dev-qt/qtsql postgres -mysql
-kde-apps/akonadi postgres -mysql -sqlite
-kde-apps/akonadi-config postgres -mysql -sqlite
+dev-qt/qtgui egl jpeg
+dev-qt/qtsql -mysql postgres
+dev-qt/qtcore icu
 kde-apps/ark zip
 kde-apps/kde-apps-meta -*
 kde-apps/kdecore-meta -webengine
-kde-frameworks/kconfig dbus qml
-kde-frameworks/kdelibs4support X
-kde-frameworks/kglobalaccel X
+kde-apps/akonadi -mysql -sqlite postgres
+kde-apps/akonadi-config -mysql -sqlite postgres
+kde-plasma/plasma-firewall firewalld -ufw
+kde-plasma/discover flatpak
+kde-frameworks/kwindowsystem X
+kde-frameworks/kconfig qml
 kde-frameworks/kitemmodels qml
-kde-frameworks/kwindowsystem wayland X
 kde-frameworks/prison qml
 kde-frameworks/sonnet qml
-kde-plasma/discover flatpak
-kde-plasma/plasma-firewall firewalld -ufw
-media-libs/freetype harfbuzz
-media-libs/mesa wayland
-media-video/vlc dbus gstreamer ogg
-pp-text/doxygen clang
-virtual/libusb udev
-x11-libs/cairo -X
+kde-frameworks/kglobalaccel X
+kde-frameworks/kdelibs4support X
+media-gfx/kphotoalbum -map
+media-video/vlc gstreamer ogg -ffmpeg
+

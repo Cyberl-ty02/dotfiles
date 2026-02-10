@@ -1,3 +1,6 @@
-media-gfx/krita compiler-clang
+kde-apps/kate compiler-clang
 kde-apps/konsole compiler-clang
+kde-apps/kwrite compiler-clang
 kde-apps/yakuake compiler-clang
+media-gfx/krita compiler-clang
+

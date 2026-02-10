@@ -1,11 +1,12 @@
 # enable suitable flags
+dev-python/undervolt python_targets_python3_12
 sys-apps/util-linux pam su tty-helpers unicode verify-sig
-sys-firmware/lenovolegionlinux dist-kernel
+sys-firmware/lenovolegionlinux dist-kernel modules-sign
 sys-firmware/intel-microcode dist-kernel
 
-sys-kernel/gentoo-kernel  modules-compress
+sys-kernel/gentoo-kernel  modules-compress modules-sign secureboot
 #sys-kernel/rt-sources build
 # linux frimware
 sys-kernel/liquorix-sources cjk
 sys-kernel/linux-firmware -initramfs compress-zstd dist-kernel
-sys-kernel/xanmod-kernel clang cjk
+sys-kernel/xanmod-kernel clang cjk modules-sign secureboot

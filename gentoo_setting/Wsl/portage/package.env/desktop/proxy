@@ -1,8 +1,9 @@
 # Mihomo Clash
-dev-lang/go compiler-clang
+dev-lang/go compiler-clang-linuxkernel
 app-admin/chezmoi compiler-clang-linuxkernel
 app-admin/chezmoi-bin compiler-clang-linuxkernel
-dev-lang/go-bootstrap compiler-clang
+dev-lang/go-bootstrap compiler-clang-linuxkernel
+net-proxy/flclash-bin compiler-clang-linuxkernel
 net-proxy/mihomo compiler-clang-linuxkernel
 
 # V2ray

@@ -1,2 +1,1 @@
-sys-devel/llvm-core -multilib
-sys-devel/gcc lto pgo
+sys-devel/gcc lto

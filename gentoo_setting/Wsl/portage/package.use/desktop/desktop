@@ -3,7 +3,6 @@ app-accessibility/speech-dispatcher python
 dev-libs/liblouis python
 dev-libs/libpcre2 pcre32
 kde-plasma/kwin lock
-media-libs/freetype harfbuzz
 media-libs/gd truetype
 media-libs/libglvnd X
 media-sound/pulseaudio -daemon
