@@ -4,10 +4,10 @@ app-admin/chezmoi compiler-clang-linuxkernel
 app-admin/chezmoi-bin compiler-clang-linuxkernel
 dev-lang/go-bootstrap compiler-clang-linuxkernel
 net-proxy/flclash-bin compiler-clang-linuxkernel
-net-proxy/mihomo compiler-clang-linux-kernel
+net-proxy/mihomo compiler-clang-linuxkernel
 
 # V2ray
 net-proxy/v2rayA compiler-clang-linuxkernel
 net-proxy/v2raya-bin compiler-clang-linuxkernel
 net-proxy/v2ray compiler-clang-linuxkernel
-net-proxy/Xray compiler-clang-linux-kernel
+net-proxy/Xray compiler-clang-linuxkernel

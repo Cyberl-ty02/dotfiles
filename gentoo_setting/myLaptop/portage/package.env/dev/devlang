@@ -1,4 +1,4 @@
-dev-lang/perl compiler-clang-linux-kernel
+dev-lang/perl compiler-clang-linuxkernel
 dev-build/xmake compiler-clang-linuxkernel
 dev-lang/go compiler-clang-linuxkernel
 dev-java/openjdk compiler-gcc
