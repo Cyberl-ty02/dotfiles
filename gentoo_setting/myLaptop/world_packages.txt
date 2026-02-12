@@ -28,6 +28,7 @@ app-shells/zsh
 app-text/aha
 app-text/tree
 app-text/typst
+dev-db/postgresql
 dev-build/ninja
 dev-build/xmake
 dev-java/openjdk-bin
@@ -94,7 +95,6 @@ sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim
 sys-fs/genfstab
-sys-kernel/installkernel
 sys-kernel/linux-firmware
 sys-kernel/xanmod-kernel
 sys-power/power-profiles-daemon
