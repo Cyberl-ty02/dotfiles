@@ -4,4 +4,4 @@
 # To enable systemd, if the system Gentoo profile supports it, uncomment the following line:
 # systemd = true
 # Additional commands. e.g. Run OpenRC:
-command = /sbin/openrc default
+command = "/sbin/openrc default"
