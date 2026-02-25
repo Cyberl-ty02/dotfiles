@@ -2,6 +2,8 @@ app-text/typst ~amd64
 dev-lang/perl ~amd64
 sys-apps/pnpm ~amd64
 dev-lang/rust ~amd64
+dev-util/cargo-about ~amd64
+
 
 dev-python/poetry-core ~amd64
 dev-python/pbs-installer ~amd64
@@ -16,3 +18,4 @@ llvm-core/llvm ~amd64
 llvm-core/llvmgold ~amd64
 
 virtual/perl-Digest-MD5 ~amd64
+virtual/rust ~amd64

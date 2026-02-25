@@ -101,4 +101,5 @@ sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
 www-client/firefox
+x11-base/xlibre-server
 x11-drivers/nvidia-drivers
