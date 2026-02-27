@@ -26,11 +26,10 @@ app-portage/gentoolkit
 app-shells/thefuck
 app-shells/zsh
 app-text/aha
-app-text/tree
 app-text/typst
-dev-db/postgresql
 dev-build/ninja
 dev-build/xmake
+dev-db/postgresql
 dev-java/openjdk-bin
 dev-lang/rust-bin
 dev-libs/openssl
@@ -41,7 +40,6 @@ dev-util/clinfo
 dev-util/pixi
 dev-util/pkgconf
 dev-util/vulkan-tools
-dev-vcs/git
 games-board/gnuchess
 kde-apps/ark
 kde-apps/bovo
@@ -59,9 +57,9 @@ kde-plasma/discover
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
 kde-plasma/print-manager
+llvm-core/clang
 llvm-core/lld
 llvm-core/lldb
-llvm-core/llvm
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
@@ -71,6 +69,7 @@ media-gfx/krita
 media-libs/freetype
 media-libs/mesa
 media-libs/vips
+media-video/mpv
 media-video/pipewire
 net-firewall/firewalld
 net-im/telegram-desktop-bin
@@ -78,6 +77,8 @@ net-im/tencent-qq
 net-im/wechat
 net-im/wemeet
 net-misc/chrony
+net-misc/curl
+net-misc/localsend-bin
 net-misc/networkmanager
 net-misc/openssh
 net-p2p/ktorrent
@@ -90,7 +91,6 @@ sys-apps/pnpm
 sys-apps/ripgrep
 sys-block/partitionmanager
 sys-boot/efibootmgr
-sys-boot/grub
 sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim

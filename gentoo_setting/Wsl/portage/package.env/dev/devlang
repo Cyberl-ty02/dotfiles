@@ -6,6 +6,7 @@ dev-java/openjdk-bin compiler-gcc
 dev-lang/rust compiler-clang-linuxkernel
 dev-lang/rust-bin compiler-clang-linuxkernel
 dev-lang/perl compiler-clang-linuxkernel
+dev-python/pyqt6 compiler-clang-linuxkernel
 dev-python/pyyaml compiler-clang-linuxkernel
 dev-python/uv compiler-clang-linuxkernel
 virtual/rust compiler-clang-linuxkernel
@@ -19,3 +20,5 @@ net-libs/nodejs compiler-clang-linuxkernel
 sys-apps/keyutils compiler-clang
 sys-apps/pnpm compiler-clang-linuxkernel
 
+# For lenovo Legion
+sys-devel/gcc compiler-gcc-lenovolegion

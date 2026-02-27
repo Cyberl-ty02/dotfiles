@@ -1,2 +1,2 @@
-x11-base/xorg-server
-x11-base/xorg-drivers
+x11-base/xorg-server::gentoo
+x11-base/xorg-drivers::gentoo

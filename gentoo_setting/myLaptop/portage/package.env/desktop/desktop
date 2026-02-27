@@ -7,5 +7,11 @@ media-libs/gstreamer compiler-clang-linuxkernel
 media-libs/mesa compiler-clang-linuxkernel
 media-video/ffmpeg compiler-clang-linuxkernel
 media-video/pipewire compiler-clang-linuxkernel
+media-video/mpv compiler-clang-linuxkernel
 media-video/vlc compiler-clang-linuxkernel
+net-libs/accounts-qt compiler-clang-linuxkernel
+net-libs/signond compiler-clang-linuxkernel
+net-libs/signon-oauth2 compiler-clang-linuxkernel
+net-libs/signon-ui compiler-clang-linuxkernel
 sys-process/btop compiler-clang
+
