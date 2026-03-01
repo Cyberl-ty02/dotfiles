@@ -39,6 +39,7 @@ dev-python/uv
 dev-util/clinfo
 dev-util/pixi
 dev-util/pkgconf
+dev-util/pycharm-professional
 dev-util/vulkan-tools
 games-board/gnuchess
 kde-apps/ark
