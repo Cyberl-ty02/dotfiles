@@ -1,2 +1,6 @@
+# For cuda usage
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
+dev-libs/cudnn NVIDIA-cuDNN
+
 x11-drivers/nvidia-drivers NVIDIA-r2
 x11-drivers/nvidia-drivers NVIDIA-2025
