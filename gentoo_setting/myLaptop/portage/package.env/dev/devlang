@@ -1,27 +1,19 @@
-# Core languages / build tools
-dev-build/xmake compiler-clang
+llvm-core/* compiler-clang
+
 dev-lang/go compiler-clang
-dev-lang/perl compiler-clang
+dev-lang/go-bootstrap compiler-clang
 dev-lang/rust compiler-clang
 dev-lang/rust-bin compiler-clang
 virtual/rust compiler-clang
 
-# Python development related
 dev-python/* compiler-clang
 
-# LLVM / Clang toolchain
-llvm-core/* compiler-clang
-
-# JS / Node ecosystem
 net-libs/nodejs compiler-clang
 sys-apps/pnpm compiler-clang
 
-# Small toolchain helpers
-sys-apps/keyutils compiler-clang
-
-# Packages that are safer with GCC
+# openjdk sometimes problematic with clang
 dev-java/openjdk compiler-gcc
 dev-java/openjdk-bin compiler-gcc
 
-# GCC self-bootstrap / self-upgrade on Lenovo Legion
+# gcc bootstrap
 sys-devel/gcc compiler-gcc-lenovolegion

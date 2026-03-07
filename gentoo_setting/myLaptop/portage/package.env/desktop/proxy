@@ -1,13 +1,9 @@
-dev-lang/go compiler-clang
-dev-lang/go-bootstrap compiler-clang
-
-app-admin/chezmoi compiler-clang
-app-admin/chezmoi-bin compiler-clang
-
-net-proxy/flclash-bin compiler-clang
 net-proxy/mihomo compiler-clang
-
+net-proxy/flclash-bin compiler-clang
 net-proxy/v2rayA compiler-clang
 net-proxy/v2raya-bin compiler-clang
 net-proxy/v2ray compiler-clang
 net-proxy/Xray compiler-clang
+
+app-admin/chezmoi compiler-clang
+app-admin/chezmoi-bin compiler-clang

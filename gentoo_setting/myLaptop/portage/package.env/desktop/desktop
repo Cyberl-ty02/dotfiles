@@ -1,21 +1,10 @@
-app-antivirus/clamav compiler-clang
-app-misc/fastfetch compiler-clang
-dev-python/pillow compiler-clang
-
-dev-qt/qtbase compiler-clang
-dev-qt/qtcore compiler-clang
-
-media-libs/gstreamer compiler-clang
 media-libs/mesa compiler-clang
+media-libs/gstreamer compiler-clang
 
 media-video/ffmpeg compiler-clang
 media-video/pipewire compiler-clang
 media-video/mpv compiler-clang
 media-video/vlc compiler-clang
 
-net-libs/accounts-qt compiler-clang
-net-libs/signond compiler-clang
-net-libs/signon-oauth2 compiler-clang
-net-libs/signon-ui compiler-clang
-
 sys-process/btop compiler-clang
+app-misc/fastfetch compiler-clang

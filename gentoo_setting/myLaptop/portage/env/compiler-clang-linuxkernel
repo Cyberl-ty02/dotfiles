@@ -1,15 +1,11 @@
-# /etc/portage/env/compiler-clang-linuxkernel
-
 COMMON_FLAGS="-march=native -O2 -pipe"
 
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
-FCFLAGS="${COMMON_FLAGS}"
-FFLAGS="${COMMON_FLAGS}"
 
 CC="clang"
-CPP="clang-cpp"
 CXX="clang++"
+CPP="clang-cpp"
 
 AR="llvm-ar"
 NM="llvm-nm"

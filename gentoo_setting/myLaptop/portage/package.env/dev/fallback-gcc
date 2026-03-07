@@ -1,0 +1,4 @@
+# Add packages here when clang/mold causes issues.
+# example:
+# category/package compiler-gcc
+

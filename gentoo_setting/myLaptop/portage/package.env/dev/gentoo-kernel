@@ -1,11 +1,3 @@
-# Kernel / firmware / boot related: use clang + lld
 sys-kernel/* compiler-clang-linuxkernel
 virtual/dist-kernel compiler-clang-linuxkernel
 sys-kernel/linux-firmware compiler-clang-linuxkernel
-
-# Optional firmware / microcode
-# sys-firmware/intel-microcode compiler-clang-linuxkernel
-
-# Low-level base/system packages you explicitly want under clang
-app-admin/sysklogd compiler-clang
-sys-apps/openrc compiler-clang

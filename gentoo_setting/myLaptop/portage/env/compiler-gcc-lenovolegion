@@ -1,11 +1,8 @@
-# /etc/portage/env/compiler-gcc
-
-COMMON_FLAGS="-O2 -pipe -flto=auto"
+RESOLVE_MARCH_FLAGS="-march=alderlake -mabm -mno-kl -mno-pconfig -mno-sgx -mno-widekl -mshstk"
+COMMON_FLAGS="${RESOLVE_MARCH_FLAGS} -O2 -pipe"
 
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
-FCFLAGS="${COMMON_FLAGS}"
-FFLAGS="${COMMON_FLAGS}"
 
 LDFLAGS="-Wl,--as-needed"
 

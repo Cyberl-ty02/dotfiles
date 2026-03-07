@@ -1,8 +1,4 @@
-app-editors/emacs compiler-clang
 app-editors/neovim compiler-clang
+app-editors/emacs compiler-clang
 app-editors/vscode compiler-clang
 app-editors/zed compiler-clang
-
-app-text/typst compiler-clang
-dev-util/cargo-about compiler-clang
-virtual/rust compiler-clang
