@@ -1,2 +1,1 @@
-# use clang to complie go language
-dev-db/postgresql compiler-clang-linuxkernel
+dev-db/postgresql compiler-clang

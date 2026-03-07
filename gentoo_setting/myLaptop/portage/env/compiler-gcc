@@ -1,12 +1,18 @@
-COMMON_FLAGS="-Os -pipe -flto"
+# /etc/portage/env/compiler-gcc
+
+COMMON_FLAGS="-O2 -pipe -flto=auto"
+
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+
 LDFLAGS="-Wl,--as-needed"
 
-# For gcc only software
 CC="gcc"
 CXX="g++"
 CPP="gcc -E"
+
 AR="ar"
 LD="ld"
 NM="nm"

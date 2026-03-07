@@ -31,6 +31,7 @@ media-fonts/noto-cjk
 sys-apps/fd
 sys-apps/pnpm
 sys-apps/ripgrep
+sys-devel/mold
 sys-kernel/linux-firmware
 sys-kernel/xanmod-kernel
 sys-process/btop
