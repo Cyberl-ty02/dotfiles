@@ -1,16 +1,27 @@
 app-accessibility/brltty python
 app-accessibility/speech-dispatcher python
+dev-libs/appstream qt6
+dev-libs/icu abi_x86_32
 dev-libs/liblouis python
 dev-libs/libpcre2 pcre32
+dev-libs/libusb udev
+dev-libs/libxml2 icu
+dev-python/pyqt6 qml
 kde-plasma/kwin lock
 media-libs/gd truetype
 media-libs/libglvnd X
+media-libs/vulkan-loader X
+media-plugins/alsa-plugins pulseaudio
 media-sound/pulseaudio -daemon
-media-video/pipewire sound-server
+media-video/pipewire extra sound-server X
 net-dns/avahi mdnsresponder-compat
+net-print/cups dbus
 sys-apps/dbus elogind
 sys-auth/pambase elogind
 sys-auth/polkit daemon
 sys-fs/udisks elogind
 x11-libs/cairo X
+x11-libs/gtk+ wayland
 x11-libs/libxkbcommon X
+x11-libs/pango X
+

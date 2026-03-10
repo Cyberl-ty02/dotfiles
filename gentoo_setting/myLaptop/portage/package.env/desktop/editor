@@ -1,8 +1,0 @@
-#app-editors/edit compiler-clang-linuxkernel
-app-editors/emacs compiler-clang-linuxkernel
-app-editors/neovim compiler-clang-linuxkernel
-app-editors/vscode compiler-clang-linuxkernel
-app-editors/zed compiler-clang-linuxkernel
-app-text/typst compiler-clang-linuxkernel
-dev-util/cargo-about compiler-clang-linuxkernel
-virtual/rust compiler-clang-linuxkernel

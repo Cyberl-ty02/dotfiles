@@ -1,3 +1,4 @@
+app-text/doxygen ~amd64
 app-editors/edit ~amd64
 app-editors/vscode ~amd64
 app-editors/zed ~amd64

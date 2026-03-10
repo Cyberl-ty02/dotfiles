@@ -1,28 +1,22 @@
-app-text/doxygen clang
 app-text/poppler qt5
 dev-libs/libzip zstd
+dev-libs/qcoro dbus
 virtual/libusb udev
 media-libs/mesa wayland
 app-text/xmlto text
-dev-qt/qtbase postgres -mysql
-dev-qt/qtprintsupport cups
-dev-qt/qtgui egl jpeg
-dev-qt/qtsql -mysql postgres
-dev-qt/qtcore icu
+dev-qt/* cups egl icu jpeg libproxy wayland opengl postgres qml vulkan X -mysql
+kde-apps/* postgres X -mysql -sqlite
 kde-apps/ark zip
 kde-apps/kde-apps-meta -*
 kde-apps/kdecore-meta -webengine
-kde-apps/akonadi -mysql -sqlite postgres
-kde-apps/akonadi-config -mysql -sqlite postgres
-kde-plasma/plasma-firewall firewalld -ufw
+kde-frameworks/* avif dbus qml wayland X
+kde-plasma/* firewalld X -ufw
 kde-plasma/discover flatpak
-kde-frameworks/kwindowsystem X
-kde-frameworks/kconfig qml
-kde-frameworks/kitemmodels qml
-kde-frameworks/prison qml
-kde-frameworks/sonnet qml
-kde-frameworks/kglobalaccel X
-kde-frameworks/kdelibs4support X
+kde-plasma/kwin-x11 lock
 media-gfx/kphotoalbum -map
 media-video/vlc gstreamer ogg -ffmpeg
-
+sys-apps/accountsservice elogind
+sys-apps/dbus X
+sys-apps/fwupd elogind
+sys-libs/zlib minizip
+www-client/falkon kde

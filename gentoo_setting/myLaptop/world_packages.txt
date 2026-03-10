@@ -41,6 +41,7 @@ dev-util/pixi
 dev-util/pkgconf
 dev-util/pycharm-professional
 dev-util/vulkan-tools
+dev-vcs/git
 games-board/gnuchess
 kde-apps/ark
 kde-apps/bovo
@@ -56,12 +57,14 @@ kde-apps/knights
 kde-apps/kwalletmanager
 kde-apps/yakuake
 kde-plasma/discover
+kde-plasma/kde-gtk-config
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
 kde-plasma/print-manager
 llvm-core/clang
+llvm-core/clang:20
 llvm-core/lld
-llvm-core/lldb
+llvm-core/lld:20
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
@@ -71,6 +74,7 @@ media-gfx/krita
 media-libs/freetype
 media-libs/mesa
 media-libs/vips
+media-plugins/alsa-plugins
 media-video/mpv
 media-video/pipewire
 net-firewall/firewalld
@@ -96,6 +100,7 @@ sys-boot/efibootmgr
 sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim
+sys-devel/mold
 sys-fs/btrfs-progs
 sys-fs/genfstab
 sys-kernel/linux-firmware
@@ -103,10 +108,11 @@ sys-kernel/xanmod-kernel
 sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
+www-client/falkon
 www-client/firefox
 x11-apps/xdpyinfo
 x11-base/xlibre-server
-x11-drivers/nvidia-drivers
 
 dev-libs/cudnn
 dev-util/nvidia-cuda-toolkit
+x11-drivers/nvidia-drivers
