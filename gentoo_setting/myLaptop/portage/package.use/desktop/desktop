@@ -11,6 +11,7 @@ kde-plasma/kwin lock
 media-libs/gd truetype
 media-libs/libglvnd X
 media-libs/vulkan-loader X
+x11-apps/mesa-progs wayland X
 media-plugins/alsa-plugins pulseaudio
 media-sound/pulseaudio -daemon
 media-video/pipewire extra sound-server X
