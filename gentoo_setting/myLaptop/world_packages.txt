@@ -43,8 +43,8 @@ dev-util/pycharm-professional
 dev-util/vulkan-tools
 dev-vcs/git
 games-board/gnuchess
-gui-libs/egl-x11
 gui-libs/egl-wayland
+gui-libs/egl-x11
 kde-apps/ark
 kde-apps/bovo
 kde-apps/dolphin
@@ -62,7 +62,6 @@ kde-plasma/discover
 kde-plasma/kde-gtk-config
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
-kde-plasma/plasma-pa
 kde-plasma/print-manager
 llvm-core/clang
 llvm-core/clang:20
@@ -77,6 +76,8 @@ media-gfx/krita
 media-libs/freetype
 media-libs/mesa
 media-libs/vips
+media-plugins/alsa-plugins
+media-sound/alsa-utils
 media-video/mpv
 media-video/pipewire
 net-firewall/firewalld
@@ -110,7 +111,6 @@ sys-kernel/xanmod-kernel
 sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
-www-client/falkon
 www-client/firefox
 x11-apps/mesa-progs
 x11-apps/xdpyinfo
