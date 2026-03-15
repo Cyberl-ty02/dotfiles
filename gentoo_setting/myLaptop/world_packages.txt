@@ -57,6 +57,7 @@ kde-apps/kfind
 kde-apps/kmahjongg
 kde-apps/knights
 kde-apps/kwalletmanager
+kde-plasma/plasma-pa
 kde-apps/yakuake
 kde-plasma/discover
 kde-plasma/kde-gtk-config

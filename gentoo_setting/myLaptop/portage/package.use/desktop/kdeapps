@@ -11,7 +11,8 @@ dev-qt/qtdeclarative svg
 dev-qt/qtpositioning geoclue
 kde-apps/* postgres X -mysql -sqlite
 kde-apps/ark zip
-kde-apps/kde-apps-meta -education -games -multimedia
+kde-apps/kde-apps-meta -*
+kde-apps/kdecore-meta -webengine
 kde-frameworks/* avif dbus qml wayland X
 kde-frameworks/kfilemetadata taglib
 kde-plasma/* firewalld X -ufw
