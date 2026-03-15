@@ -1,5 +1,6 @@
 app-accessibility/brltty python
 app-accessibility/speech-dispatcher python
+app-text/poppler qt6 nss
 dev-libs/appstream qt6
 dev-libs/icu abi_x86_32
 dev-libs/liblouis python
@@ -10,6 +11,7 @@ dev-python/pyqt6 qml
 kde-plasma/kwin lock
 media-libs/gd truetype
 media-libs/libglvnd X
+media-libs/opencv features2d contrib contribdnn
 media-libs/vulkan-loader X
 x11-apps/mesa-progs wayland X
 media-plugins/alsa-plugins pulseaudio
@@ -25,4 +27,3 @@ x11-libs/cairo X
 x11-libs/gtk+ wayland
 x11-libs/libxkbcommon X
 x11-libs/pango X
-
