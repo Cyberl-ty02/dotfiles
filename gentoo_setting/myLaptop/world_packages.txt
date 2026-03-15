@@ -115,6 +115,7 @@ sys-process/cronie
 www-client/firefox
 x11-apps/mesa-progs
 x11-apps/xdpyinfo
+x11-apps/xev
 x11-base/xlibre-server
 
 dev-libs/cudnn
