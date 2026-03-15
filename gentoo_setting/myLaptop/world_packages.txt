@@ -57,21 +57,18 @@ kde-apps/kfind
 kde-apps/kmahjongg
 kde-apps/knights
 kde-apps/kwalletmanager
-kde-plasma/plasma-pa
 kde-apps/yakuake
 kde-plasma/discover
 kde-plasma/kde-gtk-config
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
+kde-plasma/plasma-pa
 kde-plasma/print-manager
 llvm-core/clang
-llvm-core/clang:20
 llvm-core/lld
-llvm-core/lld:20
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
-media-gfx/flameshot
 media-gfx/kphotoalbum
 media-gfx/krita
 media-libs/freetype
@@ -116,6 +113,7 @@ www-client/firefox
 x11-apps/mesa-progs
 x11-apps/xdpyinfo
 x11-apps/xev
+x11-apps/xinput
 x11-base/xlibre-server
 
 dev-libs/cudnn
