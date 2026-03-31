@@ -4,5 +4,6 @@
 
 dev-libs/darts compiler-gcc
 dev-util/pycharm-professional compiler-gcc
+media-libs/gstreamer compiler-gcc
 media-gfx/povray compiler-gcc
 sys-boot/grub compiler-gcc
