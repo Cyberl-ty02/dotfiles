@@ -1,4 +1,0 @@
-www-client/firefox compiler-clang
-www-client/microsoft-edge compiler-clang
-mail-client/thunderbird compiler-clang
-dev-qt/qtwebengine compiler-clang

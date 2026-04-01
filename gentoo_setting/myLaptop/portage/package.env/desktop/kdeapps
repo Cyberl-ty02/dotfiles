@@ -1,5 +1,4 @@
-kde-frameworks/* compiler-clang
-kde-plasma/* compiler-clang
-kde-apps/* compiler-clang
-dev-qt/* compiler-clang
-media-gfx/krita compiler-clang
+kde-frameworks/* compiler-clang-linuxkernel
+kde-plasma/* compiler-clang-linuxkernel
+kde-apps/* compiler-clang-linuxkernel
+dev-qt/* compiler-clang-linuxkernel

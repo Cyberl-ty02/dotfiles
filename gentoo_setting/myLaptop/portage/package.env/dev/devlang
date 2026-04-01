@@ -1,12 +1,10 @@
-llvm-core/* compiler-clang
-
 dev-lang/go compiler-clang
 dev-lang/go-bootstrap compiler-clang
 dev-lang/rust compiler-clang
 dev-lang/rust-bin compiler-clang
 virtual/rust compiler-clang
 
-dev-python/* compiler-clang
+dev-python/* compiler-clang-linuxkernel
 
 net-libs/nodejs compiler-clang
 sys-apps/pnpm compiler-clang
