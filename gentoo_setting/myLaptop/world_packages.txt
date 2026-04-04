@@ -89,6 +89,7 @@ net-print/gutenprint
 net-proxy/flclash-bin
 net-wireless/iwd
 sys-apps/fd
+sys-apps/kmscon
 sys-apps/pnpm
 sys-apps/ripgrep
 sys-block/partitionmanager
