@@ -1,4 +1,0 @@
-kde-frameworks/* compiler-clang-linuxkernel
-kde-plasma/* compiler-clang-linuxkernel
-kde-apps/* compiler-clang-linuxkernel
-dev-qt/* compiler-clang-linuxkernel

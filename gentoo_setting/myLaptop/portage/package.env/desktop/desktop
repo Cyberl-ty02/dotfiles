@@ -1,8 +1,0 @@
-app-text/doxygen compiler-clang-linuxkernel
-
-media-libs/mesa compiler-clang
-media-libs/gstreamer compiler-clang
-
-media-video/ffmpeg compiler-clang
-media-video/pipewire compiler-clang-linuxkernel
-

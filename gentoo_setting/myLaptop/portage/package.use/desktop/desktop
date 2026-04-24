@@ -1,30 +1,32 @@
 app-accessibility/brltty python
 app-accessibility/speech-dispatcher python
-app-text/poppler qt6 nss
-dev-libs/appstream qt6
+app-text/poppler nss
+# keep appstream GTK/X11-friendly; avoid Qt frontend integration
+# dev-libs/appstream
+
 dev-libs/icu abi_x86_32
 dev-libs/liblouis python
 dev-libs/libpcre2 pcre32
 dev-libs/libusb udev
 dev-libs/libxml2 icu
-dev-python/pyqt6 qml
-kde-plasma/kwin lock
 media-libs/gd truetype
 media-libs/libglvnd X
+media-libs/libpulse X
 media-libs/opencv features2d contrib contribdnn
 media-libs/vulkan-loader X
-x11-apps/mesa-progs wayland X
 media-plugins/alsa-plugins pulseaudio
-media-sound/pulseaudio -daemon
-media-video/pipewire extra sound-server X
 net-dns/avahi mdnsresponder-compat
 net-print/cups dbus
-sys-apps/dbus elogind
+sys-apps/dbus X
 sys-auth/pambase elogind
 sys-auth/polkit daemon
 sys-fs/udisks elogind
+x11-apps/mesa-progs X -wayland
 x11-libs/cairo X
-x11-libs/gtk+ wayland
+x11-libs/gtk+ X -wayland
 x11-libs/libxkbcommon X
 x11-libs/pango X
-
+x11-misc/lightdm elogind
+x11-misc/lightdm-gtk-greeter branding
+xfce-base/thunar udisks
+xfce-base/tumbler jpeg pdf

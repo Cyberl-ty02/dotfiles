@@ -1,3 +1,6 @@
 # For rime input
 dev-cpp/glog -libunwind llvm-libunwind
 dev-util/google-perftools -libunwind llvm-libunwind
+app-i18n/fcitx gtk
+app-i18n/fcitx-configtool gtk
+app-i18n/fcitx-qt qt5
