@@ -108,7 +108,8 @@ sys-process/cronie
 www-client/firefox
 x11-apps/xdpyinfo
 x11-base/xlibre-server
-x11-drivers/nvidia-drivers
+
 
 dev-libs/cudnn
 dev-util/nvidia-cuda-toolkit
+x11-drivers/nvidia-drivers
