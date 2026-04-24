@@ -59,9 +59,6 @@ kde-plasma/discover
 kde-plasma/plasma-firewall
 kde-plasma/plasma-meta
 kde-plasma/print-manager
-llvm-core/clang
-llvm-core/lld
-llvm-core/lldb
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
@@ -108,7 +105,6 @@ sys-process/cronie
 www-client/firefox
 x11-apps/xdpyinfo
 x11-base/xlibre-server
-
 
 dev-libs/cudnn
 dev-util/nvidia-cuda-toolkit
