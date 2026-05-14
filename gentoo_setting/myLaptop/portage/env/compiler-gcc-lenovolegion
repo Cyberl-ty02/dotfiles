@@ -1,15 +1,23 @@
-RESOLVE_MARCH_FLAGS="-march=alderlake -mabm -mno-kl -mno-pconfig -mno-sgx -mno-widekl -mshstk \ 
---param=l1-cache-line-size=64 --param=l1-cache-size=48 --param=l2-cache-size=36864"
-COMMON_FLAGS="${RESOLVE_MARCH_FLAGS} -Os -pipe -flto"
+# GCC fallback profile for packages that do not build cleanly with clang/LLVM.
+# Keep this conservative. Do not add LTO or mold here.
+
+# Generated/resolved for the current Lenovo Legion CPU.
+# If this config is copied to another machine, replace this with -march=native.
+RESOLVE_MARCH_FLAGS="-march=alderlake -mabm -mno-kl -mno-pconfig -mno-sgx -mno-widekl -mshstk"
+COMMON_FLAGS="${RESOLVE_MARCH_FLAGS} -O2 -pipe"
 
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
-LDFLAGS="-Wl,--as-needed"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
 
-# For gcc only software
+# Safe linker flags for GCC fallback builds.
+LDFLAGS="-Wl,-O1 -Wl,--as-needed"
+
 CC="gcc"
 CXX="g++"
 CPP="gcc -E"
+
 AR="ar"
 LD="ld"
 NM="nm"

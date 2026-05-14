@@ -1,0 +1,6 @@
+# -------------------------------------------------------------------
+# NVIDIA CUDA / cuDNN
+# -------------------------------------------------------------------
+
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
+dev-libs/cudnn NVIDIA-cuDNN

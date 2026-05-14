@@ -1,0 +1,6 @@
+# Secure Boot / module signing packages.
+# These need access to MODULES_SIGN_KEY / SECUREBOOT_SIGN_KEY if the key is under /root.
+sys-kernel/xanmod-kernel secureboot-rootbuild no-mold lowjobs
+sys-kernel/gentoo-kernel secureboot-rootbuild no-mold lowjobs
+sys-kernel/gentoo-kernel-bin secureboot-rootbuild no-mold
+x11-drivers/nvidia-drivers secureboot-rootbuild no-mold

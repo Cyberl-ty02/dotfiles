@@ -1,0 +1,21 @@
+# -------------------------------------------------------------------
+# Qt / small KDE applications
+# -------------------------------------------------------------------
+
+dev-qt/qtbase dbus gui icu network opengl sql sqlite widgets
+dev-qt/qtdeclarative opengl qml
+dev-qt/qttools opengl qml
+dev-qt/qt5compat icu qml
+
+# KDE Frameworks used by small KDE apps
+kde-frameworks/sonnet qml
+kde-frameworks/kio acl udev
+kde-frameworks/kconfigwidgets nls
+kde-frameworks/kwidgetsaddons nls
+kde-frameworks/kxmlgui nls
+
+# KDE apps: keep useful apps, not full Plasma
+kde-apps/ark 7zip zip
+kde-apps/okular markdown pdf
+kde-apps/gwenview jpeg png
+kde-apps/kate lsp

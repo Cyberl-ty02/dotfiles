@@ -1,0 +1,26 @@
+# -------------------------------------------------------------------
+# Chat / office / extra desktop apps
+# -------------------------------------------------------------------
+
+# Tencent QQ
+net-im/tencent-qq bwrap system-vips appindicator liteloader
+media-libs/vips -pdf
+dev-libs/libdbusmenu gtk3
+
+# WPS / office / printing may need some compatibility deps.
+# Add package-specific flags here only if emerge asks.
+
+# ClamAV / ClamTK
+app-antivirus/clamav clamd
+app-antivirus/clamtk
+
+# GParted is GTK but useful enough to keep as a tool.
+sys-block/gparted
+
+# Blueman is GTK but useful for lightweight desktops.
+net-wireless/blueman
+
+# Screenshots
+media-gfx/flameshot
+
+# Krita, VLC, qBittorrent normally need little manual USE here.

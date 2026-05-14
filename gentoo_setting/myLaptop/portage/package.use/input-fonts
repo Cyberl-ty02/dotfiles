@@ -1,0 +1,21 @@
+# -------------------------------------------------------------------
+# Input method / fonts
+# -------------------------------------------------------------------
+
+app-i18n/fcitx5 X wayland
+app-i18n/fcitx5-configtool
+app-i18n/fcitx5-gtk
+app-i18n/fcitx5-qt qt5 qt6
+app-i18n/fcitx5-rime
+
+# Rime related dependencies
+dev-cpp/glog -libunwind llvm-libunwind
+dev-util/google-perftools -libunwind llvm-libunwind
+
+# Fonts
+media-libs/freetype png harfbuzz
+media-libs/gd fontconfig truetype
+media-fonts/nerdfonts intelonemono
+
+# Ghostscript / printing / CJK documents
+app-text/ghostscript-gpl cups

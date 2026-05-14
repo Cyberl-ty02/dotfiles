@@ -1,0 +1,9 @@
+# -------------------------------------------------------------------
+# Desktop applications
+# -------------------------------------------------------------------
+
+app-office/wps-office ~amd64
+media-gfx/krita ~amd64
+net-misc/localsend-bin ~amd64
+net-proxy/flclash-bin ~amd64
+net-p2p/qbittorrent-enhanced ~amd64

@@ -1,0 +1,31 @@
+# -------------------------------------------------------------------
+# LXQt desktop
+# -------------------------------------------------------------------
+# trash:
+#   pulls gnome-base/gvfs. Disabled for a cleaner Qt/LXQt desktop.
+#
+# window-manager:
+#   pulls KWin. Disabled at first; use Openbox as the lightweight WM.
+#   Enable later if you really want LXQt + KWin.
+# -------------------------------------------------------------------
+
+lxqt-base/lxqt-meta about archiver desktop-portal display-manager filemanager icons lximage policykit processviewer screenshot sddm terminal admin nls powermanagement ssh-askpass wayland -trash -window-manager
+
+# LXQt PolicyKit agent
+lxqt-base/lxqt-policykit policykit
+
+# SDDM, Qt-friendly display manager
+x11-misc/sddm elogind
+
+# File manager / terminal / image viewer / screenshot / process viewer
+x11-misc/pcmanfm-qt exif
+x11-terms/qterminal
+media-gfx/lximage-qt
+x11-misc/screengrab
+x11-misc/qps
+
+# Window manager for LXQt first-stage setup
+x11-wm/openbox imlib session startup-notification svg xinerama
+
+# Desktop portal for LXQt / Wayland / sandbox integration
+sys-apps/xdg-desktop-portal screencast

@@ -1,0 +1,11 @@
+# -------------------------------------------------------------------
+# GURU overlay packages
+# -------------------------------------------------------------------
+# Add packages from ::guru here when needed.
+# Examples:
+# app-misc/yazi::guru ~amd64
+# app-text/typst::guru ~amd64
+# -------------------------------------------------------------------
+
+app-misc/yazi ~amd64
+app-text/typst ~amd64

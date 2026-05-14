@@ -1,0 +1,20 @@
+# -------------------------------------------------------------------
+# NVIDIA / CUDA / Vulkan
+# -------------------------------------------------------------------
+
+dev-util/nvidia-cuda-toolkit clang
+dev-libs/cudnn
+
+x11-drivers/nvidia-drivers modules-sign dist-kernel tools persistenced
+
+media-libs/libglvnd X
+media-libs/vulkan-loader X
+dev-util/vulkan-tools X
+
+# Mesa is still useful for common graphics stack components.
+# Keep Wayland enabled for fallback/testing.
+media-libs/mesa wayland vulkan
+
+# XLibre / X11 tools
+x11-apps/mesa-progs X
+x11-libs/libxkbcommon X wayland

@@ -1,0 +1,26 @@
+# -------------------------------------------------------------------
+# Development tools
+# -------------------------------------------------------------------
+
+# GCC fallback. Do not over-optimise it; keep it stable.
+# If you do not want GCC LTO, remove lto.
+sys-devel/gcc lto
+
+# Rust: avoid global lto for fewer build problems.
+dev-lang/rust llvm-libunwind rust-analyzer rust-src rustfmt
+virtual/rust rustfmt
+
+# PostgreSQL
+dev-db/postgresql zstd llvm
+
+# doas
+app-admin/doas persist
+
+# eclean-kernel
+app-admin/eclean-kernel zstd
+
+# ncurses: no gpm for cleaner desktop setup
+sys-libs/ncurses -gpm
+
+# Utilities
+sys-apps/util-linux pam su tty-helpers unicode verify-sig

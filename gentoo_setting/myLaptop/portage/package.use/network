@@ -1,0 +1,20 @@
+# -------------------------------------------------------------------
+# Network
+# -------------------------------------------------------------------
+
+net-misc/networkmanager elogind iwd
+net-wireless/iwd monitor wired
+
+net-misc/openssh -bindist
+
+net-firewall/nftables python json xtables
+
+# Avahi is useful for local network discovery / printers / some desktop apps
+net-dns/avahi mdnsresponder-compat
+
+# OpenRC capabilities support, useful for some network/proxy services
+sys-apps/openrc caps
+
+# Proxy geodata alternatives
+app-alternatives/v2ray-geoip -v2fly loyalsoldier
+app-alternatives/v2ray-geosite -v2fly loyalsoldier

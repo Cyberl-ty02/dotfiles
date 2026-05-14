@@ -1,0 +1,8 @@
+# -------------------------------------------------------------------
+# Chat / meeting apps
+# -------------------------------------------------------------------
+
+net-im/telegram-desktop-bin ~amd64
+net-im/tencent-qq ~amd64
+net-im/wechat ~amd64
+net-im/wemeet ~amd64
