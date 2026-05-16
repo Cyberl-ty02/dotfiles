@@ -57,6 +57,7 @@ mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto-cjk
 media-gfx/lximage-qt
+media-gfx/krita
 media-sound/pavucontrol
 media-video/vlc
 net-firewall/firewalld
