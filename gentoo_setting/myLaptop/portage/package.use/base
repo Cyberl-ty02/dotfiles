@@ -7,6 +7,8 @@ sys-apps/kmscon elogind
 sys-auth/pambase elogind
 sys-auth/polkit daemon elogind
 sys-fs/udisks elogind
+x11-base/xlibre-server -xvfb
+x11-base/xwayland libei
 
 dev-libs/libusb udev
 virtual/libusb udev
@@ -17,7 +19,7 @@ dev-libs/icu abi_x86_32
 sys-libs/zlib minizip
 
 # Printing
-net-print/cups dbus
+net-print/cups dbus zeroconf
 net-print/cups-meta zeroconf
 net-print/gutenprint ppds
 

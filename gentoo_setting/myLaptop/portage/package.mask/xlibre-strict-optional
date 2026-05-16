@@ -3,5 +3,5 @@
 # Enable this only after XLibre + NVIDIA works reliably.
 # -------------------------------------------------------------------
 
-# x11-base/xorg-server::gentoo
-# x11-base/xorg-drivers::gentoo
+x11-base/xorg-server::gentoo
+x11-base/xorg-drivers::gentoo

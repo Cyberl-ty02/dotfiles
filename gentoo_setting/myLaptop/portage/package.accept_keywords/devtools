@@ -3,8 +3,13 @@
 # -------------------------------------------------------------------
 
 app-editors/vscodium ~amd64
+app-misc/brightnessctl ~amd64
+app-misc/cpufetch ~amd64
 app-misc/yazi ~amd64
+app-shells/thefuck ~amd64
 app-text/typst ~amd64
 dev-build/xmake ~amd64
+dev-lang/rust-bin ~amd64
+dev-util/clinfo ~amd64
 dev-util/pixi ~amd64
 dev-util/pycharm-professional ~amd64

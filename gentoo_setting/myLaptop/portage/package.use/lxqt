@@ -9,7 +9,7 @@
 #   Enable later if you really want LXQt + KWin.
 # -------------------------------------------------------------------
 
-lxqt-base/lxqt-meta about archiver desktop-portal display-manager filemanager icons lximage policykit processviewer screenshot sddm terminal admin nls powermanagement ssh-askpass wayland -trash -window-manager
+lxqt-base/lxqt-meta about admin archiver desktop-portal display-manager icons lximage nls policykit powermanagement processviewer screenshot sddm ssh-askpass terminal -filemanager -trash -window-manager
 
 # LXQt PolicyKit agent
 lxqt-base/lxqt-policykit policykit
@@ -19,10 +19,7 @@ x11-misc/sddm elogind
 
 # File manager / terminal / image viewer / screenshot / process viewer
 x11-misc/pcmanfm-qt exif
-x11-terms/qterminal
-media-gfx/lximage-qt
-x11-misc/screengrab
-x11-misc/qps
+media-libs/libcanberra alsa
 
 # Window manager for LXQt first-stage setup
 x11-wm/openbox imlib session startup-notification svg xinerama

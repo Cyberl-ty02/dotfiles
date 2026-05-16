@@ -1,9 +1,0 @@
-# -------------------------------------------------------------------
-# Proprietary apps not used in the new first-stage system
-# -------------------------------------------------------------------
-
-media-gfx/unityhub
-app-misc/github-desktop-bin
-www-client/microsoft-edge
-net-im/zoom
-net-proxy/clash-for-windows-bin

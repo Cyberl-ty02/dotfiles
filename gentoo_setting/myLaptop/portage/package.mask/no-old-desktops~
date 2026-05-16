@@ -24,7 +24,7 @@ x11-terms/xfce4-terminal
 x11-themes/greybird
 
 # GNOME desktop-side components removed from the new design.
-gnome-extra/nm-applet
+# gnome-extra/nm-applet
 gnome-extra/polkit-gnome
 sys-apps/baobab
 app-crypt/seahorse

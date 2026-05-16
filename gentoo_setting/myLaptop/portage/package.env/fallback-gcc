@@ -2,7 +2,7 @@
 # Format:
 # category/package compiler-gcc-lenovolegion no-mold
 
-dev-libs/darts compiler-gcc-lenovolegion no-mold
+dev-libs/spdlog compiler-gcc-lenovolegion no-mold
 dev-util/pycharm-professional compiler-gcc-lenovolegion no-mold
 media-libs/gstreamer compiler-gcc-lenovolegion no-mold
 media-gfx/povray compiler-gcc-lenovolegion no-mold

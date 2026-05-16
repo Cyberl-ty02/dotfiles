@@ -2,12 +2,10 @@
 # Network
 # -------------------------------------------------------------------
 
-net-misc/networkmanager elogind iwd
-net-wireless/iwd monitor wired
-
-net-misc/openssh -bindist
-
 net-firewall/nftables python json xtables
+net-misc/networkmanager elogind iwd
+net-misc/openssh -bindist
+net-wireless/iwd monitor wired
 
 # Avahi is useful for local network discovery / printers / some desktop apps
 net-dns/avahi mdnsresponder-compat
