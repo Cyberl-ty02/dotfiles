@@ -1,8 +1,0 @@
-# -------------------------------------------------------------------
-# Optional kernel policy
-# Do not enable during first-stage installation.
-# Keep gentoo-kernel-bin as a fallback kernel.
-# -------------------------------------------------------------------
-
-sys-kernel/gentoo-kernel::gentoo
-sys-kernel/gentoo-kernel-bin::gentoo

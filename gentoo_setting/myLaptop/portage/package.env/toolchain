@@ -1,2 +1,0 @@
-# Toolchain packages: keep them on the safe GCC/linker path if clang/mold causes bootstrap issues.
-sys-devel/gcc compiler-gcc-lenovolegion no-mold

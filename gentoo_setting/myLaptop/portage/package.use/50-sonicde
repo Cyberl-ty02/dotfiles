@@ -1,0 +1,16 @@
+# SonicDE / Qt / Plasma-derived X11 desktop.
+dev-qt/qtbase dbus gui icu libproxy network opengl sql sqlite widgets
+dev-qt/qtdeclarative opengl qml
+dev-qt/qttools opengl qml
+dev-qt/qt5compat icu qml
+
+x11-misc/sddm elogind
+
+# Common KDE Frameworks used by SonicDE/Plasma components.
+kde-frameworks/sonnet qml
+kde-frameworks/kio acl udev
+kde-frameworks/kconfigwidgets nls
+kde-frameworks/kwidgetsaddons nls
+kde-frameworks/kxmlgui nls
+kde-frameworks/kglobalaccel X
+kde-frameworks/kwindowsystem X

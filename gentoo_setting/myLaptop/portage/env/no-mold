@@ -1,3 +1,2 @@
-# Disable global mold/lld experiments for sensitive packages.
-# Useful if make.conf globally sets LDFLAGS="-fuse-ld=mold".
+# Conservative linker flags for sensitive packages.
 LDFLAGS="-Wl,-O1 -Wl,--as-needed"

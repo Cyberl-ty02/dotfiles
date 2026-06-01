@@ -1,0 +1,6 @@
+sys-devel/gcc -lto
+dev-lang/rust llvm-libunwind rust-analyzer rust-src rustfmt
+virtual/rust rustfmt
+dev-db/postgresql zstd llvm
+app-admin/doas persist
+app-admin/eclean-kernel zstd

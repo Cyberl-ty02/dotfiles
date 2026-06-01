@@ -1,0 +1,5 @@
+# Small userland tools. Keep pure; add chat/CUDA/office later in a separate file.
+app-editors/vscodium ~amd64
+app-misc/yazi ~amd64
+app-text/typst ~amd64
+dev-util/pixi ~amd64

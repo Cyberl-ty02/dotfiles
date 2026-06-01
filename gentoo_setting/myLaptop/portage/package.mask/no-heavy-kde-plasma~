@@ -1,9 +1,0 @@
-# -------------------------------------------------------------------
-# Avoid full KDE Plasma desktop in the first-stage LXQt system.
-# Small KDE apps such as okular/kate/ark/gwenview are allowed.
-# -------------------------------------------------------------------
-
-kde-plasma/plasma-meta
-kde-plasma/plasma-desktop
-kde-plasma/plasma-workspace
-kde-plasma/systemsettings

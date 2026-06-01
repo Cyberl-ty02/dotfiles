@@ -1,0 +1,4 @@
+dev-lang/rust no-mold lowjobs
+dev-lang/rust-bin no-mold
+dev-java/openjdk compiler-gcc-generic no-mold lowjobs
+dev-java/openjdk-bin compiler-gcc-generic no-mold

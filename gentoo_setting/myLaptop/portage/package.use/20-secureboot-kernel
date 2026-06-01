@@ -1,0 +1,8 @@
+sys-boot/grub secureboot mount
+sys-boot/shim secureboot
+sys-apps/kmod pkcs7
+sys-kernel/installkernel dracut
+sys-apps/systemd-utils boot kernel-install
+sys-kernel/linux-firmware -initramfs compress-zstd dist-kernel
+sys-kernel/gentoo-kernel modules-compress modules-sign secureboot
+sys-kernel/gentoo-kernel-bin modules-compress modules-sign secureboot

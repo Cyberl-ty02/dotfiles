@@ -1,7 +1,0 @@
-# Language runtimes / large compiler stacks.
-# OpenJDK sometimes has clang/toolchain edge cases.
-dev-java/openjdk compiler-gcc-lenovolegion no-mold lowjobs
-dev-java/openjdk-bin compiler-gcc-lenovolegion no-mold
-
-# Rust is very memory-heavy. Keep no-mold available if global mold is enabled.
-dev-lang/rust no-mold lowjobs

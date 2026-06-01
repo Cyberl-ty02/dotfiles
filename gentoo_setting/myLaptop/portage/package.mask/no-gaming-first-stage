@@ -1,9 +1,0 @@
-# -------------------------------------------------------------------
-# Gaming stack is not part of the first-stage LXQt workstation.
-# Add a separate 95-gaming config later if needed.
-# -------------------------------------------------------------------
-
-games-util/steam-launcher
-app-emulation/wine
-app-emulation/wine-proton
-app-emulation/protontricks

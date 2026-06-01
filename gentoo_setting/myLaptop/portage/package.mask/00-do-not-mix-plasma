@@ -1,0 +1,5 @@
+# SonicDE should be tested separately from official Plasma.
+kde-plasma/plasma-meta
+# Do not mask these unless Portage conflict resolution requires it:
+# kde-plasma/plasma-workspace
+# kde-plasma/plasma-desktop

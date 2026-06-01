@@ -1,2 +1,2 @@
-# Lower per-package build parallelism for memory-heavy packages.
+# Lower per-package parallelism for memory-heavy packages.
 MAKEOPTS="-j6 -l13"
