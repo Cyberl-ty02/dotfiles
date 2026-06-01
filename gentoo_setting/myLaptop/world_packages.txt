@@ -32,7 +32,6 @@ dev-util/pycharm-professional
 dev-util/vulkan-tools
 dev-vcs/git
 kde-apps/ark
-kde-apps/bovo
 kde-apps/dolphin
 kde-apps/filelight
 kde-apps/gwenview
