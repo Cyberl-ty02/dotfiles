@@ -1,3 +1,0 @@
-# Needed when Secure Boot/module-signing keys live under /root.
-# Keep this per-package, not global.
-FEATURES="${FEATURES} -userpriv -usersandbox"

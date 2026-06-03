@@ -1,0 +1,4 @@
+# Uncomment only when actually installing optional packages.
+#dev-util/nvidia-cuda-toolkit ~amd64
+#dev-util/clinfo ~amd64
+#app-shells/thefuck ~amd64

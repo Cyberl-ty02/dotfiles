@@ -1,0 +1,3 @@
+sys-devel/gcc no_lto lowjobs
+sys-libs/glibc no_lto lowjobs
+sys-devel/binutils no_lto

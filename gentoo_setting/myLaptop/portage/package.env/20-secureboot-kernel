@@ -1,3 +1,0 @@
-sys-kernel/gentoo-kernel secureboot-rootbuild no-mold lowjobs
-sys-kernel/gentoo-kernel-bin secureboot-rootbuild no-mold
-x11-drivers/nvidia-drivers secureboot-rootbuild no-mold

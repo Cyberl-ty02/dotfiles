@@ -1,3 +1,0 @@
-# Add packages here if clang/mold causes issues.
-#category/package compiler-gcc-generic no-mold
-sys-boot/grub compiler-gcc-generic no-mold

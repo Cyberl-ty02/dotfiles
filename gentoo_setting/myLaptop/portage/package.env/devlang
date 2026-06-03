@@ -1,0 +1,10 @@
+dev-lang/rust no_lto lowjobs
+dev-lang/rust-bin no_lto
+dev-lang/go no_lto lowjobs
+dev-java/openjdk gcc_generic no_lto lowjobs
+dev-java/openjdk-bin gcc_generic no_lto
+net-libs/nodejs no_lto lowjobs
+app-editors/emacs no_lto lowjobs
+app-text/typst no_lto lowjobs
+dev-util/pixi no_lto lowjobs
+dev-python/uv no_lto

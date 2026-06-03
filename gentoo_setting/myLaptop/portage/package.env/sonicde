@@ -1,0 +1,5 @@
+kde-plasma/sonic-meta no_lto lowjobs
+kde-plasma/sonic-workspace no_lto lowjobs
+kde-plasma/sonic-desktop no_lto lowjobs
+kde-plasma/sonic-win no_lto lowjobs
+x11-misc/silver-sddm no_lto

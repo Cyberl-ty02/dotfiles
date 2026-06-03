@@ -1,6 +1,0 @@
-llvm-core/llvm no-mold lowjobs
-llvm-core/clang no-mold lowjobs
-llvm-core/lld no-mold lowjobs
-llvm-runtimes/compiler-rt no-mold lowjobs
-llvm-runtimes/clang-runtime no-mold lowjobs
-llvm-runtimes/openmp no-mold lowjobs

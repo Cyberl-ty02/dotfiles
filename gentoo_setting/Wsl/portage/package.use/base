@@ -1,0 +1,14 @@
+# WSL base: no bootloader/kernel/desktop-service stack.
+sys-apps/util-linux pam su tty-helpers unicode verify-sig
+sys-libs/ncurses -gpm
+sys-apps/dbus X
+sys-auth/pambase -systemd
+sys-auth/polkit daemon -systemd
+app-admin/doas persist
+app-admin/eclean-kernel zstd
+net-misc/openssh -bindist
+
+# Useful libraries.
+dev-libs/libxml2 icu
+dev-libs/libusb udev
+virtual/libusb udev

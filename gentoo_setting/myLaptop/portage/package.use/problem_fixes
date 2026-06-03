@@ -1,0 +1,2 @@
+# Observed fixes from local rebuild logs.
+app-text/doxygen -clang

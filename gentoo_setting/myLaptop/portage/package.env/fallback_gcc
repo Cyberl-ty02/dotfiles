@@ -1,0 +1,5 @@
+# Package-level fixes observed from logs.
+dev-libs/darts gcc_cxx14 no_lto
+app-text/doxygen gcc_generic no_lto lowjobs
+dev-libs/libfmt gcc_generic no_lto
+dev-libs/spdlog gcc_generic no_lto

@@ -1,2 +1,0 @@
-# Conservative linker flags for sensitive packages.
-LDFLAGS="-Wl,-O1 -Wl,--as-needed"

@@ -1,3 +1,0 @@
-sys-devel/gcc compiler-gcc-generic no-mold
-sys-libs/glibc no-mold lowjobs
-sys-devel/binutils no-mold

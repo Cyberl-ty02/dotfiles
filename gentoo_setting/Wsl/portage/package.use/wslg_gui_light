@@ -1,0 +1,11 @@
+# WSLg/light GUI support, not full KDE/SonicDE.
+media-libs/freetype png harfbuzz
+media-libs/gd fontconfig truetype
+x11-libs/cairo X
+x11-libs/libxkbcommon X wayland
+media-libs/libglvnd X
+media-libs/vulkan-loader X
+media-libs/mesa vulkan wayland egl d3d12
+media-video/pipewire sound-server
+media-libs/libpulse X
+media-fonts/nerdfonts intelonemono

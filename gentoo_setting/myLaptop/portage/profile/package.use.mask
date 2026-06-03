@@ -1,0 +1,2 @@
+# Local profile masks. Useful when an LLVM profile tries to pull clang features too broadly.
+app-text/doxygen clang
