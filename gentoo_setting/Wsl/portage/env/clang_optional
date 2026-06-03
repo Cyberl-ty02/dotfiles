@@ -1,9 +1,10 @@
-COMMON_FLAGS="-march=native -O2 -pipe"
+# Optional only. The stage4-based WSL config does not use clang globally.
+COMMON_FLAGS="-O2 -pipe"
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
 FCFLAGS="${COMMON_FLAGS}"
 FFLAGS="${COMMON_FLAGS}"
-LDFLAGS="-Wl,-O1 -Wl,--as-needed"
+LDFLAGS="-fuse-ld=lld -Wl,-O1 -Wl,--as-needed"
 CC="clang"
 CPP="clang-cpp"
 CXX="clang++"

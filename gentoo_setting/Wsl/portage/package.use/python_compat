@@ -1,3 +1,4 @@
-# Some packages have not fully caught up with python3_14 yet.
+# Some packages may lag the newest profile Python target.
+# Keep these as per-package fixes instead of forcing global PYTHON_TARGETS.
 dev-util/nvidia-cuda-toolkit python_targets_python3_13 -python_targets_python3_12
 net-firewall/ufw python_single_target_python3_13 -python_single_target_python3_12

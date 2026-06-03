@@ -1,4 +1,4 @@
-# WSLg/light GUI support, not full KDE/SonicDE.
+# WSLg/light GUI support, not a full KDE/SonicDE desktop.
 media-libs/freetype png harfbuzz
 media-libs/gd fontconfig truetype
 x11-libs/cairo X

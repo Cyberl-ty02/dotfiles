@@ -1,4 +1,4 @@
-# Optional multilib examples. Only use these on a multilib profile.
+# Optional multilib examples. Only use after check_multilib.sh confirms multilib.
 #app-emulation/wine-proton abi_x86_32
 #games-util/steam-launcher abi_x86_32
 #media-libs/mesa abi_x86_32

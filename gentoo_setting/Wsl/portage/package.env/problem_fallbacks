@@ -1,3 +1,4 @@
+# Compatibility fallbacks for older or C++-sensitive code.
 dev-libs/darts gcc_cxx14 no_lto
 app-text/doxygen gcc_generic no_lto lowjobs
 dev-libs/libfmt gcc_generic no_lto

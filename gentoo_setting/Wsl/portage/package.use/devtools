@@ -1,7 +1,8 @@
+# Development tools, still CLI-first.
 sys-devel/gcc -lto
-dev-lang/rust llvm-libunwind rust-analyzer rust-src rustfmt
+dev-lang/rust rust-analyzer rust-src rustfmt
 virtual/rust rustfmt
-dev-db/postgresql zstd llvm
+dev-db/postgresql zstd
 dev-build/cmake ncurses
 dev-vcs/git curl gpg pcre perl threads webdav
 app-editors/emacs -X -gtk -gui tree-sitter

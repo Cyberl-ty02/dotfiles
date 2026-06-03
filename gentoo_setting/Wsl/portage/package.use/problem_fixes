@@ -1,1 +1,2 @@
+# Avoid Doxygen + LLVM/libc++/libclang ABI trouble seen on the laptop profile.
 app-text/doxygen -clang
