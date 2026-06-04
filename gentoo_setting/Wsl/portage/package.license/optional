@@ -1,3 +1,3 @@
 # Uncomment only if these optional packages are installed.
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
 #media-fonts/nerdfonts Vic-Fieger-License
-#dev-util/nvidia-cuda-toolkit NVIDIA-CUDA

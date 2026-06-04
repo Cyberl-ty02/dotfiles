@@ -1,7 +1,0 @@
-# Optional packages. Install manually only when needed.
-#dev-util/nvidia-cuda-toolkit
-#dev-util/vulkan-tools
-#dev-util/clinfo
-#app-shells/thefuck
-#sys-process/cronie
-#app-admin/sysklogd

@@ -1,10 +1,10 @@
-media-video/ffmpeg opus vpx x264 x265 webp
-media-libs/libvpx postproc
 media-libs/freetype png harfbuzz
 media-libs/gd fontconfig truetype
 media-libs/libpulse X
+media-libs/libvpx postproc
 media-plugins/alsa-plugins pulseaudio
 media-sound/pulseaudio-daemon bluetooth dbus
+media-video/ffmpeg opus vpx x264 x265 webp
 media-video/pipewire sound-server
 
 app-i18n/fcitx:5 X wayland
@@ -12,5 +12,5 @@ app-i18n/fcitx-configtool:5
 app-i18n/fcitx-gtk:5
 app-i18n/fcitx-qt:5 qt5 qt6
 app-i18n/fcitx-rime:5
-media-fonts/nerdfonts intelonemono
 app-text/ghostscript-gpl cups
+media-fonts/nerdfonts intelonemono

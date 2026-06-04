@@ -1,4 +1,4 @@
-x11-drivers/nvidia-drivers ~amd64
+dev-util/nvidia-cuda-toolkit ~amd64
 sys-boot/shim ~amd64
 sys-kernel/xanmod-kernel ~amd64
-dev-util/nvidia-cuda-toolkit ~amd64
+x11-drivers/nvidia-drivers ~amd64

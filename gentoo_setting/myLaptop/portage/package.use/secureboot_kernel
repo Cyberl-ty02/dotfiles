@@ -1,11 +1,11 @@
-sys-boot/grub secureboot mount
-sys-boot/shim secureboot
-sys-boot/mokutil
 sys-apps/kmod pkcs7
-sys-kernel/installkernel dracut grub -systemd -systemd-boot -uki -ukify -efistub -refind
 sys-apps/systemd-utils boot kernel-install
-sys-kernel/linux-firmware -initramfs compress-zstd dist-kernel
+sys-boot/grub secureboot mount
+sys-boot/mokutil
+sys-boot/shim secureboot
 sys-kernel/gentoo-kernel modules-compress modules-sign secureboot
 sys-kernel/gentoo-kernel-bin modules-compress modules-sign secureboot
+sys-kernel/installkernel dracut grub -systemd -systemd-boot -uki -ukify -efistub -refind
+sys-kernel/linux-firmware -initramfs compress-zstd dist-kernel
 sys-kernel/xanmod-kernel modules-compress modules-sign secureboot savedconfig
 virtual/dist-kernel

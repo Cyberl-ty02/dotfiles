@@ -4,8 +4,9 @@ Target:
 
 - Windows 11 remains the only real operating system.
 - Gentoo inside WSL2 is a Linux development userland.
-- No real kernel, GRUB, Secure Boot, SDDM, SonicDE/XLibre, NetworkManager, or NVIDIA kernel module stack.
+- No real kernel, GRUB, Secure Boot, SDDM, SonicDE, NetworkManager, or NVIDIA kernel module stack.
 - Light WSLg support for individual GUI apps only.
+- XLibre overlay access is enabled for optional WSLg experimentation, without pulling in a full desktop.
 - Multilib is **not forced**. The uploaded original stage4 `make.conf` did not set `ABI_X86`, so this config keeps it commented until the profile is confirmed.
 
 ## What changed from the previous WSL config
@@ -20,7 +21,9 @@ Target:
 - WSL remains CLI/dev focused:
   - Git/GPG/SSH, Emacs/Doom, Rust, Python/uv/pixi, Node/pnpm, Java, Typst.
 - Hardware/full-desktop packages remain masked:
-  - kernel, firmware, GRUB, shim, nvidia-drivers, SDDM, SonicDE/XLibre.
+  - kernel, firmware, GRUB, shim, nvidia-drivers, SDDM, and SonicDE.
+- Optional development additions from the active WSL config:
+  - mold linker, bun-bin, clinfo, CUDA tooling, Rust binary toolchain, thefuck, and XLibre overlay access.
 - Kept package-level fixes:
   - `darts` uses GCC + C++14;
   - `doxygen` is forced `-clang` and built with GCC;

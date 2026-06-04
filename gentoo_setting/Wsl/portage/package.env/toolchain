@@ -1,10 +1,10 @@
-sys-devel/gcc no_lto lowjobs
-sys-libs/glibc no_lto lowjobs
-sys-devel/binutils no_lto
-llvm-core/llvm no_lto lowjobs
 llvm-core/clang no_lto lowjobs
 llvm-core/lld no_lto lowjobs
 llvm-core/lldb no_lto lowjobs
-llvm-runtimes/compiler-rt no_lto lowjobs
+llvm-core/llvm no_lto lowjobs
 llvm-runtimes/clang-runtime no_lto lowjobs
+llvm-runtimes/compiler-rt no_lto lowjobs
 llvm-runtimes/openmp no_lto lowjobs
+sys-devel/binutils no_lto
+sys-devel/gcc no_lto lowjobs
+sys-libs/glibc no_lto lowjobs

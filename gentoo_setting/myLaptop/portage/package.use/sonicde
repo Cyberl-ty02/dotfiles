@@ -1,23 +1,24 @@
 # SonicDE / Qt / Plasma-derived desktop on OpenRC + elogind.
 # Do not enable sonic-meta[firewall] on OpenRC; it requires systemd.
+kde-plasma/kwin lock -systemd
+kde-plasma/plasma-workspace X fontconfig ksysguard networkmanager policykit -systemd -screencast
 kde-plasma/sonic-meta X bluetooth crash-handler crypt display-manager elogind grub kwallet networkmanager sddm smart thunderbolt wallpapers -systemd -firewall -browser-integration -discover -flatpak -pulseaudio -rdp -sdk -unsupported -webengine
 kde-plasma/sonic-win lock -systemd
-kde-plasma/kwin lock -systemd
 kde-plasma/sonic-workspace X fontconfig ksysguard networkmanager policykit -systemd -screencast
-kde-plasma/plasma-workspace X fontconfig ksysguard networkmanager policykit -systemd -screencast
 
 # Qt / KDE framework base.
+dev-qt/qt5compat icu qml
 dev-qt/qtbase dbus gui icu libproxy network opengl sql sqlite widgets
 dev-qt/qtdeclarative opengl qml
 dev-qt/qttools opengl qml
-dev-qt/qt5compat icu qml
 
 x11-misc/sddm elogind -systemd
 
-kde-frameworks/sonnet qml
-kde-frameworks/kio acl udev
+kde-frameworks/kconfig qml
 kde-frameworks/kconfigwidgets nls
-kde-frameworks/kwidgetsaddons nls
-kde-frameworks/kxmlgui nls
 kde-frameworks/kglobalaccel X
+kde-frameworks/kio acl udev
+kde-frameworks/kwidgetsaddons nls
 kde-frameworks/kwindowsystem X
+kde-frameworks/kxmlgui nls
+kde-frameworks/sonnet qml

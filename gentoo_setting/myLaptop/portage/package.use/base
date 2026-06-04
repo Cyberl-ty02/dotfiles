@@ -1,20 +1,20 @@
-sys-apps/dbus X
-sys-auth/pambase elogind -systemd
-sys-auth/polkit daemon elogind -systemd
-sys-fs/udisks elogind
-sys-apps/util-linux pam su tty-helpers unicode verify-sig
-sys-libs/ncurses -gpm
-sys-apps/openrc caps
-
 app-admin/doas persist
 app-admin/eclean-kernel zstd
 
 dev-libs/libusb udev
-virtual/libusb udev
 dev-libs/libxml2 icu
+virtual/libusb udev
 
-net-misc/networkmanager elogind iwd
-net-wireless/iwd monitor wired
-net-misc/openssh -bindist
-net-misc/chrony
 net-firewall/nftables python json xtables
+net-misc/chrony
+net-misc/networkmanager elogind iwd
+net-misc/openssh -bindist
+net-wireless/iwd monitor wired
+
+sys-apps/dbus X
+sys-apps/openrc caps
+sys-apps/util-linux pam su tty-helpers unicode verify-sig
+sys-auth/pambase elogind -systemd
+sys-auth/polkit daemon elogind -systemd
+sys-fs/udisks elogind
+sys-libs/ncurses -gpm

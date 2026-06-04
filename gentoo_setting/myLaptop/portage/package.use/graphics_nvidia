@@ -1,7 +1,7 @@
+media-libs/libglvnd X
+media-libs/mesa vulkan wayland
+media-libs/vulkan-loader X
 x11-base/xlibre-server -xvfb
 x11-base/xwayland libei
 x11-drivers/nvidia-drivers modules-sign dist-kernel tools persistenced
-media-libs/libglvnd X
-media-libs/vulkan-loader X
-media-libs/mesa vulkan wayland
 x11-libs/libxkbcommon X wayland
