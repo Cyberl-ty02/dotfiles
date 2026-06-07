@@ -3,5 +3,6 @@ app-text/typst
 app-text/xmlto text
 dev-db/postgresql zstd llvm
 dev-lang/rust llvm-libunwind rust-analyzer rust-src rustfmt
+dev-util/nvidia-cuda-toolkit clang
 sys-devel/gcc -lto
 virtual/rust rustfmt
