@@ -17,4 +17,5 @@ sys-auth/pambase elogind -systemd
 sys-auth/polkit daemon elogind -systemd
 sys-fs/udisks elogind
 sys-libs/ncurses -gpm
+sys-libs/zlib minizip
 virtual/libusb udev

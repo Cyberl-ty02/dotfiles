@@ -31,20 +31,20 @@ Target:
 
 ## Apply
 
-From `gentoo_setting/wsl`, back up the active configuration and replace it directly:
+From `gentoo_setting/Wsl`, back up the active configuration and replace it directly:
 
 ```bash
-sudo cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
-sudo rsync -a --delete portage/ /etc/portage/
-sudo install -m 0644 wsl.conf /etc/wsl.conf
+doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
+doas rsync -a --delete --exclude=make.profile portage/ /etc/portage/
+doas install -m 0644 wsl.conf /etc/wsl.conf
 ```
 
 Then:
 
 ```bash
 eselect profile show
-sudo emerge --sync
-sudo emerge -avuDN @world
+doas emerge --sync
+doas emerge -avuDN @world
 ```
 
 If you later confirm that this Gentoo WSL stage4 uses a multilib profile and a manual `gcc -m32` smoke test works, you may uncomment in `make.conf`:

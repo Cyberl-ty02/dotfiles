@@ -6,6 +6,7 @@ app-i18n/fcitx-qt:5 qt5 qt6
 app-i18n/fcitx-rime:5
 app-text/ghostscript-gpl cups
 media-fonts/nerdfonts intelonemono
+media-libs/libcanberra alsa
 media-libs/freetype png harfbuzz
 media-libs/gd fontconfig truetype
 media-libs/libpulse X

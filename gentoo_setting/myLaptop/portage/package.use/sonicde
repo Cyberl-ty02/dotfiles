@@ -1,9 +1,10 @@
 # SonicDE / Qt / Plasma-derived desktop on OpenRC + elogind.
 # Do not enable sonic-meta[firewall] on OpenRC; it requires systemd.
 dev-qt/qt5compat icu qml
-dev-qt/qtbase X concurrent dbus gui icu libinput libproxy network opengl sql sqlite wayland widgets xml
+dev-qt/qtbase X concurrent cups dbus gui icu libinput libproxy network opengl sql sqlite wayland widgets xml
 dev-qt/qtdeclarative opengl qml widgets
 dev-qt/qttools opengl qdbus qml widgets
+kde-frameworks/kimageformats avif
 kde-frameworks/kconfig qml
 kde-frameworks/kconfigwidgets nls
 kde-frameworks/kglobalaccel X
