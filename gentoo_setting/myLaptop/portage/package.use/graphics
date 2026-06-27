@@ -1,5 +1,5 @@
 media-libs/libglvnd X
-media-libs/mesa vulkan wayland
+media-libs/mesa X opengl vulkan wayland
 media-libs/vulkan-loader X
 x11-base/xlibre-server -xvfb
 x11-base/xwayland libei

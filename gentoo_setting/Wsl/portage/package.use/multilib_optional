@@ -1,6 +1,0 @@
-# Optional multilib examples. Only use after check_multilib.sh confirms multilib.
-#app-emulation/wine-proton abi_x86_32
-#games-util/steam-launcher abi_x86_32
-#media-libs/mesa abi_x86_32
-#x11-libs/libX11 abi_x86_32
-#x11-libs/libxcb abi_x86_32

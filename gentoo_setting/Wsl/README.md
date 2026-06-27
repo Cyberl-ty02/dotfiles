@@ -31,22 +31,23 @@ Target:
 
 ## Apply
 
-From the archive root:
+From `gentoo_setting/wsl`, back up the active configuration and replace it directly:
 
 ```bash
-sudo ./scripts/apply_wsl_config.sh
+sudo cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
+sudo rsync -a --delete portage/ /etc/portage/
+sudo install -m 0644 wsl.conf /etc/wsl.conf
 ```
 
 Then:
 
 ```bash
 eselect profile show
-./wsl/scripts/check_multilib.sh
 sudo emerge --sync
 sudo emerge -avuDN @world
 ```
 
-If you later confirm that this Gentoo WSL stage4 uses a multilib profile and `gcc -m32` works, you may uncomment in `make.conf`:
+If you later confirm that this Gentoo WSL stage4 uses a multilib profile and a manual `gcc -m32` smoke test works, you may uncomment in `make.conf`:
 
 ```bash
 ABI_X86="64 32"

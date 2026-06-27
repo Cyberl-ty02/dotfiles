@@ -3,7 +3,6 @@ app-admin/eclean-kernel zstd
 
 dev-libs/libusb udev
 dev-libs/libxml2 icu
-virtual/libusb udev
 
 net-firewall/nftables python json xtables
 net-misc/chrony
@@ -18,3 +17,4 @@ sys-auth/pambase elogind -systemd
 sys-auth/polkit daemon elogind -systemd
 sys-fs/udisks elogind
 sys-libs/ncurses -gpm
+virtual/libusb udev

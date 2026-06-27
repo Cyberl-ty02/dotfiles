@@ -1,9 +1,4 @@
-# Some packages may lag the newest profile Python target.
-# Keep these as per-package fixes instead of forcing global PYTHON_TARGETS.
-dev-util/nvidia-cuda-toolkit python_targets_python3_13 -python_targets_python3_12
-net-firewall/ufw python_single_target_python3_13 -python_single_target_python3_12
-
-# CUDA dependencies that still need the older Python target.
+# Per-package compatibility for CUDA and packages lagging the profile target.
 dev-python/defusedxml python_targets_python3_13
 dev-python/flit-core python_targets_python3_13
 dev-python/gpep517 python_targets_python3_13
@@ -19,3 +14,4 @@ dev-python/setuptools-scm python_targets_python3_13
 dev-python/trove-classifiers python_targets_python3_13
 dev-python/vcs-versioning python_targets_python3_13
 dev-python/wheel python_targets_python3_13
+net-firewall/ufw python_single_target_python3_13 -python_single_target_python3_12

@@ -6,7 +6,6 @@ sys-kernel/gentoo-kernel
 sys-kernel/gentoo-kernel-bin
 sys-kernel/linux-firmware
 sys-kernel/xanmod-kernel
-# x11-base/xlibre-server
 x11-drivers/nvidia-drivers
 x11-misc/sddm
 x11-misc/silver-sddm

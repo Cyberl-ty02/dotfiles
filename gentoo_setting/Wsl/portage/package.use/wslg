@@ -11,6 +11,5 @@ media-libs/libpulse X
 media-libs/mesa vulkan wayland egl d3d12
 media-libs/vulkan-loader X
 media-video/pipewire sound-server
-sys-auth/pambase elogind
 x11-libs/cairo X
 x11-libs/libxkbcommon X wayland
