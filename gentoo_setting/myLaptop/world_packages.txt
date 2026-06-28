@@ -66,7 +66,6 @@ app-antivirus/clamav
 app-antivirus/clamtk
 app-shells/thefuck
 dev-util/clinfo
-dev-util/pycharm-professional
 kde-plasma/discover
 kde-plasma/print-manager
 media-gfx/krita
