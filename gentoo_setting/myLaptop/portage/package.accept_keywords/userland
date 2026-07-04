@@ -6,3 +6,12 @@ dev-build/xmake ~amd64
 dev-python/uv ~amd64
 dev-util/pixi ~amd64
 media-fonts/nerdfonts ~amd64
+media-gfx/krita ~amd64
+media-libs/libdicom ~amd64
+media-libs/openslide ~amd64
+net-im/telegram-desktop-bin ~amd64
+net-im/tencent-qq ~amd64
+net-im/wechat ~amd64
+net-im/wemeet ~amd64
+net-misc/localsend-bin ~amd64
+net-proxy/flclash-bin ~amd64

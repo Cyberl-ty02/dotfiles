@@ -1,9 +1,7 @@
-app-editors/emacs no_lto lowjobs
-app-text/typst no_lto lowjobs
-dev-lang/go no_lto lowjobs
-dev-lang/go-bootstrap no_lto lowjobs
-dev-lang/rust no_lto lowjobs
-dev-lang/rust-bin no_lto
-dev-python/uv no_lto
-dev-util/pixi no_lto lowjobs
-net-libs/nodejs no_lto lowjobs
+app-editors/emacs lowjobs
+app-text/typst lowjobs
+dev-lang/go lowjobs
+dev-lang/go-bootstrap lowjobs
+dev-lang/rust lowjobs
+dev-util/pixi lowjobs
+net-libs/nodejs lowjobs

@@ -1,2 +1,3 @@
-# SonicDE should be tested separately from official Plasma meta packages.
-kde-plasma/plasma-meta
+# The Plasma profile supplies defaults; SonicDE remains the installed desktop.
+kde-plasma/plasma-desktop::gentoo
+kde-plasma/plasma-meta::gentoo

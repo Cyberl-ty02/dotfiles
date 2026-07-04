@@ -43,6 +43,7 @@ sys-apps/fd
 sys-apps/ripgrep
 sys-block/partitionmanager
 sys-boot/efibootmgr
+sys-boot/grub
 sys-boot/mokutil
 sys-boot/os-prober
 sys-boot/shim
@@ -65,6 +66,7 @@ x11-misc/silver-sddm
 app-antivirus/clamav
 app-antivirus/clamtk
 app-shells/thefuck
+dev-lang/bun-bin
 dev-util/clinfo
 kde-plasma/discover
 kde-plasma/print-manager
@@ -75,7 +77,6 @@ net-im/telegram-desktop-bin
 net-im/tencent-qq
 net-im/wechat
 net-im/wemeet
-net-libs/bun-bin
 net-misc/localsend-bin
 net-p2p/ktorrent
 net-print/cups-meta

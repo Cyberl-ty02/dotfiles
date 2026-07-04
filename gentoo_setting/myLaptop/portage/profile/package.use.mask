@@ -1,2 +1,2 @@
-# Local profile masks. Useful when an LLVM profile tries to pull clang features too broadly.
+# Keep Doxygen on the default GCC path instead of pulling Clang support.
 app-text/doxygen clang

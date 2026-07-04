@@ -1,2 +1,3 @@
-# Uncomment only if these optional packages are added to world.
-#media-fonts/nerdfonts Vic-Fieger-License
+net-im/tencent-qq Tencent
+net-im/wechat all-rights-reserved
+net-im/wemeet wemeet_license

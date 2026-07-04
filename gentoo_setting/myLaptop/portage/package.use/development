@@ -1,9 +1,9 @@
-app-editors/emacs tree-sitter
+app-editors/emacs jit tree-sitter
 app-text/typst
 app-text/xmlto text
 dev-build/cmake ncurses
 dev-db/postgresql zstd llvm
-dev-lang/rust llvm-libunwind rust-analyzer rust-src rustfmt
+dev-lang/rust rust-analyzer rust-src rustfmt
 dev-vcs/git curl gpg pcre perl threads webdav
-sys-devel/gcc -lto
+sys-devel/gcc jit
 virtual/rust rustfmt

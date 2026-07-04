@@ -1,7 +1,7 @@
 # Optional development packages and overlays used by this WSL profile.
 */*::xlibre ~amd64
 app-shells/thefuck ~amd64
+dev-lang/bun-bin ~amd64
 dev-lang/rust-bin ~amd64
 dev-util/clinfo ~amd64
 dev-util/nvidia-cuda-toolkit ~amd64
-net-libs/bun-bin

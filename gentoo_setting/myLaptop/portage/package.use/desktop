@@ -5,10 +5,11 @@ app-i18n/fcitx-gtk:5
 app-i18n/fcitx-qt:5 qt5 qt6
 app-i18n/fcitx-rime:5
 app-text/ghostscript-gpl cups
+dev-libs/libdbusmenu gtk3
 media-fonts/nerdfonts intelonemono
-media-libs/libcanberra alsa
 media-libs/freetype png harfbuzz
 media-libs/gd fontconfig truetype
+media-libs/libcanberra alsa
 media-libs/libpulse X
 media-libs/libvpx postproc
 media-plugins/alsa-plugins pulseaudio

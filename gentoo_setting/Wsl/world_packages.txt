@@ -31,10 +31,11 @@ sys-process/btop
 
 
 
-# Optional packages. Install manually only when needed.
-#app-admin/sysklogd
-#app-shells/thefuck
-#dev-util/clinfo
-#dev-util/nvidia-cuda-toolkit
-#dev-util/vulkan-tools
-#sys-process/cronie
+# Optional packages.
+app-admin/sysklogd
+app-shells/thefuck
+dev-lang/bun-bin
+dev-util/clinfo
+dev-util/nvidia-cuda-toolkit
+dev-util/vulkan-tools
+sys-process/cronie

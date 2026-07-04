@@ -1,7 +1,0 @@
-# Compatibility fallbacks for older or C++-sensitive code.
-app-text/doxygen gcc_generic no_lto lowjobs
-dev-java/openjdk gcc_generic no_lto lowjobs
-dev-java/openjdk-bin gcc_generic no_lto
-dev-libs/darts gcc_cxx14 no_lto
-dev-libs/libfmt gcc_generic no_lto
-dev-libs/spdlog gcc_generic no_lto
