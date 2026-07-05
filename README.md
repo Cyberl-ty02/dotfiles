@@ -4,7 +4,11 @@ This repo is mainly for backup some of my configs.
 
 ## gentoo_setting
 
-For part of my Gentoo configuration files. Including portage,  zsh, ccache.
+Gentoo configuration for the physical laptop.
+
+## nixos_setting
+
+Declarative NixOS configuration for the WSL development environment.
 
 ## windows_setting
 
