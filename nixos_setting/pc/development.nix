@@ -48,14 +48,15 @@
     llvmPackages.lldb
     llvmPackages.llvm
 
-    # Language runtimes and development tools follow their Nixpkgs defaults.
+    # Follow Nixpkgs' supported upstream defaults. For ecosystems with an LTS
+    # channel, these aliases can advance to a newer LTS during a reviewed
+    # flake update instead of pinning one major release here.
     bun
     cargo
     clippy
     jdk
     nodejs
     pixi
-    pnpm
     postgresql
     python3
     rust-analyzer

@@ -37,15 +37,36 @@
         "root"
         "@wheel"
       ];
-      auto-optimise-store = true;
+
+      # Under disk pressure, collect only unreachable store paths. System
+      # generations remain GC roots until the age-based job below removes them.
+      min-free = 5 * 1024 * 1024 * 1024;
+      max-free = 15 * 1024 * 1024 * 1024;
     };
 
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 14d";
+      persistent = true;
+      randomizedDelaySec = "45min";
+      options = "--delete-older-than 30d";
+    };
+
+    # Let Nix deduplicate identical store files in one scheduled pass instead
+    # of adding optimise work to every build/install operation.
+    # 使用 Nix 自带的定时去重，避免每次构建都额外扫描和硬链接。
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
     };
   };
+
+  # Keep enough diagnostics for the rollback window while limiting VHD growth.
+  # 保留足够的排错日志，同时限制 WSL 虚拟磁盘增长。
+  services.journald.extraConfig = ''
+    SystemMaxUse=256M
+    MaxRetentionSec=30day
+  '';
 
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_US.UTF-8";

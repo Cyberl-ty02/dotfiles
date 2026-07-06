@@ -30,7 +30,7 @@
 
     printing.enable = true;
 
-    # Match the useful hardware-management pieces from the Gentoo laptop.
+    # 使用 NixOS/util-linux 的默认批量 TRIM 周期。
     fstrim.enable = true;
     fwupd.enable = true;
     hardware.bolt.enable = true;
