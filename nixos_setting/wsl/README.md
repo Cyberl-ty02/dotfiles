@@ -4,6 +4,11 @@ This replaces the former Gentoo WSL profile with a declarative,
 development-only NixOS configuration. Windows remains the host operating
 system; NixOS-WSL supplies the Linux userland.
 
+The flake follows `nixos-unstable`, and language runtimes use the unversioned
+Nixpkgs package names. `flake.lock` records a reproducible snapshot rather than
+permanently fixing tool versions; `nix flake update` advances the whole
+environment to a newly tested upstream snapshot.
+
 ## Scope
 
 The default configuration keeps:
@@ -24,6 +29,10 @@ It intentionally omits:
 CUDA compiler/runtime tools are retained as the optional `nixos-wsl-cuda`
 configuration because they add a large closure and require unfree packages.
 The Windows driver bridge is already enabled through `wsl.useWindowsDriver`.
+WSLg supplies both Wayland and X11 compatibility sockets. Firefox and
+Electron/Chromium applications prefer native Wayland, while WSLg's existing
+`DISPLAY` socket remains available for XWayland fallback; NixOS does not start
+a second display server inside WSL.
 
 ## Apply
 
@@ -48,6 +57,42 @@ installed.
 If the repository is stored on Windows, enter it through `/mnt/c/...` first.
 For better filesystem performance during daily development, keep source trees
 under `/home/lty`.
+
+## Fresh WSL installation from GitHub
+
+First install the current `nixos.wsl` image from the NixOS-WSL releases. With
+WSL 2.4.4 or newer, PowerShell can import the downloaded image directly:
+
+```powershell
+wsl --install --from-file .\nixos.wsl --name NixOS
+wsl -d NixOS
+```
+
+Inside the new distribution, clone and stage this configuration:
+
+```bash
+cd /tmp
+nix --extra-experimental-features 'nix-command flakes' \
+  shell github:NixOS/nixpkgs/nixos-unstable#git -c \
+  git clone https://github.com/Cyberl-ty02/dotfiles.git
+
+cd dotfiles/nixos_setting/wsl
+sudo ./install.sh
+exit
+```
+
+Because the image initially uses `nixos` while this flake changes the default
+user to `lty`, activate the boot generation using this sequence in PowerShell:
+
+```powershell
+wsl --terminate NixOS
+wsl -d NixOS --user root -- true
+wsl --terminate NixOS
+wsl -d NixOS
+```
+
+The first `lty` Zsh login asks for a password. Afterward, `/etc/nixos` is
+self-contained and rebuilds do not depend on the temporary Git clone.
 
 ## User and password
 
@@ -96,4 +141,6 @@ node --version
 References:
 
 - https://github.com/nix-community/NixOS-WSL
+- https://nix-community.github.io/NixOS-WSL/install.html
+- https://nix-community.github.io/NixOS-WSL/how-to/change-username.html
 - https://nixos.org/manual/nixos/stable/

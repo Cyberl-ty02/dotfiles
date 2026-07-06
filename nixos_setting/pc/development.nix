@@ -24,13 +24,14 @@
     zip
 
     # Editors and Nix tooling.
-    emacs-nox
+    emacs
     nh
     nil
     nix-output-monitor
     nixfmt
     shellcheck
     shfmt
+    vscodium
 
     # Native build and debugging toolchains.
     binutils
@@ -47,7 +48,7 @@
     llvmPackages.lldb
     llvmPackages.llvm
 
-    # Language runtimes and development tools.
+    # Language runtimes and development tools follow their Nixpkgs defaults.
     bun
     cargo
     clippy
@@ -77,8 +78,6 @@
       enableSSHSupport = false;
     };
 
-    # Allows editor extensions and language package managers to run
-    # dynamically linked Linux binaries that were not packaged by Nix.
     nix-ld.enable = true;
   };
 }

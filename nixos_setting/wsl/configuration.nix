@@ -53,6 +53,11 @@
   environment.sessionVariables = {
     EDITOR = "emacs";
     VISUAL = "emacs";
+
+    # WSLg exposes both Wayland and X11 sockets. Prefer native Wayland for
+    # Electron and Firefox while leaving DISPLAY available as a fallback.
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
   };
 
   programs.zsh = {
