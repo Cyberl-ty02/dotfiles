@@ -69,9 +69,31 @@
   '';
 
   time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n = {
+    defaultLocale = "zh_CN.UTF-8";
+    supportedLocales = [
+      "zh_CN.UTF-8/UTF-8"
+      "en_US.UTF-8/UTF-8"
+    ];
+    extraLocaleSettings = {
+      LC_ADDRESS = "zh_CN.UTF-8";
+      LC_COLLATE = "zh_CN.UTF-8";
+      LC_CTYPE = "zh_CN.UTF-8";
+      LC_IDENTIFICATION = "zh_CN.UTF-8";
+      LC_MEASUREMENT = "zh_CN.UTF-8";
+      LC_MESSAGES = "zh_CN.UTF-8";
+      LC_MONETARY = "zh_CN.UTF-8";
+      LC_NAME = "zh_CN.UTF-8";
+      LC_NUMERIC = "zh_CN.UTF-8";
+      LC_PAPER = "zh_CN.UTF-8";
+      LC_TELEPHONE = "zh_CN.UTF-8";
+      LC_TIME = "zh_CN.UTF-8";
+    };
+  };
 
   environment.sessionVariables = {
+    LANGUAGE = "zh_CN:en_US:C";
     EDITOR = "emacs";
     VISUAL = "emacs";
 
@@ -79,6 +101,38 @@
     # Electron and Firefox while leaving DISPLAY available as a fallback.
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
+  };
+
+  fonts = {
+    fontconfig.enable = true;
+    fontconfig.defaultFonts = {
+      monospace = [
+        "MesloLGS NF"
+        "JetBrainsMono Nerd Font"
+        "Sarasa Mono SC"
+        "Noto Sans Mono CJK SC"
+      ];
+      sansSerif = [
+        "Sarasa Gothic SC"
+        "Noto Sans CJK SC"
+        "Noto Sans"
+      ];
+      serif = [
+        "Noto Serif CJK SC"
+        "Noto Serif"
+      ];
+      emoji = [ "Noto Color Emoji" ];
+    };
+    packages = with pkgs; [
+      nerd-fonts.meslo-lg
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.noto
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      sarasa-gothic
+    ];
   };
 
   programs.zsh = {

@@ -89,9 +89,31 @@
   '';
 
   time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n = {
+    defaultLocale = "zh_CN.UTF-8";
+    supportedLocales = [
+      "zh_CN.UTF-8/UTF-8"
+      "en_US.UTF-8/UTF-8"
+    ];
+    extraLocaleSettings = {
+      LC_ADDRESS = "zh_CN.UTF-8";
+      LC_COLLATE = "zh_CN.UTF-8";
+      LC_CTYPE = "zh_CN.UTF-8";
+      LC_IDENTIFICATION = "zh_CN.UTF-8";
+      LC_MEASUREMENT = "zh_CN.UTF-8";
+      LC_MESSAGES = "zh_CN.UTF-8";
+      LC_MONETARY = "zh_CN.UTF-8";
+      LC_NAME = "zh_CN.UTF-8";
+      LC_NUMERIC = "zh_CN.UTF-8";
+      LC_PAPER = "zh_CN.UTF-8";
+      LC_TELEPHONE = "zh_CN.UTF-8";
+      LC_TIME = "zh_CN.UTF-8";
+    };
+  };
 
   environment.sessionVariables = {
+    LANGUAGE = "zh_CN:en_US:C";
     EDITOR = "emacs";
     VISUAL = "emacs";
 
@@ -99,6 +121,18 @@
     # Qt and GTK auto-detect Wayland and retain their own X11 fallback.
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
+  };
+
+  # Use userspace KMS console rendering for readable Chinese/Japanese/Korean
+  # text on local TTYs without switching to a fast-moving patched kernel.
+  services.kmscon = {
+    enable = true;
+    useXkbConfig = true;
+    config = {
+      font-name = "MesloLGS NF, Sarasa Mono SC, Noto Sans CJK SC";
+      font-size = 14;
+      term = "xterm-256color";
+    };
   };
 
   programs.zsh.enable = true;

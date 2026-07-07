@@ -1,5 +1,15 @@
 { pkgs, ... }:
 
+let
+  # Prefer Alibaba Dragonwell Standard LTS when nixpkgs exposes an upstream-
+  # maintained rolling alias. Keep the expression unversioned so a reviewed
+  # flake update can move to the next Dragonwell LTS without changing this
+  # package list. Current nixpkgs may not yet ship Dragonwell; in that case
+  # keep the platform JDK so the system remains evaluable.
+  dragonwellStandardLts =
+    pkgs.dragonwell or pkgs."alibaba-dragonwell" or pkgs.dragonwell21 or pkgs.jdk;
+in
+
 {
   environment.systemPackages = with pkgs; [
     # Shell and everyday CLI tools.
@@ -53,7 +63,7 @@
     bun
     cargo
     clippy
-    jdk
+    dragonwellStandardLts
     nodejs
     pixi
     postgresql
