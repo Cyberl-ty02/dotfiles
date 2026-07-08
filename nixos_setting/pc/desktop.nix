@@ -30,7 +30,7 @@
 
     printing.enable = true;
 
-    # Match the useful hardware-management pieces from the Gentoo laptop.
+    # 使用 NixOS/util-linux 的默认批量 TRIM 周期。
     fstrim.enable = true;
     fwupd.enable = true;
     hardware.bolt.enable = true;
@@ -58,13 +58,37 @@
     ];
   };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    noto-fonts-color-emoji
-  ];
+  fonts = {
+    fontconfig.enable = true;
+    fontconfig.defaultFonts = {
+      monospace = [
+        "MesloLGS NF"
+        "JetBrainsMono Nerd Font"
+        "Sarasa Mono SC"
+        "Noto Sans Mono CJK SC"
+      ];
+      sansSerif = [
+        "Sarasa Gothic SC"
+        "Noto Sans CJK SC"
+        "Noto Sans"
+      ];
+      serif = [
+        "Noto Serif CJK SC"
+        "Noto Serif"
+      ];
+      emoji = [ "Noto Color Emoji" ];
+    };
+    packages = with pkgs; [
+      nerd-fonts.meslo-lg
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.noto
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      sarasa-gothic
+    ];
+  };
 
   programs.firefox.enable = true;
 

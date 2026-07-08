@@ -2,6 +2,11 @@
 set -euo pipefail
 
 TARGET_ROOT="${TARGET_ROOT:-/mnt}"
+# Compression saves space and noatime avoids read-triggered metadata writes.
+# Keep discard out of the mount path: NixOS batches TRIM weekly. Avoid
+# autodefrag/commit tuning here because they can increase write amplification
+# or widen the amount of recent metadata lost after an abrupt power failure.
+# 压缩用于节省空间，noatime 避免“读取也写盘”；TRIM 由系统每周批量执行。
 MOUNT_OPTIONS="compress=zstd:3,noatime"
 EXPECTED_SUBVOLUMES=(
   @

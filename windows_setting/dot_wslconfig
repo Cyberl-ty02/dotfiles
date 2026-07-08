@@ -1,13 +1,12 @@
 [wsl2]
-# 方便配置代理
-# networkingMode=Nat
+# 使用镜像网络，并复用 Windows 的 DNS、防火墙和代理配置。
+# Use mirrored networking with Windows DNS, firewall and proxy integration.
 networkingMode=Mirrored
-# 启用 DNS 隧道（可选，但通常推荐）
 dnsTunneling=true
-# 启用 Windows 防火墙规则
 firewall=true
-# 启用自动代理（Windows中设为系统代理）
 autoProxy=true
+
+# 如需自定义内核，请同时核对内核和模块 VHD 的版本。
 # kernel=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2\\6.18.4-1.1\\bzImage-x64v3
 # kernelModules=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2-addons\\6.18.4-1.1\\bzImage-x64v3-addons.vhdx
 
