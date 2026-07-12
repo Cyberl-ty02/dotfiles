@@ -1,8 +1,6 @@
 # Alternative system configurations
 
-These profiles are retained as fallback choices and are not the repository's
-primary deployment target.
+These profiles are retained as system-specific or fallback choices.
 
-- `gentoo/` contains the previous physical-laptop Gentoo configuration.
-- The active NixOS WSL and physical-machine profiles live under
-  `../nixos_setting/`.
+- `gentoo/` contains the active physical PC/laptop Gentoo configuration.
+- The active WSL development profile lives under `../guix_setting/wsl/`.

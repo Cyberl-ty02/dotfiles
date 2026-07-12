@@ -9,4 +9,3 @@ autoProxy=true
 # 如需自定义内核，请同时核对内核和模块 VHD 的版本。
 # kernel=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2\\6.18.4-1.1\\bzImage-x64v3
 # kernelModules=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2-addons\\6.18.4-1.1\\bzImage-x64v3-addons.vhdx
-
