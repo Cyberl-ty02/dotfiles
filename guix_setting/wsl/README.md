@@ -1,6 +1,6 @@
 # Guix WSL 配置
 
-本目录把原来的 NixOS-WSL 目标迁移到 Guix WSL。物理 PC 继续使用 Gentoo；统一入口见 [`../../system_setting/README.md`](../../system_setting/README.md)。
+本目录提供 Guix WSL 开发环境。物理 PC 继续使用 Gentoo；统一入口见 [`../../system_setting/README.md`](../../system_setting/README.md)。
 
 配置参考 [Arian-D/guix-wsl](https://github.com/Arian-D/guix-wsl)，并继承 Guix 官方 `wsl-os`。冷启动由上游 `wsl-boot-program` 启动 Shepherd 和 `guix-daemon`，随后降权进入 `lty`，同时补齐首次密码设置。
 
@@ -17,7 +17,7 @@
 在 Windows PowerShell 中运行：
 
 ```powershell
-wsl -d Guix --cd /mnt/c/Users/lty00/source/repos/dotfiles/guix_setting/wsl --exec /bin/sh install.sh
+wsl -d Guix -u root --cd /mnt/c/Users/lty00/source/repos/dotfiles/guix_setting/wsl --exec /var/guix/profiles/system/profile/bin/bash install.sh
 wsl --terminate Guix
 wsl -d Guix
 ```
@@ -27,7 +27,7 @@ wsl -d Guix
 仅需临时恢复 `guix` 命令时可运行：
 
 ```powershell
-wsl -d Guix --cd /mnt/c/Users/lty00/source/repos/dotfiles/guix_setting/wsl --exec /bin/sh fix-runtime.sh
+wsl -d Guix -u root --cd /mnt/c/Users/lty00/source/repos/dotfiles/guix_setting/wsl --exec /var/guix/profiles/system/profile/bin/bash fix-runtime.sh
 ```
 
 ## 安装开发工具
@@ -39,7 +39,25 @@ guix pull
 guix package -m /mnt/c/Users/lty00/source/repos/dotfiles/guix_setting/wsl/manifest.scm
 ```
 
-该 manifest 已与先前 Nix WSL 的开发能力及 Gentoo PC 的开发包交叉核对。完整对照与“只属于物理机”的工具边界见 [`../../system_setting/development-parity.md`](../../system_setting/development-parity.md)。
+该 manifest 已与 Gentoo PC 的开发包交叉核对。完整对照与“只属于物理机”的工具边界见 [`../../system_setting/development-parity.md`](../../system_setting/development-parity.md)。
+
+## VS Code Remote WSL
+
+配置把 WSL 默认用户设为 `lty`，并为 Remote WSL 使用的非登录 `sh -c` 注入 Guix profile PATH。WSL 启动时会在后台启动 Shepherd 与 `guix-daemon`；普通用户 shell 最多等待 daemon 30 秒，以避免首次连接竞态，但 daemon 故障不会永久阻止 shell。
+
+如果 Remote WSL 曾缓存失败状态，先在 Windows 运行：
+
+```powershell
+wsl --terminate Guix
+```
+
+然后重新执行“连接到 WSL”。可用与扩展相同的探测方式验证：
+
+```powershell
+wsl -d Guix -e sh -c "id; uname -m; command -v tar; command -v curl"
+```
+
+预期用户为 `lty`，工具路径位于 `/run/current-system/profile/bin`。启动日志保存在 `/var/log/guix-wsl-boot.log`。
 
 Guix 官方仓库不一定包含 Bun、Dragonwell JDK、CUDA 工具链及部分较新的语言工具。本配置不默认加入第三方 channel，以免混淆系统迁移和信任边界；需要时可再显式添加可信 channel 或使用上游安装方式。
 

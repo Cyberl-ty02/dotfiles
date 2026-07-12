@@ -18,7 +18,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-"$repo_dir/fix-runtime.sh"
+/var/guix/profiles/system/profile/bin/bash "$repo_dir/fix-runtime.sh"
 
 install -Dm644 "$repo_dir/system.scm" /etc/config.scm
 install -Dm755 "$repo_dir/fix-runtime.sh" /etc/guix-wsl-fix-runtime
