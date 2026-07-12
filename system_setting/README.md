@@ -7,4 +7,4 @@
 | 物理 PC / laptop | Gentoo | [`../alternative_setting/gentoo/mylaptop`](../alternative_setting/gentoo/mylaptop) |
 | Windows WSL | GNU Guix | [`../guix_setting/wsl`](../guix_setting/wsl) |
 
-共同开发能力与版本策略见 [`development-parity.md`](development-parity.md)。旧 NixOS PC/WSL 配置已删除；它只作为迁移时的能力基线，不再作为可安装目标。
+共同开发能力与版本策略见 [`development-parity.md`](development-parity.md)。仓库只保留当前 Gentoo PC 与 Guix WSL 配置。

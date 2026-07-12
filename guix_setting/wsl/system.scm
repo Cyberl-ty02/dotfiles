@@ -19,16 +19,90 @@
              (guix gexp))
 
 (use-package-modules certs
+                     bash
                      curl
                      fonts
+                     guile
                      shells
                      version-control)
+
+(define %wsl-sh
+  (program-file
+   "guix-wsl-sh"
+   #~(begin
+       ;; Remote WSL deliberately starts a non-login `sh -c`.  Give it the
+       ;; same Guix tools as an interactive shell before handing off to Bash.
+       (setenv
+        "PATH"
+        (string-append
+         "/home/lty/.config/guix/current/bin:"
+         "/home/lty/.guix-profile/bin:"
+         "/run/current-system/profile/sbin:"
+         "/run/current-system/profile/bin:"
+         "/var/guix/profiles/system/profile/sbin:"
+         "/var/guix/profiles/system/profile/bin:"
+         "/run/privileged/bin:/usr/bin:/bin"))
+       ;; WSL starts [boot].command and the requested user command in
+       ;; parallel.  Avoid racing the daemon during Remote WSL startup, while
+       ;; never blocking the root-owned boot command itself.  Continue after
+       ;; 30 seconds so a daemon failure cannot prevent shell access.
+       (unless (zero? (getuid))
+         (let wait ((remaining 30))
+           (unless (or (zero? remaining)
+                       (file-exists? "/var/guix/daemon-socket/socket"))
+             (sleep 1)
+             (wait (- remaining 1)))))
+       (apply execl #$(file-append bash "/bin/bash")
+              "sh" (cdr (command-line))))))
+
+(define %wsl-boot
+  (program-file
+   "guix-wsl-boot"
+   #~(let* ((profiles "/var/guix/profiles/")
+            (profile (string-append profiles "system"))
+            (generation (readlink profile))
+            (generation-path
+             (if (string-prefix? "/" generation)
+                 generation
+                 (string-append profiles generation)))
+            (system (readlink generation-path))
+            (system-path
+             (if (string-prefix? "/" system)
+                 system
+                 (string-append profiles system))))
+       ;; WSL waits for [boot].command to return.  Start Shepherd in a child,
+       ;; then return only after the daemon socket is ready.  This follows the
+       ;; upstream wsl-boot-program lifecycle without opening a login shell.
+       (for-each
+        (lambda (socket)
+          (when (file-exists? socket)
+            (delete-file socket)))
+        '("/var/run/shepherd/socket"
+          "/var/guix/daemon-socket/socket"))
+       (if (zero? (primitive-fork))
+           (begin
+             (setenv "GUIX_NEW_SYSTEM" system-path)
+             (execl #$(file-append guile-3.0 "/bin/guile")
+                    "guile"
+                    "--no-auto-compile"
+                    (string-append system-path "/boot")))
+           (let ((socket "/var/guix/daemon-socket/socket"))
+             (let wait ()
+               (unless (file-exists? socket)
+                 (sleep 1)
+                 (wait))))))))
 
 (define %wsl-conf
   (plain-file
    "wsl.conf"
-   "[interop]
+   "[user]
+default=lty
+
+[interop]
 appendWindowsPath=false
+
+[boot]
+command=/etc/guix-wsl-boot >>/var/log/guix-wsl-boot.log 2>&1
 "))
 
 (define %set-password-script
@@ -106,11 +180,9 @@ lty ALL=(root) NOPASSWD: /run/current-system/profile/bin/sh /etc/guix-wsl-set-pa
      (home-directory "/home/lty")
      (shell (file-append zsh "/bin/zsh"))
      (supplementary-groups '("wheel" "audio" "video")))
-    ;; WSL initially invokes root.  The upstream boot program starts the Guix
-    ;; system and Shepherd, then replaces itself with lty's login shell.
     (user-account
      (inherit %root-account)
-     (shell (wsl-boot-program "lty")))
+     (shell (file-append bash "/bin/bash")))
     %base-user-accounts))
 
   (packages
@@ -144,8 +216,17 @@ lty ALL=(root) NOPASSWD: /run/current-system/profile/bin/sh /etc/guix-wsl-set-pa
      'guix-wsl-files
      etc-service-type
      `(("wsl.conf" ,%wsl-conf)
+       ("guix-wsl-boot" ,%wsl-boot)
        ("guix-wsl-set-password" ,%set-password-script)
        ("profile.d/guix-wsl-first-login.sh" ,%first-login-script)))
-    (operating-system-user-services wsl-os)))
+    (modify-services
+        (operating-system-user-services wsl-os)
+      (special-files-service-type
+       files =>
+       (map (lambda (entry)
+              (if (string=? (car entry) "/bin/sh")
+                  `( "/bin/sh" ,%wsl-sh)
+                  entry))
+            files)))))
 
   (name-service-switch %mdns-host-lookup-nss))

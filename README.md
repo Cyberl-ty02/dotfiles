@@ -19,7 +19,7 @@ kernel/Secure Boot notes and routine update instructions.
 
 ## WSL: Guix
 
-The WSL development environment is moving from NixOS-WSL to Guix WSL:
+The WSL development environment uses Guix WSL:
 
 - `guix_setting/wsl/`
 
