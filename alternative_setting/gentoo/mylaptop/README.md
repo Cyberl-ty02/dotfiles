@@ -21,7 +21,8 @@ plan so `sys-kernel/xanmod-kernel` remains the only selected kernel.
 
 ## Apply
 
-From `gentoo_setting/myLaptop`, back up the active configuration and replace it directly:
+From `alternative_setting/gentoo/mylaptop`, back up the active configuration
+and replace it directly:
 
 ```bash
 doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"

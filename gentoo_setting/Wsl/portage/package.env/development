@@ -1,7 +1,0 @@
-app-editors/emacs lowjobs
-app-text/typst lowjobs
-dev-lang/go lowjobs
-dev-lang/go-bootstrap lowjobs
-dev-lang/rust lowjobs
-dev-util/pixi lowjobs
-net-libs/nodejs lowjobs
