@@ -1,0 +1,7 @@
+llvm-core/clang lowjobs
+llvm-core/lld lowjobs
+llvm-core/lldb lowjobs
+llvm-core/llvm lowjobs
+llvm-runtimes/clang-runtime lowjobs
+llvm-runtimes/compiler-rt lowjobs
+llvm-runtimes/openmp lowjobs

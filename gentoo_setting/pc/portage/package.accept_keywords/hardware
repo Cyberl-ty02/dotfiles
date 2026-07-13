@@ -1,0 +1,5 @@
+dev-util/nvidia-cuda-toolkit ~amd64
+net-wireless/iwd ~amd64
+sys-kernel/xanmod-kernel ~amd64
+virtual/dist-kernel ~amd64
+x11-drivers/nvidia-drivers ~amd64

@@ -1,0 +1,12 @@
+# WSL base: no bootloader/kernel/desktop-service stack.
+app-admin/doas persist
+app-admin/eclean-kernel zstd
+dev-libs/libusb udev
+dev-libs/libxml2 icu
+net-misc/openssh -bindist
+sys-apps/dbus X
+sys-apps/util-linux pam su tty-helpers unicode verify-sig
+sys-auth/pambase elogind -systemd
+sys-auth/polkit daemon -systemd
+sys-libs/ncurses -gpm
+virtual/libusb udev

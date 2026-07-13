@@ -1,0 +1,14 @@
+# For using github
+proxy () {
+        export https_proxy="http://127.0.0.1:2080"
+        export http_proxy="http://127.0.0.1:2080"
+        export all_proxy="sock5://127.0.0.1:2080"
+        echo "HTTP Proxy on: 127.0.0.1"
+}
+
+nproxy () {
+    unset http_proxy
+    unset https_proxy
+    unset all_proxy
+    echo "HTTP Proxy off"
+}

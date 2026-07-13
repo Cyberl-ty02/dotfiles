@@ -1,0 +1,10 @@
+[wsl2]
+# 镜像网络可复用 Windows 的网络、DNS、防火墙与代理设置。
+networkingMode=Mirrored
+dnsTunneling=true
+firewall=true
+autoProxy=true
+
+# 自定义内核为可选项；启用时必须确保内核与模块 VHD 版本一致。
+# kernel=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2\\6.18.4-1.1\\bzImage-x64v3
+# kernelModules=C:\\Users\\lty00\\scoop\\apps\\xanmod-WSL2-addons\\6.18.4-1.1\\bzImage-x64v3-addons.vhdx
