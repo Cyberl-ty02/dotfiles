@@ -1,5 +1,0 @@
-# Optional development tools shared with the WSL profile.
-app-shells/thefuck ~amd64
-dev-lang/bun-bin ~amd64
-dev-lang/rust-bin ~amd64
-dev-util/clinfo ~amd64

@@ -1,4 +1,0 @@
-sys-boot/grub secureboot_key_access
-sys-boot/shim secureboot_key_access
-sys-kernel/xanmod-kernel secureboot_key_access lowjobs
-x11-drivers/nvidia-drivers secureboot_key_access

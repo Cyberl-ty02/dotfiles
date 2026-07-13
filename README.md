@@ -1,41 +1,17 @@
-# Introduce
+# Dotfiles
 
-This repo is mainly for backing up my system and shell configuration files.
+本仓库用于备份系统、Shell 与开发环境配置。
 
-## System configuration
+## Gentoo
 
-The unified index and development-capability comparison are under:
+- `gentoo_setting/wsl/`：WSL2 Gentoo，使用 GCC，侧重 CLI/开发与 WSLg。
+- `gentoo_setting/pc/`：实体 PC Gentoo，使用 Clang/LLVM，并包含桌面、NVIDIA 与 Secure Boot 配置。
+- `gentoo_setting/private_dot_zshrc`：Gentoo 共用的 Zsh 私有配置。
 
-- `system_setting/`
+## Windows
 
-## PC: Gentoo
+`windows_setting/` 保存 Windows 与 WSL 的宿主侧配置。
 
-The physical PC/laptop configuration is kept under:
+## 其他配置
 
-- `alternative_setting/gentoo/mylaptop/`
-
-That profile contains the Portage configuration, selected world packages,
-kernel/Secure Boot notes and routine update instructions.
-
-## WSL: Guix
-
-The WSL development environment uses Guix WSL:
-
-- `guix_setting/wsl/`
-
-The Guix WSL profile inherits Guix's upstream `wsl-os` image definition and adds
-local fixes for imported WSL instances, including `/run/current-system` repair,
-`guix-daemon` startup, the `lty` user, Chinese locale and a development
-manifest.
-
-## alternative_setting
-
-Alternative operating-system configurations and fallback profiles.
-
-## windows_setting
-
-Windows-side configuration files, including `.wslconfig`.
-
-## dot(s)
-
-Other shell and user configuration files.
+仓库根目录中的 `dot_*` 文件保存通用 Shell 配置。

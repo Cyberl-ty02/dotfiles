@@ -1,6 +1,0 @@
-# SonicDE requires GCC 14 and warns about libc++; the selected GCC profile satisfies both.
-# Limit the large core builds to avoid exhausting laptop memory.
-kde-plasma/sonic-desktop lowjobs
-kde-plasma/sonic-meta lowjobs
-kde-plasma/sonic-win lowjobs
-kde-plasma/sonic-workspace lowjobs
