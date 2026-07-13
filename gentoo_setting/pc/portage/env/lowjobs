@@ -1,0 +1,2 @@
+# Lower per-package parallelism for memory-heavy packages.
+MAKEOPTS="-j6 -l13"
