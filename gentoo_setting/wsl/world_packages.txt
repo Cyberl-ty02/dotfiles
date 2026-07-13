@@ -29,10 +29,6 @@ sys-apps/fd
 sys-apps/ripgrep
 sys-devel/mold
 sys-process/btop
-
-
-
-# Optional packages.
 app-admin/sysklogd
 app-shells/thefuck
 dev-util/clinfo

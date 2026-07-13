@@ -1,10 +1,10 @@
 # WSL should not maintain a real kernel/bootloader/NVIDIA kernel module/full desktop stack.
 kde-plasma/plasma-desktop
 kde-plasma/plasma-meta
-kde-plasma/sonic-desktop
-kde-plasma/sonic-meta
-kde-plasma/sonic-win
-kde-plasma/sonic-workspace
+sonicde-base/sonic-desktop
+sonicde-base/sonic-meta
+sonicde-base/sonic-win
+sonicde-base/sonic-workspace
 sys-boot/grub
 sys-boot/shim
 sys-kernel/gentoo-kernel
