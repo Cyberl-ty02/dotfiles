@@ -1,0 +1,8 @@
+# Development tools, still CLI-first.
+app-editors/emacs -X -gtk -gui jit tree-sitter
+dev-build/cmake ncurses
+dev-db/postgresql zstd
+dev-lang/rust rust-analyzer rust-src rustfmt
+dev-vcs/git curl gpg pcre perl threads webdav
+sys-devel/gcc jit
+virtual/rust rustfmt

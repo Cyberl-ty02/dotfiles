@@ -1,0 +1,2 @@
+# Required when the optional CUDA toolkit is installed.
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA

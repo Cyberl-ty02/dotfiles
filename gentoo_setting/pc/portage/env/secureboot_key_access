@@ -1,0 +1,3 @@
+# Needed when Secure Boot/module-signing packages need to read /etc/kernel/secureboot/MOK.pem.
+# Keep this per-package, not global. This lets root-owned private keys remain chmod 0600.
+FEATURES="${FEATURES} -userpriv -usersandbox"

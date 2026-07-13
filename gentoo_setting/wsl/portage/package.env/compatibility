@@ -1,0 +1,3 @@
+# Build-resource and language-standard compatibility exceptions.
+app-text/doxygen lowjobs
+dev-libs/darts gcc_cxx14

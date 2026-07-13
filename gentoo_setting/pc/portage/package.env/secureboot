@@ -1,0 +1,5 @@
+# Match the current xanmod-only kernel selection while retaining Clang-safe fallbacks.
+sys-boot/grub secureboot_key_access gcc_generic no_lto
+sys-boot/shim secureboot_key_access no_lto
+sys-kernel/xanmod-kernel secureboot_key_access no_lto lowjobs
+x11-drivers/nvidia-drivers secureboot_key_access no_lto

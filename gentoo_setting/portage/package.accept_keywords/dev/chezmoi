@@ -1,3 +1,0 @@
-# required by app-admin/chezmoi (argument)
-app-admin/chezmoi ~amd64
-app-admin/chezmoi-bin ~amd64

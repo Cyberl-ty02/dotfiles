@@ -1,0 +1,21 @@
+app-admin/doas persist
+app-admin/eclean-kernel zstd
+
+dev-libs/libusb udev
+dev-libs/libxml2 icu
+
+net-firewall/nftables python json xtables
+net-misc/chrony
+net-misc/networkmanager elogind iwd
+net-misc/openssh -bindist
+net-wireless/iwd monitor wired
+
+sys-apps/dbus X
+sys-apps/openrc caps
+sys-apps/util-linux pam su tty-helpers unicode verify-sig
+sys-auth/pambase elogind -systemd
+sys-auth/polkit daemon elogind -systemd
+sys-fs/udisks elogind
+sys-libs/ncurses -gpm
+sys-libs/zlib minizip
+virtual/libusb udev

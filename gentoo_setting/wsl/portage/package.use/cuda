@@ -1,0 +1,2 @@
+# CUDA uses Clang for NVCC integration while retaining the compatible Python target.
+dev-util/nvidia-cuda-toolkit clang python_targets_python3_13 -python_targets_python3_12

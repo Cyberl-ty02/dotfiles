@@ -1,2 +1,0 @@
-# Will not require confirmation by password for a time period of five minutes
-app-admin/doas persist

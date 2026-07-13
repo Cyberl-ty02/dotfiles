@@ -1,0 +1,5 @@
+# Prefer keyworded SonicDE release ebuilds; do not globally allow live packages.
+*/*::sonicde ~amd64
+
+# The overlay currently provides silver-sddm only as a live theme package.
+=x11-misc/silver-sddm-9999::sonicde **
