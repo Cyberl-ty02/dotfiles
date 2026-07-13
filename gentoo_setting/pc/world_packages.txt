@@ -22,7 +22,7 @@ dev-build/ninja
 dev-build/xmake
 dev-db/postgresql
 dev-java/openjdk-bin
-dev-lang/bun
+dev-lang/bun-bin
 dev-lang/rust-bin
 dev-python/uv
 dev-util/nvidia-cuda-toolkit
@@ -40,7 +40,7 @@ kde-apps/filelight
 kde-apps/gwenview
 kde-apps/kwalletmanager
 kde-apps/yakuake
-kde-plasma/sonic-meta
+sonicde-base/sonic-meta
 media-fonts/nerdfonts
 media-fonts/noto-cjk
 net-misc/chrony
@@ -66,10 +66,6 @@ x11-base/xlibre-server
 x11-drivers/nvidia-drivers
 x11-misc/sddm
 x11-misc/silver-sddm
-
-
-
-# Optional heavier desktop/chat/printing/media packages.
 app-antivirus/clamav
 app-antivirus/clamtk
 app-shells/thefuck

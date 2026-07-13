@@ -9,6 +9,7 @@
 doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
 doas rsync -a --delete --exclude=make.profile portage/ /etc/portage/
 doas emerge --sync
+doas xargs emerge -av --noreplace < world_packages.txt
 doas emerge -pvuDN @world
 doas emerge -avuDN @world
 ```
