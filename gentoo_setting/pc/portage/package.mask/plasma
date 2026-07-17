@@ -1,3 +1,14 @@
-# The Plasma profile supplies defaults; SonicDE remains the installed desktop.
+# SonicDE supplies these forked desktop components. Block their Gentoo
+# counterparts so Portage consistently selects the SonicDE packages/dummies.
+kde-plasma/kinfocenter::gentoo
+kde-plasma/kwin::gentoo
+kde-plasma/kwin-x11::gentoo
 kde-plasma/plasma-desktop::gentoo
+kde-plasma/plasma-login-sessions::gentoo
 kde-plasma/plasma-meta::gentoo
+kde-plasma/plasma-workspace::gentoo
+
+# Keep tightly coupled, non-forked Plasma components aligned with SonicDE 6.7.3.
+# Review these two pins when the SonicDE overlay advances to a newer series.
+>kde-plasma/kscreenlocker-6.7.3::gentoo
+>kde-plasma/powerdevil-6.7.3-r1::gentoo

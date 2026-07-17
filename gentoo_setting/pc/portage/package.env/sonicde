@@ -1,7 +1,7 @@
-# SonicDE requires GCC 14 for its core and warns about libc++ runtime issues.
+# SonicDE core packages use the GCC fallback to avoid libc++ runtime issues.
 # Keep the PC Clang-oriented while limiting these large fallback builds.
-sonicde-base/sonic-desktop gcc_generic no_lto lowjobs
-sonicde-base/sonic-meta gcc_generic no_lto lowjobs
-sonicde-base/sonic-win gcc_generic no_lto lowjobs
-sonicde-base/sonic-workspace gcc_generic no_lto lowjobs
+sonicde-base/sonic-desktop gcc_generic lowjobs
+sonicde-base/sonic-meta gcc_generic lowjobs
+sonicde-base/sonic-win gcc_generic lowjobs
+sonicde-base/sonic-workspace gcc_generic lowjobs
 x11-misc/silver-sddm no_lto

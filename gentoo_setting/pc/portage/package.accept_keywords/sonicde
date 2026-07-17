@@ -1,5 +1,9 @@
 # Prefer keyworded SonicDE release ebuilds; do not globally allow live packages.
 */*::sonicde ~amd64
 
+# SonicDE releases track the matching ~amd64 Plasma series and reuse the
+# components that are not forked by SonicDE.
+kde-plasma/* ~amd64
+
 # The overlay currently provides silver-sddm only as a live theme package.
 =x11-misc/silver-sddm-9999::sonicde **

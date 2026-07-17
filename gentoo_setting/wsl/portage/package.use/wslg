@@ -4,12 +4,12 @@ dev-qt/qtbase libproxy
 kde-frameworks/kconfig qml
 kde-frameworks/sonnet qml
 media-fonts/nerdfonts intelonemono
-media-libs/freetype png harfbuzz
+media-libs/freetype harfbuzz png
 media-libs/gd fontconfig truetype
 media-libs/libglvnd X
 media-libs/libpulse X
-media-libs/mesa vulkan wayland egl d3d12
+media-libs/mesa vulkan wayland
 media-libs/vulkan-loader X
 media-video/pipewire sound-server
 x11-libs/cairo X
-x11-libs/libxkbcommon X wayland
+x11-libs/libxkbcommon wayland X

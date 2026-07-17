@@ -1,0 +1,2 @@
+# Keep released XLibre overlay packages available without selecting the server in world.
+*/*::xlibre ~amd64

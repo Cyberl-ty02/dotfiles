@@ -1,2 +1,2 @@
-# XLibre overlay. Remove this file if you decide to use Gentoo xorg-server instead.
+# Prefer released XLibre server, compatibility dummy, and driver ebuilds.
 */*::xlibre ~amd64
