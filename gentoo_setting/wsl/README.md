@@ -2,7 +2,7 @@
 
 Target:
 
-- `default/linux/amd64/23.0/desktop`, GCC, and OpenRC.
+- `default/linux/amd64/23.0/desktop`, Clang/LLVM preferred with GCC fallbacks, and OpenRC.
 - Windows 11 remains the only real operating system.
 - Gentoo inside WSL2 is a Linux development userland.
 - No real kernel, GRUB, Secure Boot, SDDM, SonicDE, NetworkManager, or NVIDIA kernel module stack.
@@ -13,10 +13,11 @@ Target:
 ## Configuration Policy
 
 - The `make.conf` baseline:
-  - keeps `COMMON_FLAGS="-O2 -pipe"` instead of `-march=native`;
+  - keeps portable `COMMON_FLAGS="-O2 -pipe"` instead of `-march=native`, with
+    ThinLTO for Clang C/C++ and standard LTO for GCC Fortran;
   - keeps `-passwdqc video_cards_d3d12`;
   - keeps the amd64/23.0 binhost in `binrepos.conf/gentoo.conf`;
-  - does **not** force global `clang`;
+  - selects Clang/LLVM globally while retaining package-level GCC fallbacks;
   - does **not** force global `PYTHON_TARGETS`;
   - does **not** force `ABI_X86="64 32"`.
   - keeps Portage's stage3-compatible wget fetch defaults.
@@ -29,15 +30,20 @@ Target:
 - Hardware/full-desktop packages remain masked:
   - kernel, firmware, GRUB, shim, nvidia-drivers, SDDM, and SonicDE.
 - Development additions from the active WSL config:
-  - mold linker, `bun-bin`, Rust binary toolchain, and XLibre overlay access;
+  - the mold package (with its linker override disabled by default), `bun-bin`,
+    Rust binary toolchain, and XLibre overlay access;
   - clinfo, CUDA tooling, and thefuck are included in `world_packages.txt`.
 - Kept package-level fixes:
   - `darts` uses GCC + C++14;
   - `doxygen` is forced `-clang`;
   - memory-heavy builds use the shared `lowjobs` environment.
 
-Global LTO and a global alternative linker are intentionally disabled. Packages follow
-the selected Gentoo profile defaults, matching the laptop configuration policy.
+Global ThinLTO is enabled and lld is the default linker. Enable the commented mold
+override in `make.conf` only after installing and testing mold manually. Sensitive
+packages use the existing compatibility environments where required, and glibc
+remains on GCC because its Clang mode is experimental.
+`COMMON_FLAGS`, `CLANG_LTO_FLAGS` and `FORTRAN_LTO_FLAGS` are independent knobs;
+GCC compatibility environments use their own LTO and language-standard flags.
 
 ## Apply
 
@@ -47,8 +53,11 @@ change to `gentoo_setting/wsl`, and run:
 ```bash
 cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
 cp -a portage/. /etc/portage/
-install -m 0644 wsl.conf /etc/wsl.conf
 ```
+
+The repository uses `kl` as an anonymous public-template identity. Do not copy
+that value over an existing machine blindly: keep the real local account only
+in `/etc/wsl.conf`, or edit a private copy of `wsl.conf` before installing it.
 
 Then:
 
@@ -59,7 +68,8 @@ xargs emerge -av --noreplace < world_packages.txt
 emerge -avuDN @world
 ```
 
-Create the configured default user before restarting WSL if it does not exist:
+For a new public-template installation, create the anonymous default user before
+restarting WSL if it does not exist:
 
 ```bash
 useradd -m -s /bin/bash -G wheel,audio,video kl

@@ -1,3 +1,10 @@
 # The Plasma profile supplies defaults; SonicDE remains the installed desktop.
 kde-plasma/plasma-desktop::gentoo
 kde-plasma/plasma-meta::gentoo
+
+# Keep Gentoo Plasma patch releases aligned with the SonicDE 6.6.5 forks.
+# Remove these pins together when the SonicDE overlay catches up.
+>kde-plasma/kscreenlocker-6.6.5::gentoo
+>kde-plasma/kwin-6.6.5-r1::gentoo
+>kde-plasma/plasma-workspace-6.6.5-r1::gentoo
+>kde-plasma/powerdevil-6.6.5-r1::gentoo

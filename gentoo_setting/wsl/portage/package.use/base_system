@@ -8,5 +8,7 @@ sys-apps/dbus X
 sys-apps/util-linux pam su tty-helpers unicode verify-sig
 sys-auth/pambase elogind -systemd
 sys-auth/polkit daemon -systemd
+# glibc's clang mode remains experimental; retain it as the system GCC anchor.
+sys-libs/glibc -clang
 sys-libs/ncurses -gpm
 virtual/libusb udev

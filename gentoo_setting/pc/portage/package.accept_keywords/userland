@@ -1,5 +1,4 @@
 app-admin/chezmoi-bin ~amd64
-app-editors/vscodium ~amd64
 app-misc/yazi ~amd64
 app-text/typst ~amd64
 dev-build/xmake ~amd64

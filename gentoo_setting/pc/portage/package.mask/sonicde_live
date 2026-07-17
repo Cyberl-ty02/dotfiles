@@ -3,6 +3,14 @@
 =kde-plasma/kwin-9999::sonicde
 =kde-plasma/plasma-workspace-9999::sonicde
 =sonicde-base/sonic-desktop-9999::sonicde
-=sonicde-base/sonic-meta-9999::sonicde
 =sonicde-base/sonic-win-9999::sonicde
 =sonicde-base/sonic-workspace-9999::sonicde
+
+# SonicDE 6.7.2 currently conflicts with Gentoo Plasma 6.7.3 slot dependencies.
+# Keep the complete desktop on the resolvable 6.6 series until the overlay catches up.
+>=kde-plasma/kwin-6.7::sonicde
+>=kde-plasma/plasma-workspace-6.7::sonicde
+>=sonicde-base/sonic-desktop-6.7::sonicde
+>=sonicde-base/sonic-meta-6.7::sonicde
+>=sonicde-base/sonic-win-6.7::sonicde
+>=sonicde-base/sonic-workspace-6.7::sonicde

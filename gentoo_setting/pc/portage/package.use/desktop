@@ -1,9 +1,6 @@
 # Desktop audio, media, fonts, and input methods.
 app-i18n/fcitx:5 X wayland
-app-i18n/fcitx-configtool:5
-app-i18n/fcitx-gtk:5
 app-i18n/fcitx-qt:5 qt5 qt6
-app-i18n/fcitx-rime:5
 app-text/ghostscript-gpl cups
 dev-libs/libdbusmenu gtk3
 media-fonts/nerdfonts intelonemono
@@ -16,3 +13,4 @@ media-plugins/alsa-plugins pulseaudio
 media-sound/pulseaudio-daemon bluetooth dbus
 media-video/ffmpeg opus vpx x264 x265 webp
 media-video/pipewire sound-server
+net-dns/avahi mdnsresponder-compat

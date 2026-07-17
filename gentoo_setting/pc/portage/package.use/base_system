@@ -5,7 +5,6 @@ dev-libs/libusb udev
 dev-libs/libxml2 icu
 
 net-firewall/nftables python json xtables
-net-misc/chrony
 net-misc/networkmanager elogind iwd
 net-misc/openssh -bindist
 net-wireless/iwd monitor wired

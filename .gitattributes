@@ -1,3 +1,4 @@
 *.sh text eol=lf
 *.scm text eol=lf
 **/world_packages.txt text eol=lf
+gentoo_setting/** text eol=lf

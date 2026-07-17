@@ -14,8 +14,12 @@ doas emerge -pvuDN @world
 doas emerge -avuDN @world
 ```
 
-建议使用稳定的 `default/linux/amd64/23.0/desktop/plasma` OpenRC profile；
-`make.conf` 按 Gentoo 官方方式将 `CC/CXX` 等变量切换到 Clang/LLVM。
-不要把现有 glibc 系统直接切换到 ABI 不同的纯 LLVM profile。
+本配置以 `stage3-amd64-llvm-openrc` 及其
+`default/linux/amd64/23.0/llvm` profile 为基础；Clang、LLVM binutils、
+libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
+`make.conf` 不再重复声明工具链变量。GCC 仅供已记录的包级回退使用。
+基础优化、Clang ThinLTO 与 Fortran LTO 分别由 `COMMON_FLAGS`、
+`CLANG_LTO_FLAGS` 和 `FORTRAN_LTO_FLAGS` 控制；兼容环境显式使用
+`-fno-lto`，无需重写其他语言或工具链设置。
 
 应用前请阅读 `kernel/secureboot/README.md`。私钥不会保存在本仓库中。
