@@ -1,5 +1,4 @@
-# Development packages and overlays used by this WSL profile.
-*/*::xlibre ~amd64
+# Development packages used by this WSL profile.
 app-shells/thefuck ~amd64
 dev-lang/bun-bin ~amd64
 dev-lang/rust-bin ~amd64

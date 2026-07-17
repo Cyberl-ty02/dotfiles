@@ -1,0 +1,3 @@
+# XLibre replaces the full X.Org server and its driver metapackage.
+x11-base/xorg-drivers::gentoo
+x11-base/xorg-server::gentoo
