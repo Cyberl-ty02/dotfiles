@@ -2,6 +2,6 @@ app-editors/emacs jit tree-sitter
 app-text/xmlto text
 dev-build/cmake ncurses
 dev-db/postgresql llvm zstd
-dev-lang/rust rust-analyzer rustfmt rust-src
+dev-lang/rust rust-analyzer rust-src rustfmt
 dev-vcs/git curl gpg pcre perl webdav
 sys-devel/gcc jit lto

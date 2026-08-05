@@ -1,22 +1,22 @@
-# Secure Boot with shim and GRUB
+# Secure Boot with shim and rEFInd
 
 This laptop has a dedicated EFI System Partition mounted directly at `/boot`.
-Its Gentoo boot files therefore live in `/boot/EFI/Gentoo`, not under
-`/boot/efi`.
+Its active boot entry points to `\EFI\refind\BOOTX64.EFI`.
 
-The setup follows the current Gentoo Handbook workflow: `sys-boot/grub` with
-the `secureboot` USE flag builds a signed standalone GRUB image. Shim,
-MokManager, that image, and its external `grub.cfg` are installed together:
+The boot chain is:
 
 ```text
-/boot/EFI/Gentoo/shimx64.efi
-/boot/EFI/Gentoo/mmx64.efi
-/boot/EFI/Gentoo/grubx64.efi
-/boot/EFI/Gentoo/grub.cfg
+/boot/EFI/refind/BOOTX64.EFI     Microsoft-signed shim
+/boot/EFI/refind/mmx64.efi       MokManager
+/boot/EFI/refind/grubx64.efi     locally signed rEFInd payload
+/boot/EFI/refind/refind.conf     rEFInd configuration
 ```
 
-Shim loads the sibling `grubx64.efi`; the firmware boot entry must point to
-`\EFI\Gentoo\shimx64.efi`.
+Shim uses the fixed next-stage filename `grubx64.efi`. In this setup that file
+is a signed copy of `refind_x64.efi`; GRUB is not installed or used.
+
+The reusable configuration in this directory accompanies the troubleshooting
+note [Gentoo 在 Btrfs 与 rEFInd 环境下的启动修复记录](https://kagaranakaki.top/posts/gentoo-refind-btrfs-rescue/).
 
 ## Keys
 
@@ -36,12 +36,8 @@ sudo /etc/kernel/secureboot/generate_mok.sh
 sudo /etc/kernel/secureboot/import_mok.sh
 ```
 
-The certificate Common Name defaults to the privacy-neutral label `kl`. It is
-only a public certificate label and does not need to contain a legal or personal
-name. Override it with an ASCII label such as `xxx` when generating a new key:
-
-证书通用名称（CN）默认为不暴露隐私的标签 `kl`。它只是公开的证书标签，无需填写
-真实姓名。生成新密钥时可以用 `xxx` 等 ASCII 标签覆盖：
+The certificate Common Name defaults to the privacy-neutral label `kl`. Override
+it with an ASCII label when generating a new key:
 
 ```bash
 sudo env MOK_CN=xxx /etc/kernel/secureboot/generate_mok.sh
@@ -49,52 +45,124 @@ sudo env MOK_CN=xxx /etc/kernel/secureboot/generate_mok.sh
 
 After reboot, use MokManager to finish enrolling the key.
 
-The laptop `make.conf` points GRUB, kernel, and module signing at `MOK.pem`.
+## Install packages and confirm signing
 
-## Install the boot chain
-
-Install the required packages, then copy this directory to
-`/etc/kernel/secureboot`. Rebuild GRUB after generating the key so Portage can
-produce `/usr/lib/grub/grub-x86_64.efi.signed`:
+Install the required packages and copy this directory to
+`/etc/kernel/secureboot`:
 
 ```bash
-sudo emerge --ask sys-boot/grub sys-boot/shim sys-boot/mokutil sys-boot/efibootmgr
-sudo emerge --ask --oneshot sys-boot/grub
-sudo /etc/kernel/secureboot/install_bootloader.sh
-sudo env-update
+sudo emerge --ask sys-boot/refind sys-boot/shim sys-boot/mokutil sys-boot/efibootmgr
+findmnt /boot
+grep -E '[[:space:]]/boot[[:space:]]' /etc/fstab
 ```
 
-The installer refuses to continue unless the dedicated `/boot` partition is
-mounted. It also installs `/etc/env.d/99grub`, which directs
-`installkernel[grub]` to update `/boot/EFI/Gentoo/grub.cfg` after kernel
-installations.
+The `secureboot` USE flag on `sys-boot/refind` tells Portage to sign its EFI
+executables with `SECUREBOOT_SIGN_KEY` and `SECUREBOOT_SIGN_CERT`. Verify the
+emerge output and the resulting signature instead of assuming that signing
+succeeded.
 
-Create the firmware entry once, substituting the actual Gentoo disk and ESP
-partition number:
+Choose one of the two installation methods below. Do not alternate between
+them without first comparing the existing ESP layout and NVRAM entry.
+
+## Method A: refind-install with shim
+
+The Gentoo Shim documentation recommends passing the packaged shim directly to
+rEFInd's installer:
+
+```bash
+sudo refind-install --shim /usr/share/shim/BOOTX64.EFI
+```
+
+This method lets `refind-install` copy rEFInd and the shim support files to the
+ESP, prepare the shim-compatible follow-on loader name, and create an NVRAM
+entry. Read the full command output: the detected ESP, copied paths, and newly
+created boot entry must match this host.
+
+Important details:
+
+- `/boot` should be mounted and represented correctly in `/etc/fstab` before
+  running the command. Otherwise `refind-install` may select a different ESP
+  path such as `/boot/efi`.
+- Shim must start before rEFInd. The packaged shim normally looks for a sibling
+  `grubx64.efi`; when installed this way that compatibility filename contains
+  rEFInd, not GRUB.
+- `refind-install` can create `refind.conf`, an NVRAM entry, and
+  `refind_linux.conf`. Review all three before rebooting.
+- Run it from the installed Gentoo system whenever possible. Its generated
+  Linux options are based on the current `/proc/cmdline` and can inherit LiveCD
+  parameters when run from rescue media.
+
+After installation, inspect rather than immediately rebooting:
+
+```bash
+sudo efibootmgr -v
+find /boot/EFI -maxdepth 3 -type f
+find /boot -name refind_linux.conf -print
+```
+
+## Method B: repository fixed-layout installer
+
+The existing host uses a fixed `/boot/EFI/refind` layout. To preserve that
+layout, run the repository installer instead of Method A:
+
+```bash
+sudo /etc/kernel/secureboot/install_bootloader.sh
+```
+
+The installer refuses to continue unless `/boot` is mounted. It preserves the
+existing `refind.conf`, refreshes shim and MokManager, signs the installed rEFInd
+binary with the local MOK, and writes it as
+`/boot/EFI/refind/grubx64.efi`, the compatibility filename expected by shim.
+
+Create the firmware entry once, substituting the actual disk and ESP partition:
 
 ```bash
 sudo efibootmgr --create --disk /dev/nvme0n1 --part 1 \
-  --loader '\EFI\Gentoo\shimx64.efi' --label 'Gentoo (shim)' --unicode
+  --loader '\EFI\refind\BOOTX64.EFI' --label 'rEFInd Boot Manager' --unicode
 ```
 
 Do not copy the example disk or partition number without checking `lsblk` and
 `findmnt /boot`.
 
+## Kernel options
+
+`refind-install` or `mkrlconf` may create `/boot/refind_linux.conf` from the
+currently running kernel's `/proc/cmdline`. Do not trust an automatically
+generated file when working from a LiveCD or unrelated rescue environment.
+
+Start from [`refind_linux.conf.example`](refind_linux.conf.example), then
+replace the UUID, Btrfs subvolume and filenames with values verified on the
+target host.
+
 ## Verify and maintain
 
-After enrollment and enabling Secure Boot:
+Before rebooting, retain a known-good EFI entry or rescue medium. Then inspect:
 
 ```bash
 mokutil --sb-state
 mokutil --test-key /etc/kernel/secureboot/MOK.cer
-sudo efibootmgr
+sudo efibootmgr -v
+sbverify --list /boot/EFI/refind/grubx64.efi
+find /boot/EFI -maxdepth 3 -type f
 ```
 
-Kernel updates automatically regenerate the external `grub.cfg`. After a
-`sys-boot/grub` or `sys-boot/shim` update, rerun
-`install_bootloader.sh` to copy the updated EFI executables.
+After booting Gentoo:
+
+```bash
+cat /proc/cmdline
+findmnt /
+uname -r
+ls /lib/modules/"$(uname -r)"
+```
+
+rEFInd discovers installed kernels directly, so kernel updates do not require a
+generated boot menu. After rEFInd or shim updates, rerun
+the same installation method originally selected. Re-check `refind_linux.conf`,
+because rescue media can contaminate auto-generated kernel options.
 
 References:
 
-- https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Bootloader
-- https://www.setphaserstostun.org/posts/secure-boot-on-gentoo-with-shim-grub/
+- https://wiki.gentoo.org/wiki/REFInd
+- https://wiki.gentoo.org/wiki/Shim
+- https://www.rodsbooks.com/refind/installing.html
+- https://www.rodsbooks.com/refind/secureboot.html

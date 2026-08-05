@@ -14,4 +14,4 @@ dev-python/setuptools-scm python_targets_python3_13
 dev-python/trove-classifiers python_targets_python3_13
 dev-python/vcs-versioning python_targets_python3_13
 dev-python/wheel python_targets_python3_13
-net-firewall/ufw -python_single_target_python3_12 python_single_target_python3_13
+net-firewall/ufw python_single_target_python3_13 -python_single_target_python3_12
