@@ -1,5 +1,22 @@
 # Package-level fixes observed from logs.
+app-arch/libarchive gcc_generic
+app-arch/zip gcc_generic
+app-editors/nano gcc_generic
 app-text/doxygen gcc_generic lowjobs
+dev-lang/nasm gcc_generic
+dev-libs/botan gcc_generic
 dev-libs/darts gcc_cxx14
 dev-libs/libfmt gcc_generic
+dev-libs/libgpg-error gcc_generic
+dev-libs/sexpp gcc_generic
 dev-libs/spdlog gcc_generic
+dev-python/cython gcc_generic
+dev-python/librt gcc_generic
+dev-util/librnp gcc_generic
+net-dns/c-ares gcc_generic
+net-dns/libidn gcc_generic
+net-misc/curl gcc_generic
+net-misc/socat gcc_generic
+sys-apps/file gcc_generic
+sys-apps/less gcc_generic
+sys-libs/libnvme gcc_generic

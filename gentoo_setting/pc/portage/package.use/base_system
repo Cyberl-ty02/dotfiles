@@ -3,12 +3,15 @@ app-admin/eclean-kernel zstd
 
 dev-libs/libusb udev
 dev-libs/libxml2 icu
+dev-util/ostree -grub
 
+net-firewall/firewalld gui
 net-firewall/nftables json python xtables
 net-misc/networkmanager elogind iwd
 net-wireless/iwd monitor wired
 
 sys-apps/dbus X
+sys-apps/flatpak policykit seccomp X -systemd
 sys-apps/util-linux pam su tty-helpers unicode verify-sig
 sys-auth/pambase elogind -systemd
 sys-auth/polkit elogind -systemd

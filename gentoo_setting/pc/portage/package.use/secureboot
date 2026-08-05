@@ -1,7 +1,7 @@
 sys-apps/kmod pkcs7
 sys-apps/systemd-utils boot kernel-install
-sys-boot/grub mount secureboot
+sys-boot/refind btrfs ext2 ext4 iso9660 secureboot
 sys-boot/shim secureboot
-sys-kernel/installkernel dracut -efistub grub -refind -systemd -systemd-boot -uki -ukify
+sys-kernel/installkernel dracut refind -efistub -grub -systemd -systemd-boot -ugrd -uki -ukify
 sys-kernel/linux-firmware compress-zstd dist-kernel -initramfs
 sys-kernel/xanmod-kernel modules-sign savedconfig secureboot

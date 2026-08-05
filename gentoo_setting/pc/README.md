@@ -1,6 +1,6 @@
 # Gentoo PC Clang/LLVM 配置
 
-目标：amd64、OpenRC、Clang/LLVM 主工具链、XLibre + SonicDE、NVIDIA 与 Secure Boot。
+目标：amd64、OpenRC、Clang/LLVM 主工具链、XLibre + SonicDE、NVIDIA、rEFInd 与 Secure Boot。
 少数无法可靠使用 Clang/libc++ 构建的软件通过 `portage/env/gcc_generic` 回退到 GCC。
 
 ## 桌面包策略
@@ -61,4 +61,12 @@ libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
 `CLANG_LTO_FLAGS` 和 `FORTRAN_LTO_FLAGS` 控制；兼容环境显式使用
 `-fno-lto`，无需重写其他语言或工具链设置。
 
-应用前请阅读 `kernel/secureboot/README.md`。私钥不会保存在本仓库中。
+应用前请阅读 [`kernel/secureboot/README.md`](kernel/secureboot/README.md)。当前
+启动链为 shim + rEFInd，不再使用 GRUB。私钥不会保存在本仓库中。
+
+对应排错笔记：
+
+- [rEFInd、Btrfs 与 LiveCD 启动修复](https://kagaranakaki.top/posts/gentoo-refind-btrfs-rescue/)
+- [字体、KDE 托盘与 PipeWire](https://kagaranakaki.top/posts/gentoo-openrc-desktop-troubleshooting/)
+- [chrony、时区与 PostgreSQL 18](https://kagaranakaki.top/posts/gentoo-chrony-timezone-postgresql/)
+- [旧 LLVM 阻塞 Firefox/CUDA 构建](https://kagaranakaki.top/posts/gentoo-llvm-firefox-cuda-build-failure/)

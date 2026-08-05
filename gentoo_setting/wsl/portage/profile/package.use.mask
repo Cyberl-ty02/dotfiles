@@ -1,2 +1,0 @@
-# Local WSL profile masks.
-app-text/doxygen clang

@@ -17,18 +17,26 @@ fi
 
 # Put your fun stuff here.
 
-## For bash or zsh
-# For github
+# Enable a local proxy: proxy [host] [http-port] [socks-port].
 proxy() {
-        export https_proxy="127.0.0.1:20171"
-        export http_proxy="127.0.0.1:20171"
-        export all_proxy="sock5://127.0.0.1:20170"
-        echo "HTTP Proxy on: 127.0.0.1"
+    local proxy_host="${1:-${PROXY_HOST:-127.0.0.1}}"
+    local http_port="${2:-${PROXY_HTTP_PORT:-2080}}"
+    local socks_port="${3:-${PROXY_SOCKS_PORT:-${http_port}}}"
+
+    export http_proxy="http://${proxy_host}:${http_port}"
+    export https_proxy="${http_proxy}"
+    export all_proxy="socks5h://${proxy_host}:${socks_port}"
+    export HTTP_PROXY="${http_proxy}"
+    export HTTPS_PROXY="${https_proxy}"
+    export ALL_PROXY="${all_proxy}"
+    export no_proxy="${NO_PROXY:-localhost,127.0.0.1,::1}"
+    export NO_PROXY="${no_proxy}"
+
+    echo "Proxy on: HTTP ${http_proxy}; SOCKS ${all_proxy}"
 }
 
 nproxy() {
-        unset http_proxy
-        unset https_proxy
-        unset all_proxy
-        echo "HTTP Proxy off"
+    unset http_proxy https_proxy all_proxy no_proxy
+    unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
+    echo "Proxy off"
 }

@@ -3,8 +3,8 @@ media-libs/mesa opengl vulkan wayland X
 media-libs/vulkan-loader X
 # XLibre replaces the full X.Org server. Its xorg-server package is a
 # compatibility dummy for dependencies that still use the historical atom.
-x11-base/xlibre-server elogind glx glx-dri -seatd -systemd udev xinerama xorg xvfb
-x11-base/xorg-server::xlibre elogind glx glx-dri -seatd -systemd udev xinerama xorg xvfb
+x11-base/xlibre-server elogind glx glx-dri udev xinerama xorg xvfb -seatd -systemd
+x11-base/xorg-server::xlibre elogind glx glx-dri udev xinerama xorg xvfb -seatd -systemd
 # Xwayland remains a separate compatibility server and is required by sonic-win.
 x11-base/xwayland libei
 x11-drivers/nvidia-drivers dist-kernel modules-sign persistenced tools
