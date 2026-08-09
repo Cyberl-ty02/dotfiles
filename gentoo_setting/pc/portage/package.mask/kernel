@@ -1,4 +1,5 @@
-# XanMod is the selected distribution kernel.
+# The source-built Gentoo-Zh CJK distribution kernel is selected.
+sys-kernel/gentoo-cjk-kernel-bin
 sys-kernel/gentoo-kernel
 sys-kernel/gentoo-kernel-bin
 sys-kernel/gentoo-sources

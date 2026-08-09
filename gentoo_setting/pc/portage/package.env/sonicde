@@ -1,11 +1,12 @@
-# SonicDE core packages currently build with the global Clang toolchain.
-# Keep the previous GCC fallbacks documented for quick regression testing.
+# Current Clang/mold build exceptions for SonicDE and related desktop packages.
+kde-plasma/bluedevil no_lto
+kde-plasma/kdecoration no_lto
 kde-plasma/plasma-pa no_lto
 media-gfx/krita no_lto
 media-libs/pulseaudio-qt no_lto
-#sonicde-base/sonic-desktop gcc_generic lowjobs
-#sonicde-base/sonic-meta gcc_generic lowjobs
-#sonicde-base/sonic-win gcc_generic lowjobs
-#sonicde-base/sonic-workspace gcc_generic lowjobs
+sonicde-base/sonic-desktop no_lto
+sonicde-base/sonic-meta no_lto
+sonicde-base/sonic-win no_lto
+sonicde-base/sonic-workspace no_lto
 x11-drivers/xf86-input-libinput no_lto
 x11-misc/silver-sddm no_lto

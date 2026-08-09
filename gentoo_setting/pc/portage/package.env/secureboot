@@ -1,5 +1,5 @@
-# Match the current xanmod-only kernel and rEFInd selection while retaining Clang-safe fallbacks.
+# Keep signing-key access scoped to packages that consume the root-only MOK.
 sys-boot/refind no_lto secureboot_key_access
 sys-boot/shim no_lto secureboot_key_access
-sys-kernel/xanmod-kernel lowjobs no_lto secureboot_key_access
+sys-kernel/gentoo-cjk-kernel secureboot_key_access
 x11-drivers/nvidia-drivers no_lto secureboot_key_access

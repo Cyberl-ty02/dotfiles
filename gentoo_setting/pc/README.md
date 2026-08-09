@@ -57,9 +57,14 @@ doas emerge -avuDN @world
 `default/linux/amd64/23.0/llvm` profile 为基础；Clang、LLVM binutils、
 libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
 `make.conf` 不再重复声明工具链变量。GCC 仅供已记录的包级回退使用。
-基础优化、Clang ThinLTO 与 Fortran LTO 分别由 `COMMON_FLAGS`、
-`CLANG_LTO_FLAGS` 和 `FORTRAN_LTO_FLAGS` 控制；兼容环境显式使用
-`-fno-lto`，无需重写其他语言或工具链设置。
+基础优化与 Fortran LTO 分别由 `COMMON_FLAGS` 和
+`FORTRAN_LTO_FLAGS` 控制。全局 Clang ThinLTO 当前为稳定性而停用；需要时可
+重新启用 `CLANG_LTO_FLAGS`。已记录的兼容环境继续显式使用 `-fno-lto`。
+
+当前实体机使用 `sys-kernel/gentoo-cjk-kernel`，提供 CJKTTY、发行版
+initramfs、Secure Boot 与已签名的外部 NVIDIA 模块。该内核使用 ebuild
+生成的配置，不启用 `savedconfig`；rEFInd 按版本化内核/initramfs 文件名自动
+匹配启动项。
 
 应用前请阅读 [`kernel/secureboot/README.md`](kernel/secureboot/README.md)。当前
 启动链为 shim + rEFInd，不再使用 GRUB。私钥不会保存在本仓库中。
