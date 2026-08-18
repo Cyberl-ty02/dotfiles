@@ -3,3 +3,6 @@ sys-kernel/gentoo-cjk-kernel-bin
 sys-kernel/gentoo-kernel
 sys-kernel/gentoo-kernel-bin
 sys-kernel/gentoo-sources
+
+# This overlay virtual selects stock gentoo-sources instead of the CJK kernel.
+virtual/linux-sources::gentoo-zh
