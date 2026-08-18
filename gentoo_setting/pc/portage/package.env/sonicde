@@ -1,4 +1,5 @@
 # Current Clang/mold build exceptions for SonicDE and related desktop packages.
+kde-apps/kldap no_lto
 kde-plasma/bluedevil no_lto
 kde-plasma/kdecoration no_lto
 kde-plasma/plasma-pa no_lto

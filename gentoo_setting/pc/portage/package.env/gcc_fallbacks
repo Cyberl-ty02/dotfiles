@@ -5,6 +5,7 @@ app-editors/nano gcc_generic
 app-text/doxygen gcc_generic lowjobs
 dev-lang/nasm gcc_generic
 dev-libs/botan gcc_generic
+dev-libs/cyrus-sasl gcc_generic
 dev-libs/darts gcc_cxx14
 dev-libs/libfmt gcc_generic
 dev-libs/libgpg-error gcc_generic
