@@ -61,10 +61,13 @@ libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
 `FORTRAN_LTO_FLAGS` 控制。全局 Clang ThinLTO 当前为稳定性而停用；需要时可
 重新启用 `CLANG_LTO_FLAGS`。已记录的兼容环境继续显式使用 `-fno-lto`。
 
-当前实体机使用 `sys-kernel/gentoo-cjk-kernel`，提供 CJKTTY、发行版
-initramfs、Secure Boot 与已签名的外部 NVIDIA 模块。该内核使用 ebuild
-生成的配置，不启用 `savedconfig`；rEFInd 按版本化内核/initramfs 文件名自动
-匹配启动项。
+当前 Portage 配置选择 gentoo-zh 的 `sys-kernel/xanmod-kernel`，启用其
+CJKTTY、发行版 initramfs、Secure Boot 与外部 NVIDIA 模块签名支持。该内核
+使用 ebuild 提供的 XanMod 配置，不启用 `savedconfig`；rEFInd 按版本化
+内核/initramfs 文件名自动匹配启动项。完成构建和重启验证前应保留上一份可启动
+内核作为回退。已安装的 CJK distribution kernel 会精确钉住旧版本
+`virtual/dist-kernel`；实际迁移前应先准备不受包卸载影响的可启动回退，再移除旧包的
+精确依赖并安装 XanMod。不要在当前运行内核仍是唯一回退时直接卸载它。
 
 应用前请阅读 [`kernel/secureboot/README.md`](kernel/secureboot/README.md)。当前
 启动链为 shim + rEFInd，不再使用 GRUB。私钥不会保存在本仓库中。
