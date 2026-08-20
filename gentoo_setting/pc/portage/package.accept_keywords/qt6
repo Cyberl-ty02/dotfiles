@@ -1,13 +1,21 @@
-# Qt 6.11.2 is required by the current KDE, SonicDE, and Krita package graph.
-=dev-qt/qt5compat-6.11.2 ~amd64
-=dev-qt/qtbase-6.11.2 ~amd64
-=dev-qt/qtdeclarative-6.11.2 ~amd64
-=dev-qt/qtimageformats-6.11.2 ~amd64
-=dev-qt/qtmultimedia-6.11.2 ~amd64
-=dev-qt/qtpositioning-6.11.2 ~amd64
-=dev-qt/qtquick3d-6.11.2 ~amd64
-=dev-qt/qtquicktimeline-6.11.2 ~amd64
-=dev-qt/qtshadertools-6.11.2 ~amd64
-=dev-qt/qtsvg-6.11.2 ~amd64
-=dev-qt/qttools-6.11.2 ~amd64
-=dev-qt/qttranslations-6.11.2 ~amd64
+# Follow the testing Qt revisions required by the KDE, SonicDE, and Krita graph.
+dev-qt/qt5compat ~amd64
+dev-qt/qtbase ~amd64
+dev-qt/qtconnectivity ~amd64
+dev-qt/qtdeclarative ~amd64
+dev-qt/qtimageformats ~amd64
+dev-qt/qtlocation ~amd64
+dev-qt/qtmultimedia ~amd64
+dev-qt/qtnetworkauth ~amd64
+dev-qt/qtpositioning ~amd64
+dev-qt/qtquick3d ~amd64
+dev-qt/qtquicktimeline ~amd64
+dev-qt/qtsensors ~amd64
+dev-qt/qtshadertools ~amd64
+dev-qt/qtspeech ~amd64
+dev-qt/qtsvg ~amd64
+dev-qt/qttools ~amd64
+dev-qt/qttranslations ~amd64
+dev-qt/qtwayland ~amd64
+dev-qt/qtwebchannel ~amd64
+dev-qt/qtwebengine ~amd64
