@@ -1,4 +1,4 @@
-# The source-built Gentoo-Zh CJK distribution kernel is selected.
+# The Gentoo-Zh XanMod kernel with CJKTTY is selected.
 sys-kernel/gentoo-cjk-kernel-bin
 sys-kernel/gentoo-kernel
 sys-kernel/gentoo-kernel-bin

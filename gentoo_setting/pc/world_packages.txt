@@ -79,8 +79,8 @@ sys-boot/shim
 sys-devel/mold
 sys-fs/btrfs-progs
 sys-fs/genfstab
-sys-kernel/gentoo-cjk-kernel
 sys-kernel/linux-firmware
+sys-kernel/xanmod-kernel
 sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
