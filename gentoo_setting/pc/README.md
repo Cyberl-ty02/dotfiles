@@ -62,7 +62,8 @@ libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
 重新启用 `CLANG_LTO_FLAGS`。已记录的兼容环境继续显式使用 `-fno-lto`。
 
 当前 Portage 配置选择 gentoo-zh 的 `sys-kernel/xanmod-kernel`，启用其
-CJKTTY、发行版 initramfs、Secure Boot 与外部 NVIDIA 模块签名支持。该内核
+CJKTTY 16x16 与 32x32 字体、发行版 initramfs、Secure Boot 与外部 NVIDIA
+模块签名支持。该内核
 使用 ebuild 提供的 XanMod 配置，不启用 `savedconfig`；rEFInd 按版本化
 内核/initramfs 文件名自动匹配启动项。完成构建和重启验证前应保留上一份可启动
 内核作为回退。已安装的 CJK distribution kernel 会精确钉住旧版本
