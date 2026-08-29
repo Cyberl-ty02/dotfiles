@@ -63,12 +63,12 @@ libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
 
 当前 Portage 配置选择 gentoo-zh 的 `sys-kernel/xanmod-kernel`，启用其
 CJKTTY 16x16 与 32x32 字体、发行版 initramfs、Secure Boot 与外部 NVIDIA
-模块签名支持。该内核
-使用 ebuild 提供的 XanMod 配置，不启用 `savedconfig`；rEFInd 按版本化
-内核/initramfs 文件名自动匹配启动项。完成构建和重启验证前应保留上一份可启动
-内核作为回退。已安装的 CJK distribution kernel 会精确钉住旧版本
-`virtual/dist-kernel`；实际迁移前应先准备不受包卸载影响的可启动回退，再移除旧包的
-精确依赖并安装 XanMod。不要在当前运行内核仍是唯一回退时直接卸载它。
+模块签名支持。`virtual/linux-sources` 与 `virtual/dist-kernel` 均使用
+gentoo-zh provider，避免官方 `gentoo-kernel-modprep` 与 XanMod 版本不同步时
+争用 dist-kernel 槽。该内核使用 ebuild 提供的 XanMod 配置，不启用
+`savedconfig`；rEFInd 按版本化内核/initramfs 文件名自动匹配启动项。完成构建和
+重启验证前应保留上一份可启动内核作为回退。不要在当前运行内核仍是唯一回退时
+直接卸载它。
 
 应用前请阅读 [`kernel/secureboot/README.md`](kernel/secureboot/README.md)。当前
 启动链为 shim + rEFInd，不再使用 GRUB。私钥不会保存在本仓库中。
