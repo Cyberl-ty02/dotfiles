@@ -1,0 +1,5 @@
+[mirrors]
+"https://conda.anaconda.org/" = ["https://mirrors.cernet.edu.cn/anaconda/cloud"]
+
+[pypi-config]
+index-url = "https://mirrors.cernet.edu.cn/pypi/web/simple"

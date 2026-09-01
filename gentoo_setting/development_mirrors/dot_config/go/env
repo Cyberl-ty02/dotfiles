@@ -1,0 +1,2 @@
+GOPROXY=https://mirrors.huaweicloud.com/repository/goproxy/|https://mirrors.aliyun.com/goproxy/|https://proxy.golang.org|direct
+GOSUMDB=sum.golang.org
