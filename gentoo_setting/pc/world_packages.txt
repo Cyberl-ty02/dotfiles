@@ -51,6 +51,7 @@ kde-plasma/discover
 kde-plasma/plasma-pa
 kde-plasma/print-manager
 media-fonts/nerdfonts
+media-fonts/noto
 media-fonts/noto-cjk
 media-gfx/krita
 media-video/vlc
@@ -84,8 +85,10 @@ sys-kernel/xanmod-kernel
 sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
+virtual/dist-kernel
 www-client/firefox-bin
 x11-apps/xdpyinfo
 x11-base/xlibre-server
 x11-base/xorg-server::xlibre
+x11-drivers/nvidia-drivers
 x11-misc/silver-sddm
