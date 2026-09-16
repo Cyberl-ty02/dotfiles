@@ -21,10 +21,16 @@ Target:
   - does **not** force global `PYTHON_TARGETS`;
   - does **not** force `ABI_X86="64 32"`.
   - keeps Portage's stage3-compatible wget fetch defaults.
-- The Gentoo repository uses verified rsync so a fresh stage3 can bootstrap
-  before Git is installed; optional overlays use Git after the base setup.
-- Signature verification stays enabled for repository sync and official binary
-  packages, without globally rebuilding the stage3 solely for `verify-sig` USE.
+- The Gentoo repository uses the TUNA Git mirror for routine sync; the CERNET
+  joint endpoint is commented out because its current HUST redirect does not
+  support Portage's shallow clone. The commented rsync/OpenPGP settings in
+  `repos.conf/gentoo.conf` remain for bootstrap and recovery. A fresh stage3
+  can bootstrap with rsync before Git
+  is installed; optional overlays use Git after the base setup.
+- Git sync verifies commit signatures instead of rsync's OpenPGP MetaManifest.
+  The official binary package repository still verifies signatures. Keep
+  package Manifest checks enabled, and use the commented rsync settings if
+  MetaManifest verification is specifically required.
 - WSL remains CLI/dev focused:
   - Git/GPG/SSH, Emacs/Doom, Rust, Python/uv/pixi, Bun, Java, Typst.
 - Hardware/full-desktop packages remain masked:
