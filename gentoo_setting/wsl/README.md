@@ -21,16 +21,15 @@ Target:
   - does **not** force global `PYTHON_TARGETS`;
   - does **not** force `ABI_X86="64 32"`.
   - keeps Portage's stage3-compatible wget fetch defaults.
-- The Gentoo repository uses the TUNA Git mirror for routine sync; the CERNET
-  joint endpoint is commented out because its current HUST redirect does not
-  support Portage's shallow clone. The commented rsync/OpenPGP settings in
-  `repos.conf/gentoo.conf` remain for bootstrap and recovery. A fresh stage3
-  can bootstrap with rsync before Git
-  is installed; optional overlays use Git after the base setup.
-- Git sync verifies commit signatures instead of rsync's OpenPGP MetaManifest.
-  The official binary package repository still verifies signatures. Keep
-  package Manifest checks enabled, and use the commented rsync settings if
-  MetaManifest verification is specifically required.
+- The Gentoo repository uses the USTC Git mirror for shallow clones and routine
+  incremental sync. CERNET is the first fallback, but some participating mirrors
+  only provide Git dumb HTTP; enabling it also requires `sync-depth = 0` and a
+  large full-history clone. A fresh stage3 can bootstrap with rsync before Git is
+  installed; optional overlays use Git after the base setup.
+- Git sync verifies commit signatures with the packaged local Gentoo Release
+  Key, skips the potentially slow WKD refresh, and rejects repository timestamps
+  older than three days. The official binary package repository still verifies
+  signatures, and package Manifest checks remain enabled.
 - WSL remains CLI/dev focused:
   - Git/GPG/SSH, Emacs/Doom, Rust, Python/uv/pixi, Bun, Java, Typst.
 - Hardware/full-desktop packages remain masked:
@@ -72,6 +71,10 @@ Then:
 
 ```bash
 eselect profile show
+if [ -d /var/db/repos/gentoo ] && \
+  ! git -C /var/db/repos/gentoo rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  mv /var/db/repos/gentoo "/var/db/repos/gentoo.rsync-backup-$(date +%Y%m%d-%H%M%S)"
+fi
 emerge --sync
 xargs emerge -av --noreplace < world_packages.txt
 emerge -avuDN @world

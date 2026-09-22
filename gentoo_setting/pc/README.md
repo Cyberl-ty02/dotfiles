@@ -31,16 +31,19 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 ```bash
 doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
 doas rsync -a --delete --exclude=make.profile portage/ /etc/portage/
+if [ -d /var/db/repos/gentoo ] && \
+  ! doas git -C /var/db/repos/gentoo rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  doas mv /var/db/repos/gentoo "/var/db/repos/gentoo.rsync-backup-$(date +%Y%m%d-%H%M%S)"
+fi
 doas emerge --sync
 ```
 
-主树日常通过清华 TUNA Git 镜像同步。CERNET 联合入口当前分配的 HUST
-节点不支持 Portage 默认浅克隆，因此暂列为注释候选。首次从 rsync 切换时，原有
-`/var/db/repos/gentoo` 不是 Git 工作树，需先在别处备份，然后重新克隆；
-不能仅改 `sync-type` 后继续在原 rsync 目录更新。当前配置中注释保留了
-南京大学与官方 rsync 地址及 OpenPGP MetaManifest 校验参数，供安装/恢复时
-切回使用。Git 同步改为验证提交签名，不使用 rsync 的 MetaManifest 校验；
-官方 binhost 的签名验证不受影响。
+主树日常通过 USTC Git 镜像浅克隆并增量同步。CERNET 联合入口作为第一备用，
+但部分成员镜像只支持 Git dumb HTTP，启用时必须同时设置 `sync-depth = 0`，
+首次同步会下载完整历史。上面的迁移命令会保留非 Git 主树并让 Portage 重新克隆；
+不能仅改 `sync-type` 后继续在原 rsync 目录更新。Git 同步会使用由 Portage 包管理的本地
+Gentoo Release Key 验证提交签名，不再通过 WKD 联网刷新，并拒绝超过三天的
+仓库时间戳；官方 binhost 的签名验证不受影响。
 
 首次从 Gentoo X.Org Server 切换到 XLibre 时，两者会发生文件冲突。完成上述
 同步后，先执行一次以下迁移：
