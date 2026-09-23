@@ -42,8 +42,8 @@ doas emerge --sync
 但部分成员镜像只支持 Git dumb HTTP，启用时必须同时设置 `sync-depth = 0`，
 首次同步会下载完整历史。上面的迁移命令会保留非 Git 主树并让 Portage 重新克隆；
 不能仅改 `sync-type` 后继续在原 rsync 目录更新。Git 同步会使用由 Portage 包管理的本地
-Gentoo Release Key 验证提交签名，不再通过 WKD 联网刷新，并拒绝超过三天的
-仓库时间戳；官方 binhost 的签名验证不受影响。
+Gentoo Release Key 验证提交签名，并按 Portage 默认策略刷新密钥以发现撤销状态，
+同时拒绝超过三天的仓库时间戳；官方 binhost 的签名验证不受影响。
 
 首次从 Gentoo X.Org Server 切换到 XLibre 时，两者会发生文件冲突。完成上述
 同步后，先执行一次以下迁移：
