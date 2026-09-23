@@ -27,9 +27,9 @@ Target:
   large full-history clone. A fresh stage3 can bootstrap with rsync before Git is
   installed; optional overlays use Git after the base setup.
 - Git sync verifies commit signatures with the packaged local Gentoo Release
-  Key, skips the potentially slow WKD refresh, and rejects repository timestamps
-  older than three days. The official binary package repository still verifies
-  signatures, and package Manifest checks remain enabled.
+  Key, keeps Portage's key refresh enabled to detect revocations, and rejects
+  repository timestamps older than three days. The official binary package
+  repository still verifies signatures, and package Manifest checks remain enabled.
 - WSL remains CLI/dev focused:
   - Git/GPG/SSH, Emacs/Doom, Rust, Python/uv/pixi, Bun, Java, Typst.
 - Hardware/full-desktop packages remain masked:
