@@ -1,4 +1,3 @@
-app-editors/emacs lowjobs no_lto
 app-text/typst lowjobs no_lto
 dev-java/openjdk gcc_generic lowjobs
 dev-lang/go lowjobs no_lto

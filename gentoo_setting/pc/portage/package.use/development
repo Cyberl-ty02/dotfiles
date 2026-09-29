@@ -1,4 +1,3 @@
-app-editors/emacs jit tree-sitter
 app-text/xmlto text
 dev-build/cmake ncurses
 dev-db/postgresql llvm zstd

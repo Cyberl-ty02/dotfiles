@@ -5,6 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export EDITOR=nvim
+export VISUAL=nvim
+
 # Start configuration added by Zim Framework install {{{
 #
 # User configuration sourced by interactive shells
@@ -118,7 +121,7 @@ source ${ZIM_HOME}/init.zsh
 # Enable a local proxy: proxy [host] [http-port] [socks-port].
 proxy() {
   local proxy_host="${1:-${PROXY_HOST:-127.0.0.1}}"
-  local http_port="${2:-${PROXY_HTTP_PORT:-2080}}"
+  local http_port="${2:-${PROXY_HTTP_PORT:-7890}}"
   local socks_port="${3:-${PROXY_SOCKS_PORT:-${http_port}}}"
 
   export http_proxy="http://${proxy_host}:${http_port}"

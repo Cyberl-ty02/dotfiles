@@ -17,6 +17,9 @@ fi
 
 # Put your fun stuff here.
 
+export EDITOR=nvim
+export VISUAL=nvim
+
 # Enable a local proxy: proxy [host] [http-port] [socks-port].
 proxy() {
     local proxy_host="${1:-${PROXY_HOST:-127.0.0.1}}"

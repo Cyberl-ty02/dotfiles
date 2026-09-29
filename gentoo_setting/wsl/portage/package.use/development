@@ -1,5 +1,4 @@
 # Development tools, still CLI-first.
-app-editors/emacs -gtk -gui jit tree-sitter -X
 dev-build/cmake ncurses
 dev-db/postgresql zstd
 dev-lang/rust rust-analyzer rustfmt rust-src

@@ -4,8 +4,8 @@ app-admin/eclean-kernel
 app-admin/sysklogd
 app-antivirus/clamav
 app-antivirus/clamtk
-app-editors/emacs
 app-editors/nano
+app-editors/neovim
 app-editors/vscodium
 app-eselect/eselect-repository
 app-i18n/fcitx-configtool:5
