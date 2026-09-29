@@ -22,4 +22,4 @@ Portage 镜像按机器保存在各自的 `portage/` 目录；用户级开发工
 ## 其他配置
 
 仓库根目录中的 `dot_*` 文件保存通用 Shell 配置；`dot_config/nvim/`
-保存 PC 与 WSL 共用的 Neovim 基础配置。
+保存 PC 与 WSL 共用、跟随上游 `main` 分支自动更新的 LazyVim 配置。
