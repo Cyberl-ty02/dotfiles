@@ -31,7 +31,7 @@ Target:
   repository timestamps older than three days. The official binary package
   repository still verifies signatures, and package Manifest checks remain enabled.
 - WSL remains CLI/dev focused:
-  - Git/GPG/SSH, Emacs/Doom, Rust, Python/uv/pixi, Bun, Java, Typst.
+  - Git/GPG/SSH, Neovim, Rust, Python/uv/pixi, Bun, Java, Typst.
 - Hardware/full-desktop packages remain masked:
   - kernel, firmware, GRUB, shim, nvidia-drivers, SDDM, and SonicDE;
   - the XLibre overlay is registered for parity and package metadata, but its
