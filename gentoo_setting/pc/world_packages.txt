@@ -92,3 +92,4 @@ x11-base/xlibre-server
 x11-base/xorg-server::xlibre
 x11-drivers/nvidia-drivers
 x11-misc/silver-sddm
+x11-misc/xclip
