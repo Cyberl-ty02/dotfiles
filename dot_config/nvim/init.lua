@@ -3,7 +3,6 @@ vim.g.maplocalleader = " "
 
 local options = {
   breakindent = true,
-  clipboard = "unnamedplus",
   cursorline = true,
   expandtab = true,
   ignorecase = true,
@@ -23,6 +22,12 @@ local options = {
 
 for name, value in pairs(options) do
   vim.opt[name] = value
+end
+
+if vim.fn.executable("xclip") == 1
+    or vim.fn.executable("xsel") == 1
+    or vim.fn.executable("wl-copy") == 1 then
+  vim.opt.clipboard = "unnamedplus"
 end
 
 vim.keymap.set("n", "<leader>w", "<cmd>write<cr>", { desc = "Write file" })
