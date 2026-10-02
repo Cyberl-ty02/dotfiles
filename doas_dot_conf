@@ -1,7 +1,11 @@
+# Public template identity: replace kl in a private copy before installation.
 # Do not require passwords for five minutes for all users in the wheel group
 permit persist :wheel
 
 # Allow a user to use the reboot command without a password
 permit nopass kl cmd reboot
 permit nopass kl cmd shutdown
-# permit nopass kl cmd eix-sync
+
+# Portage verifies the English metadata/timestamp.chk value during Git sync.
+# Keep this command locale-neutral without changing the desktop locale.
+permit nopass setenv { LC_ALL=C.UTF-8 } kl cmd eix-sync
