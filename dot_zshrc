@@ -1,26 +1,60 @@
+# Enable Powerlevel10k instant prompt before anything that may print output.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export EDITOR=nvim
 export VISUAL=nvim
 
+setopt HIST_IGNORE_ALL_DUPS
+bindkey -e
+WORDCHARS=${WORDCHARS//[\/]}
+
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  if (( ${+commands[curl]} )); then
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  elif (( ${+commands[wget]} )); then
+    mkdir -p ${ZIM_HOME}
+    wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  else
+    print -u2 "zimfw is missing; install curl or wget to bootstrap it"
+    return 1
+  fi
+fi
+
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init
+fi
+source ${ZIM_HOME}/init.zsh
+
+[[ ! -f ${ZDOTDIR:-${HOME}}/.p10k.zsh ]] || source ${ZDOTDIR:-${HOME}}/.p10k.zsh
+
 # Enable a local proxy: proxy [host] [http-port] [socks-port].
 proxy() {
-    local proxy_host="${1:-${PROXY_HOST:-127.0.0.1}}"
-    local http_port="${2:-${PROXY_HTTP_PORT:-2080}}"
-    local socks_port="${3:-${PROXY_SOCKS_PORT:-${http_port}}}"
+  local proxy_host="${1:-${PROXY_HOST:-127.0.0.1}}"
+  local http_port="${2:-${PROXY_HTTP_PORT:-7890}}"
+  local socks_port="${3:-${PROXY_SOCKS_PORT:-${http_port}}}"
 
-    export http_proxy="http://${proxy_host}:${http_port}"
-    export https_proxy="${http_proxy}"
-    export all_proxy="socks5h://${proxy_host}:${socks_port}"
-    export HTTP_PROXY="${http_proxy}"
-    export HTTPS_PROXY="${https_proxy}"
-    export ALL_PROXY="${all_proxy}"
-    export no_proxy="${NO_PROXY:-localhost,127.0.0.1,::1}"
-    export NO_PROXY="${no_proxy}"
+  export http_proxy="http://${proxy_host}:${http_port}"
+  export https_proxy="${http_proxy}"
+  export all_proxy="socks5h://${proxy_host}:${socks_port}"
+  export HTTP_PROXY="${http_proxy}"
+  export HTTPS_PROXY="${https_proxy}"
+  export ALL_PROXY="${all_proxy}"
+  export no_proxy="${NO_PROXY:-localhost,127.0.0.1,::1}"
+  export NO_PROXY="${no_proxy}"
 
-    echo "Proxy on: HTTP ${http_proxy}; SOCKS ${all_proxy}"
+  echo "Proxy on: HTTP ${http_proxy}; SOCKS ${all_proxy}"
 }
 
 nproxy() {
-    unset http_proxy https_proxy all_proxy no_proxy
-    unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
-    echo "Proxy off"
+  unset http_proxy https_proxy all_proxy no_proxy
+  unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
+  echo "Proxy off"
 }
