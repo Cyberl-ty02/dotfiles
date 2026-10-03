@@ -17,9 +17,11 @@ Portage 镜像按机器保存在各自的 `portage/` 目录；用户级开发工
 
 ## Windows
 
-`windows_setting/` 保存 Windows 与 WSL 的宿主侧配置。
+`windows_setting/` 保存 Windows 与 WSL 的宿主侧配置，并提供 Windows Neovim
+部署脚本。Windows 通过目录联接直接复用 `dot_config/nvim/`，不会维护第二份
+独立配置。
 
 ## 其他配置
 
 仓库根目录中的 `dot_*` 文件保存通用 Shell 配置；`dot_config/nvim/`
-保存 PC 与 WSL 共用、跟随上游 `main` 分支自动更新的 LazyVim 配置。
+保存 Windows、PC 与 WSL 共用、跟随上游 `main` 分支自动更新的 LazyVim 配置。
