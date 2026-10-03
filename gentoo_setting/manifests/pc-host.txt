@@ -1,0 +1,6 @@
+sys-boot/efibootmgr
+sys-boot/mokutil
+sys-boot/refind
+sys-boot/shim
+sys-kernel/xanmod-kernel
+virtual/dist-kernel

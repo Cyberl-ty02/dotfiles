@@ -1,0 +1,11 @@
+app-text/typst
+dev-build/ninja
+dev-build/xmake
+dev-db/postgresql
+dev-java/openjdk-bin
+dev-lang/bun-bin
+dev-lang/rust-bin
+dev-python/uv
+dev-util/pixi
+dev-util/pkgconf
+sys-devel/mold

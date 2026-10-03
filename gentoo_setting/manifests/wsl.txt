@@ -1,0 +1,4 @@
+llvm-core/clang
+llvm-core/lld
+llvm-core/lldb
+llvm-core/llvm
