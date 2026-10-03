@@ -1,0 +1,5 @@
+# uv consults this index before its built-in PyPI index, which remains the
+# fallback if the domestic mirror does not contain a package.
+[[index]]
+name = "cernet"
+url = "https://mirrors.cernet.edu.cn/pypi/web/simple"

@@ -1,0 +1,13 @@
+[mirrors]
+"https://conda.anaconda.org/conda-forge" = [
+    "https://mirrors.cernet.edu.cn/anaconda/cloud/conda-forge",
+    "https://conda.anaconda.org/conda-forge",
+]
+"https://files.pythonhosted.org/packages" = [
+    "https://mirrors.cernet.edu.cn/pypi/web/packages",
+    "https://files.pythonhosted.org/packages",
+]
+"https://pypi.org/simple" = [
+    "https://mirrors.cernet.edu.cn/pypi/web/simple",
+    "https://pypi.org/simple",
+]

@@ -1,22 +1,38 @@
-# Enable oh my posh theme in git bash
-eval "$(oh-my-posh --init --shell bash --config ~/scoop/apps/oh-my-posh/current/themes/montys.omp.json)"
+# Shared Git Bash profile. Interactive-only features are guarded so scripts
+# can source this file safely.
+if [[ $- == *i* ]] && command -v oh-my-posh >/dev/null 2>&1; then
+    theme="${POSH_THEME:-$HOME/scoop/apps/oh-my-posh/current/themes/paradox.omp.json}"
+    if [[ -f "$theme" ]]; then
+        eval "$(oh-my-posh init bash --config "$theme")"
+    fi
+    unset theme
+fi
 
-# For proxy settings
 proxy() {
-        export https_proxy="http://127.0.0.1:7890"
-        export http_proxy="http://127.0.0.1:7890"
-        export all_proxy="sock5://127.0.0.1:7890"
-        echo "HTTP Proxy on: 127.0.0.1"
+    local host="${PROXY_HOST:-127.0.0.1}"
+    local http_port="${PROXY_HTTP_PORT:-7890}"
+    local socks_port="${PROXY_SOCKS_PORT:-$http_port}"
+    export HTTP_PROXY="http://${host}:${http_port}"
+    export HTTPS_PROXY="$HTTP_PROXY"
+    export ALL_PROXY="socks5h://${host}:${socks_port}"
+    export NO_PROXY="localhost,127.0.0.1,::1"
+    export http_proxy="$HTTP_PROXY" https_proxy="$HTTPS_PROXY"
+    export all_proxy="$ALL_PROXY" no_proxy="$NO_PROXY"
+    printf 'Proxy enabled: HTTP %s; SOCKS %s\n' "$HTTP_PROXY" "$ALL_PROXY"
 }
 
 nproxy() {
-        unset http_proxy
-        unset https_proxy
-        unset all_proxy
-        echo "HTTP Proxy off"
+    unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
+    unset http_proxy https_proxy all_proxy no_proxy
+    echo "Proxy disabled"
 }
 
-# Aliases
-alias ll="ls -l"
-alias la="ls -la"
-alias l="ls -CF"
+alias ll='ls -lh'
+alias la='ls -lah'
+alias l='ls -CF'
+
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR=nvim VISUAL=nvim GIT_EDITOR=nvim
+    alias vi=nvim
+    alias vim=nvim
+fi
