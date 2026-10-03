@@ -13,6 +13,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $source = (Resolve-Path -LiteralPath $PSScriptRoot).Path
+$repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $source "..")).Path
 $homeDirectory = [Environment]::GetFolderPath("UserProfile")
 
 function Get-ManifestItems {
@@ -86,7 +87,11 @@ if ($InstallWindowsApps) {
 
 if ($InstallEditorExtensions) {
     $codium = Get-Command codium.cmd -ErrorAction Stop
-    foreach ($extension in Get-ManifestItems -Path (Join-Path $source "packages\vscodium-extensions.txt")) {
+    $extensions = @(
+        Get-ManifestItems -Path (Join-Path $repositoryRoot "vscodium\extensions-common.txt")
+        Get-ManifestItems -Path (Join-Path $repositoryRoot "vscodium\extensions-windows.txt")
+    ) | Select-Object -Unique
+    foreach ($extension in $extensions) {
         Invoke-NativeCommand -FilePath $codium.Source -ArgumentList @(
             "--install-extension", $extension, "--force"
         )

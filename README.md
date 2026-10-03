@@ -25,6 +25,9 @@ Pixi 与 uv 的用户级镜像由根目录 chezmoi source 直接管理。镜像�
 部署脚本。Windows 通过目录联接直接复用 `dot_config/nvim/`，不会维护第二份
 独立配置。
 
+VSCodium 的可迁移用户设置由各端 chezmoi source 部署；通用与平台扩展清单
+集中在 `vscodium/`，避免依赖编辑器内的第三方 Settings Sync 插件。
+
 ## 其他配置
 
 仓库根目录中的 `dot_*` 文件保存 Gentoo PC/WSL 共用的 Shell、Git 通用选项与
