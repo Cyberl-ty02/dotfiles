@@ -7,9 +7,11 @@ if not vim.uv.fs_stat(lazypath) then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
       { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
+      { "\nCheck Git and network access, then start Neovim again." },
     }, true, {})
-    vim.fn.getchar()
+    if #vim.api.nvim_list_uis() > 0 then
+      vim.fn.getchar()
+    end
     os.exit(1)
   end
 end

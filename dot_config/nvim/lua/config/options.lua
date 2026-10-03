@@ -22,6 +22,12 @@ for name, value in pairs(options) do
   vim.opt[name] = value
 end
 
-if vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1 or vim.fn.executable("wl-copy") == 1 then
+local has_clipboard_provider = vim.fn.has("win32") == 1
+  or vim.fn.has("mac") == 1
+  or vim.fn.executable("xclip") == 1
+  or vim.fn.executable("xsel") == 1
+  or vim.fn.executable("wl-copy") == 1
+
+if has_clipboard_provider then
   vim.opt.clipboard = "unnamedplus"
 end
