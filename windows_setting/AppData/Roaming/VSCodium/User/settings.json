@@ -35,6 +35,10 @@
         "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true
     },
+    "[less]": {
+        "editor.defaultFormatter": "vscode.css-language-features",
+        "editor.formatOnSave": true
+    },
     "[markdown]": {
         "files.trimTrailingWhitespace": false
     },
@@ -62,9 +66,13 @@
         "editor.defaultFormatter": "vscode.typescript-language-features",
         "editor.formatOnSave": true
     },
+    "[typst-code]": {
+        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
+    },
     "[typst]": {
         "editor.defaultFormatter": "myriad-dreamin.tinymist",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
     },
     "clangd.arguments": [
         "--background-index",
@@ -87,6 +95,7 @@
     "code-runner.runInTerminal": true,
     "code-runner.saveFileBeforeRun": true,
     "diffEditor.ignoreTrimWhitespace": false,
+    "editor.accessibilitySupport": "auto",
     "editor.fontLigatures": false,
     "editor.fontFamily": "'IntoneMono NFM', Consolas, 'HarmonyOS Sans', monospace",
     "editor.inlineSuggest.enabled": true,
@@ -164,6 +173,8 @@
     "typescript.suggest.autoImports": true,
     "typescript.updateImportsOnFileMove.enabled": "always",
     "update.mode": "default",
+    "vscode-office.editorTheme": "Auto",
+    "vscode-office.openOutline": true,
     "window.title": "${dirty}${activeEditorLong}${separator}${rootName}${separator}${appName}",
     "workbench.colorTheme": "Gruvbox Dark Hard",
     "workbench.editorAssociations": {

@@ -49,13 +49,13 @@ Optional installation is explicit and split by purpose:
 # VSCodium and Windows Terminal through winget
 .\windows_setting\bootstrap.ps1 -InstallWindowsApps
 
-# Curated VSCodium extensions
+# Curated common and Windows-specific VSCodium extensions
 .\windows_setting\bootstrap.ps1 -InstallEditorExtensions
 ```
 
-The lists in `packages/` are intentionally conservative. Large local models,
-hardware utilities, game tools, recovery media, and niche applications are not
-automatically reproduced.
+The package lists and shared `../vscodium/` extension manifests are
+intentionally conservative. Large local models, hardware utilities, game
+tools, recovery media, and niche applications are not automatically reproduced.
 
 ## UniGetUI integration
 

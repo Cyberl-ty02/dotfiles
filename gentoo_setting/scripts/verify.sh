@@ -20,6 +20,7 @@ check_sorted() {
 
 echo "Checking shell syntax"
 sh -n "$settings/scripts/bootstrap-user.sh"
+sh -n "$settings/scripts/sync-vscodium.sh"
 sh -n "$settings/scripts/verify.sh"
 bash -n "$repo_root/dot_bashrc"
 zsh -n "$repo_root/dot_zshrc"
@@ -30,6 +31,16 @@ check_sorted "$settings/wsl/world_packages.txt"
 for manifest in "$settings"/manifests/*.txt; do
   check_sorted "$manifest"
 done
+for manifest in "$repo_root"/vscodium/extensions-*.txt; do
+  check_sorted "$manifest"
+done
+
+echo "Checking JSON configuration"
+python3 -m json.tool \
+  "$repo_root/dot_config/private_VSCodium/User/settings.json" >/dev/null
+python3 -m json.tool \
+  "$repo_root/windows_setting/AppData/Roaming/VSCodium/User/settings.json" \
+  >/dev/null
 
 echo "Checking package atoms with Portage"
 python3 - "$settings" <<'PY'
