@@ -1,0 +1,3 @@
+Devolutions.UniGetUI
+Microsoft.WindowsTerminal
+VSCodium.VSCodium

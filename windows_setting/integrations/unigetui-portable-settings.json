@@ -1,0 +1,6 @@
+{
+    "DefaultVcpkgTriplet": "x64-windows",
+    "DependencyManagement.json": "{\n  \"cargo-update\": \"skipped\",\n  \"cargo-binstall\": \"skipped\"\n}",
+    "DisabledManagers.json": "{\n  \"Npm\": true,\n  \"Chocolatey\": true,\n  \"Pip\": true,\n  \"PowerShell7\": true,\n  \"Cargo\": false\n}",
+    "PreferredTheme": "auto"
+}

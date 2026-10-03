@@ -2,5 +2,9 @@
 *.scm text eol=lf
 *.lua text eol=lf
 *.ps1 text eol=crlf
+*.toml text eol=lf
 **/world_packages.txt text eol=lf
 gentoo_setting/** text eol=lf
+windows_setting/dot_bash_profile text eol=lf
+windows_setting/dot_gitconfig.tmpl text eol=lf
+windows_setting/dot_wslconfig text eol=crlf

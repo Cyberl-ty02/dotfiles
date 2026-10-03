@@ -1,0 +1,8 @@
+btop
+cpufetch
+dragonwell21-jdk
+godot-mono
+localsend
+pacaptr
+scoop-search
+vcpkg
