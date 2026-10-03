@@ -18,6 +18,7 @@ net-dns/c-ares gcc_generic
 net-dns/libidn gcc_generic
 net-misc/curl gcc_generic
 net-misc/socat gcc_generic
+
 sys-apps/file gcc_generic
 sys-apps/less gcc_generic
 sys-libs/libnvme gcc_generic

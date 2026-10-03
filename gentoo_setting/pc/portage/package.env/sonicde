@@ -5,6 +5,7 @@ kde-plasma/kdecoration no_lto
 kde-plasma/plasma-pa no_lto
 media-gfx/krita no_lto
 media-libs/pulseaudio-qt no_lto
+net-p2p/ktorrent no_lto
 sonicde-base/sonic-desktop no_lto
 sonicde-base/sonic-meta no_lto
 sonicde-base/sonic-win no_lto
