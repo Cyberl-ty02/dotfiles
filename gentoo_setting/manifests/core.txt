@@ -1,0 +1,10 @@
+app-admin/chezmoi-bin
+app-admin/doas
+app-editors/neovim
+app-eselect/eselect-repository
+app-portage/eix
+app-portage/gentoolkit
+app-shells/zsh
+dev-vcs/git
+sys-apps/fd
+sys-apps/ripgrep
