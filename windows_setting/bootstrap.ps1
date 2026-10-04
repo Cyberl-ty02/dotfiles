@@ -121,7 +121,6 @@ if ($DryRun) {
 
 Invoke-NativeCommand -FilePath $chezmoi.Source -ArgumentList ($commonArguments + @("apply", "--verbose"))
 
-& (Join-Path $source "install_powershell_profile.ps1")
 if (Get-Command nvim.exe -ErrorAction SilentlyContinue) {
     & (Join-Path $source "install_nvim.ps1")
 }

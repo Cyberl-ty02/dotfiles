@@ -1,0 +1,5 @@
+# Keep Yazi's built-in open rules and replace only their `edit` opener.
+[opener]
+edit = [
+    { run = "nvim %s", desc = "Neovim", block = true, for = "windows" },
+]
