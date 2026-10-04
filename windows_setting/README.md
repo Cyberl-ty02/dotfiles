@@ -8,14 +8,14 @@ outside the repository.
 The managed settings cover:
 
 - Git identity through machine-local chezmoi data, plus portable Git defaults;
-- WSL networking, Git Bash, Windows PowerShell 5.1, and Windows Terminal;
+- WSL networking, Git Bash, Windows PowerShell 5.1, Windows Terminal, and Yazi;
 - the shared cross-platform Neovim configuration and VSCodium preferences;
 - domestic registries for Cargo, npm, Bun, pip, Pixi, and uv.
 
-Chezmoi copies ordinary configuration into the user profile. Two deliberate
-integrations remain as small installers: PowerShell loads the tracked profile
-from this checkout, and `%LOCALAPPDATA%\nvim` is a junction to the repository's
-shared `dot_config\nvim`. This avoids maintaining duplicate copies.
+Chezmoi copies ordinary configuration into the user profile. The generated
+PowerShell loader sources the tracked profile from this checkout, while
+`%LOCALAPPDATA%\nvim` remains a junction to the repository's shared
+`dot_config\nvim`. This avoids maintaining duplicate copies.
 
 ## Deploy
 
@@ -112,7 +112,9 @@ so the short `chezmoi apply` command works from any directory. Use
 `powershell/profile.ps1` provides PSReadLine history search, an optional
 oh-my-posh prompt, UTF-8 native-tool I/O, Neovim editor variables, proxy
 helpers, and a few small development aliases. It deliberately does not require
-PowerShell 7 or modify the execution policy.
+PowerShell 7 or modify the execution policy. Chezmoi owns the sole all-hosts
+loader at `Documents\WindowsPowerShell\profile.ps1`; host-specific profiles are
+left unmanaged.
 
 The proxy helpers default to `127.0.0.1:7890` and can be customized through
 `PROXY_HOST`, `PROXY_HTTP_PORT`, and `PROXY_SOCKS_PORT`:
@@ -130,15 +132,26 @@ and Gentoo PC. LazyVim follows upstream and checks for updates at most once per
 day; run `:Lazy sync` for an immediate update. Windows plugin/runtime data stays
 separate in `%LOCALAPPDATA%\nvim-data`.
 
-The standalone installers remain available for repair:
+The standalone Neovim installer remains available for repair:
 
 ```powershell
-.\windows_setting\install_powershell_profile.ps1
 .\windows_setting\install_nvim.ps1
 ```
 
 The Neovim installer refuses to replace an unrelated existing configuration;
 use `-BackupExisting` only after reviewing that directory.
+
+## Windows Terminal and Yazi
+
+Windows Terminal customizations are intentionally additive. Chezmoi installs a
+JSON fragment containing the portable Gruvbox theme and Scoop Git Bash profile,
+then merges only the preferences in `terminal/preferences.json` into each
+existing Terminal settings file. Generated Azure, Visual Studio, WSL, and other
+machine-specific profiles remain local and are never copied into this repository.
+
+Yazi overrides only its `edit` opener. It invokes `nvim` through `PATH`, so the
+configuration has no Scoop version path and works whether Yazi starts inside or
+outside PowerShell.
 
 ## Gentoo
 

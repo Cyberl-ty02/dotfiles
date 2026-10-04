@@ -1,0 +1,75 @@
+$ErrorActionPreference = "Stop"
+
+$preferencesPath = '{{ joinPath .chezmoi.sourceDir "terminal" "preferences.json" | replace "'" "''" }}'
+$preferences = Get-Content -LiteralPath $preferencesPath -Raw | ConvertFrom-Json
+$utf8NoBom = New-Object Text.UTF8Encoding($false)
+$gitBashGuid = "{5b8b2d9f-5655-4d9a-a427-cf494de4e17a}"
+
+function Set-ObjectProperty {
+    param(
+        [Parameter(Mandatory = $true)]$InputObject,
+        [Parameter(Mandatory = $true)][string]$Name,
+        [Parameter(Mandatory = $true)]$Value
+    )
+
+    if ($InputObject.PSObject.Properties[$Name]) {
+        $InputObject.$Name = $Value
+    } else {
+        $InputObject | Add-Member -NotePropertyName $Name -NotePropertyValue $Value
+    }
+}
+
+$settingsPaths = @(
+    Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+    Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
+    Join-Path $env:LOCALAPPDATA "Microsoft\Windows Terminal\settings.json"
+) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -Unique
+
+foreach ($settingsPath in $settingsPaths) {
+    try {
+        $settings = Get-Content -LiteralPath $settingsPath -Raw | ConvertFrom-Json
+    } catch {
+        Write-Warning "Skipping Windows Terminal settings that are not valid JSON: $settingsPath"
+        continue
+    }
+
+    foreach ($name in @("copyFormatting", "copyOnSelect", "defaultProfile", "theme")) {
+        Set-ObjectProperty -InputObject $settings -Name $name -Value $preferences.$name
+    }
+
+    if (-not $settings.profiles) {
+        Set-ObjectProperty -InputObject $settings -Name "profiles" -Value ([PSCustomObject]@{})
+    }
+    Set-ObjectProperty -InputObject $settings.profiles -Name "defaults" -Value $preferences.profileDefaults
+
+    $existingBindings = @($settings.keybindings)
+    foreach ($binding in @($preferences.keybindings)) {
+        $existingBindings = @($existingBindings | Where-Object { $_.id -ne $binding.id })
+        $existingBindings += $binding
+    }
+    Set-ObjectProperty -InputObject $settings -Name "keybindings" -Value $existingBindings
+
+    # These portable entries now come from the Terminal fragment. Remove only
+    # the former dotfiles-owned copies; generated and third-party entries stay.
+    if ($settings.profiles.PSObject.Properties["list"]) {
+        $profileList = @($settings.profiles.list | Where-Object {
+            $_.guid -ne $gitBashGuid -and $_.name -ne "Git Bash (Scoop)"
+        })
+        Set-ObjectProperty -InputObject $settings.profiles -Name "list" -Value $profileList
+    }
+    if ($settings.PSObject.Properties["schemes"]) {
+        $schemes = @($settings.schemes | Where-Object { $_.name -ne "GruvboxDark" })
+        Set-ObjectProperty -InputObject $settings -Name "schemes" -Value $schemes
+    }
+
+    $updated = ($settings | ConvertTo-Json -Depth 100) + [Environment]::NewLine
+    $current = Get-Content -LiteralPath $settingsPath -Raw
+    if ($current -cne $updated) {
+        $temporaryPath = "$settingsPath.dotfiles-$PID.tmp"
+        $backupPath = "$settingsPath.dotfiles-$PID.bak"
+        [IO.File]::WriteAllText($temporaryPath, $updated, $utf8NoBom)
+        [IO.File]::Replace($temporaryPath, $settingsPath, $backupPath)
+        Remove-Item -LiteralPath $backupPath -Force
+        Write-Host "Merged portable preferences into $settingsPath"
+    }
+}

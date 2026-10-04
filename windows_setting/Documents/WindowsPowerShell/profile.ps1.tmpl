@@ -1,0 +1,7 @@
+# Managed by chezmoi. Edit powershell/profile.ps1 in the dotfiles repository.
+$dotfilesProfile = '{{ joinPath .chezmoi.sourceDir "powershell" "profile.ps1" | replace "'" "''" }}'
+if (Test-Path -LiteralPath $dotfilesProfile) {
+    . $dotfilesProfile
+} else {
+    Write-Warning "Tracked PowerShell profile not found: $dotfilesProfile"
+}

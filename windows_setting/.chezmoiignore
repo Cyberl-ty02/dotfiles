@@ -2,7 +2,7 @@
 README.md
 bootstrap.ps1
 install_nvim.ps1
-install_powershell_profile.ps1
 integrations/
 packages/
 powershell/
+terminal/
