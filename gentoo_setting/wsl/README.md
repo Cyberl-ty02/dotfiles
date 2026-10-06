@@ -24,8 +24,9 @@ Target:
 - The Gentoo repository uses the USTC Git mirror for shallow clones and routine
   incremental sync. CERNET is the first fallback, but some participating mirrors
   only provide Git dumb HTTP; enabling it also requires `sync-depth = 0` and a
-  large full-history clone. A fresh stage3 can bootstrap with rsync before Git is
-  installed; optional overlays use Git after the base setup.
+  large full-history clone. The official Git mirror precedes TUNA so queued TUNA
+  syncs cannot delay routine recovery. A fresh stage3 can bootstrap with rsync
+  before Git is installed; optional overlays use Git after the base setup.
 - Git sync verifies commit signatures with the packaged local Gentoo Release
   Key, keeps Portage's key refresh enabled to detect revocations, and rejects
   repository timestamps older than three days. The official binary package
