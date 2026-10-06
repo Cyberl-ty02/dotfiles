@@ -3,6 +3,17 @@
 本目录保存不能由用户级 chezmoi 直接部署的 Gentoo 系统策略，以及用于重建
 机器的说明和角色清单。仓库根目录才是 PC/WSL 共用的 chezmoi source。
 
+## 软件源同步的 locale
+
+PC/WSL 各自的 `eix-sync.conf` 部署到 `/etc/eix-sync.conf`。其中的 eix
+初始化钩子给同步进程设置 `LC_ALL=C.UTF-8`，使 `su`、`doas` 和直接 root
+执行 `eix-sync -a` 时均可解析 Gentoo 的英文 Git 时间戳。已有配置应合并
+此钩子，避免覆盖其他自定义钩子。此设置不改变桌面或登录 shell 的语言。
+
+直接使用 Portage 同步时运行 `LC_ALL=C.UTF-8 emerge --sync`；eix 配置不会
+影响绕过 eix 的命令。升级 Portage 后可重新检查其日期解析是否已消除
+locale 依赖，签名校验及时间戳新鲜度校验保持启用。
+
 ## 配置边界
 
 | 类别 | 示例 | 管理方式 |
