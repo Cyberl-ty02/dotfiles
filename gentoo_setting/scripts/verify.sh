@@ -66,7 +66,10 @@ echo "Checking doas syntax"
 doas -C "$repo_root/doas_dot_conf"
 
 echo "Previewing chezmoi changes (no files are written)"
-chezmoi --source "$repo_root" --dry-run --no-tty apply >/dev/null
+# A managed target may have changed since chezmoi last wrote it.  In a
+# non-interactive dry run, allow the preview to choose the source version so
+# chezmoi does not stop at its overwrite prompt with EOF.
+chezmoi --source "$repo_root" --dry-run --no-tty apply --force >/dev/null
 
 if [ "$role" = pc ] && [ -r /var/lib/portage/world ]; then
   echo "Comparing the live PC world file"
