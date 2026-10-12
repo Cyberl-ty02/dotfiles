@@ -7,7 +7,7 @@
 
 SonicDE 6.7.3 替换 Plasma 的桌面核心：`plasma-desktop`、
 `kwin`、`plasma-workspace` 和 `kinfocenter` 分别由
-`sonic-desktop`、`sonic-win`、`sonic-workspace` 和
+`sonic-desktop-interface`、`sonic-win`、`sonic-workspace` 和
 `sonic-system-info` 提供。SonicDE overlay 的同名 dummy 包用于满足仍引用
 KDE 包名的依赖；其他 KDE Frameworks、Plasma 组件和 KDE 应用继续使用
 Gentoo ebuild。
@@ -21,7 +21,7 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 
 以下 KDE 应用没有被 SonicDE 替换，继续作为显式 world 包保留：
 `ark`、`dolphin`、`filelight`、`gwenview`、`kwalletmanager`、`yakuake`、
-`discover` 和 `print-manager`。`sddm` 已由 `sonic-meta` 和
+`discover` 和 `print-manager`。`sddm` 已由 `sonicde-meta` 和
 `silver-sddm` 依赖，不再重复写入 world。
 
 ## 应用

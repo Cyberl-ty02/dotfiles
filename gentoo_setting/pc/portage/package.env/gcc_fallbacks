@@ -9,6 +9,7 @@ dev-libs/cyrus-sasl gcc_generic
 dev-libs/darts gcc_cxx14
 dev-libs/libfmt gcc_generic
 dev-libs/libgpg-error gcc_generic
+dev-libs/newt gcc_generic
 dev-libs/sexpp gcc_generic
 dev-libs/spdlog gcc_generic
 dev-python/cython gcc_generic

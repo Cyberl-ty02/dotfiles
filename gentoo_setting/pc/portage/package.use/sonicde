@@ -1,5 +1,5 @@
 # SonicDE / Qt / Plasma-derived desktop on OpenRC + elogind.
-# sonic-meta[firewall] and plasma-firewall require systemd; use firewalld[gui]
+# sonicde-meta[firewall] and plasma-firewall require systemd; use firewalld[gui]
 # directly on OpenRC instead.
 dev-qt/qt5compat icu qml
 dev-qt/qtbase concurrent cups dbus gui icu libinput libproxy network opengl sql sqlite wayland widgets X xml
@@ -16,8 +16,11 @@ kde-frameworks/prison qml
 kde-frameworks/sonnet qml
 kde-plasma/discover firmware flatpak
 kde-plasma/kwin lock -systemd
+kde-plasma/kwin-x11 lock
 kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
-sonicde-base/sonic-meta bluetooth crash-handler crypt discover display-manager elogind flatpak kwallet networkmanager sddm smart thunderbolt wallpapers X -browser-integration -firewall -grub -pulseaudio -rdp -sdk -systemd -unsupported -webengine
+# move sonicde-base/sonic-meta sonicde-base/sonicde-meta
+sonicde-base/sonicde-meta bluetooth crash-handler crypt discover display-manager elogind flatpak kwallet networkmanager sddm smart thunderbolt wallpapers X -browser-integration -firewall -grub -pulseaudio -rdp -sdk -systemd -unsupported -webengine
 sonicde-base/sonic-win lock -systemd
 sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
+sonicde-frameworks/sonic-frameworks-image-formats avif
 x11-misc/sddm elogind -systemd
