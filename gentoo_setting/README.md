@@ -18,7 +18,7 @@ locale 依赖，签名校验及时间戳新鲜度校验保持启用。
 
 | 类别 | 示例 | 管理方式 |
 | --- | --- | --- |
-| A. 跨平台用户配置 | Neovim、Git 通用选项 | 根目录 chezmoi |
+| A. 跨平台用户配置 | Doom Emacs、Git 通用选项 | 根目录 chezmoi |
 | B. Gentoo 共用用户配置 | zsh、Zim、开发镜像 | 根目录 chezmoi |
 | C. PC 系统配置 | Portage、桌面、NVIDIA、引导 | `pc/`，人工审核后部署 |
 | D. WSL 系统配置 | Portage、WSLg、`wsl.conf` | `wsl/`，人工审核后部署 |

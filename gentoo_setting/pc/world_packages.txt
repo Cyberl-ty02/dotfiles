@@ -4,8 +4,8 @@ app-admin/eclean-kernel
 app-admin/sysklogd
 app-antivirus/clamav
 app-antivirus/clamtk
+app-editors/emacs
 app-editors/nano
-app-editors/neovim
 app-editors/vscodium
 app-eselect/eselect-repository
 app-i18n/fcitx-configtool:5
@@ -25,6 +25,7 @@ app-text/tree
 app-text/typst
 dev-build/ninja
 dev-build/xmake
+dev-cpp/highway
 dev-db/postgresql
 dev-java/openjdk-bin
 dev-lang/bun-bin
@@ -38,18 +39,16 @@ dev-util/pixi
 dev-util/pkgconf
 dev-util/vulkan-tools
 dev-vcs/git
-kde-apps/akonadi-import-wizard
 kde-apps/ark
 kde-apps/dolphin
 kde-apps/filelight
 kde-apps/gwenview
-kde-apps/kmail
 kde-apps/kwalletmanager
-kde-apps/pim-data-exporter
 kde-apps/yakuake
 kde-plasma/discover
 kde-plasma/plasma-pa
 kde-plasma/print-manager
+mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto
 media-fonts/noto-cjk
@@ -86,7 +85,7 @@ sys-power/power-profiles-daemon
 sys-process/btop
 sys-process/cronie
 virtual/dist-kernel
-www-client/firefox-bin
+www-client/firefox
 x11-apps/xdpyinfo
 x11-base/xlibre-server
 x11-base/xorg-server::xlibre

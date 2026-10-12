@@ -1,3 +1,4 @@
+app-editors/emacs lowjobs no_lto
 app-text/typst lowjobs no_lto
 dev-java/openjdk gcc_generic lowjobs
 dev-lang/go lowjobs no_lto
@@ -6,4 +7,6 @@ dev-lang/rust lowjobs no_lto
 dev-lang/rust-bin no_lto
 dev-python/uv no_lto
 dev-util/pixi lowjobs no_lto
+mail-client/thunderbird lowjobs no_lto
 net-libs/nodejs lowjobs no_lto
+www-client/firefox lowjobs no_lto

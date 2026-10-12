@@ -20,10 +20,19 @@ check_sorted() {
 
 echo "Checking shell syntax"
 sh -n "$settings/scripts/bootstrap-user.sh"
+sh -n "$settings/scripts/deploy-doom.sh"
 sh -n "$settings/scripts/sync-vscodium.sh"
 sh -n "$settings/scripts/verify.sh"
 bash -n "$repo_root/dot_bashrc"
 zsh -n "$repo_root/dot_zshrc"
+
+if command -v emacs >/dev/null 2>&1; then
+  echo "Checking Emacs Lisp delimiters"
+  for elisp in "$repo_root"/dot_config/doom/*.el; do
+    emacs --batch -Q --eval \
+      "(with-temp-buffer (insert-file-contents \"$elisp\") (check-parens))"
+  done
+fi
 
 echo "Checking sorted package lists"
 check_sorted "$settings/pc/world_packages.txt"
