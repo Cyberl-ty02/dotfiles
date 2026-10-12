@@ -5,7 +5,7 @@
 
 ## 桌面包策略
 
-SonicDE 6.7.3 替换 Plasma 的桌面核心：`plasma-desktop`、
+SonicDE 6.7.5 替换 Plasma 的桌面核心：`plasma-desktop`、
 `kwin`、`plasma-workspace` 和 `kinfocenter` 分别由
 `sonic-desktop-interface`、`sonic-win`、`sonic-workspace` 和
 `sonic-system-info` 提供。SonicDE overlay 的同名 dummy 包用于满足仍引用
@@ -19,10 +19,11 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 `x11-base/xlibre-drivers`。`x11-base/xwayland` 是独立兼容服务器且仍被
 `sonic-win` 依赖，因此保留。
 
-以下 KDE 应用没有被 SonicDE 替换，继续作为显式 world 包保留：
-`ark`、`dolphin`、`filelight`、`gwenview`、`kwalletmanager`、`yakuake`、
-`discover` 和 `print-manager`。`sddm` 已由 `sonicde-meta` 和
-`silver-sddm` 依赖，不再重复写入 world。
+`dolphin` 与 `plasma-pa` 使用 SonicDE overlay 的实现。以下 KDE 应用没有
+等价 SonicDE 替代，继续作为显式 world 包保留：`ark`、`filelight`、
+`gwenview`、`kwalletmanager`、`yakuake`、`discover` 和 `print-manager`。
+`sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换；
+`sddm` 已由 `sonicde-meta` 和 `silver-sddm` 依赖，不再重复写入 world。
 
 ## 应用
 
@@ -45,6 +46,12 @@ doas emerge --sync
 不能仅改 `sync-type` 后继续在原 rsync 目录更新。Git 同步会使用由 Portage 包管理的本地
 Gentoo Release Key 验证提交签名，并按 Portage 默认策略刷新密钥以发现撤销状态，
 同时拒绝超过三天的仓库时间戳；官方 binhost 的签名验证不受影响。
+
+LinuxMirrors 可用于参考国内镜像列表，但不要在本配置上直接执行其 Gentoo
+换源脚本。该脚本会把 `GENTOO_MIRRORS` 改为单一地址，并重写主树为
+`/usr/portage` 下的 rsync 仓库，无法保留这里的 Git 签名校验、多级 distfiles
+回退及 overlay 分层。需要调整镜像时，应审核其最新列表后手工更新本目录中的
+`make.conf` 与 `repos.conf` 小文件，再通过 `verify.sh` 部署验证。
 
 首次从 Gentoo X.Org Server 切换到 XLibre 时，两者会发生文件冲突。完成上述
 同步后，先执行一次以下迁移：

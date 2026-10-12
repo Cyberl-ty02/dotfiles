@@ -13,7 +13,7 @@ net-misc/networkmanager
 sonicde-base/sonic-desktop
 sonicde-base/sonic-meta
 sys-apps/flatpak
-www-client/firefox-bin
+www-client/firefox
 x11-base/xlibre-server
 x11-base/xorg-server::xlibre
 x11-misc/silver-sddm

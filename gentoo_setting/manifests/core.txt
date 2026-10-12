@@ -1,6 +1,6 @@
 app-admin/chezmoi-bin
 app-admin/doas
-app-editors/neovim
+app-editors/emacs
 app-eselect/eselect-repository
 app-portage/eix
 app-portage/gentoolkit

@@ -1,5 +1,4 @@
 # Development packages used by this WSL profile.
-app-editors/neovim ~amd64
 app-shells/thefuck ~amd64
 dev-lang/bun-bin ~amd64
 dev-lang/rust-bin ~amd64

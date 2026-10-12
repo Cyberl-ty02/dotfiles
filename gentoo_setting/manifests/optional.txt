@@ -8,9 +8,9 @@ kde-apps/ark
 kde-apps/dolphin
 kde-apps/filelight
 kde-apps/gwenview
-kde-apps/kmail
 kde-apps/kwalletmanager
 kde-apps/yakuake
+mail-client/thunderbird
 media-gfx/krita
 media-video/vlc
 net-im/telegram-desktop-bin

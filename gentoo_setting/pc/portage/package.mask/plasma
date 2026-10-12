@@ -7,8 +7,3 @@ kde-plasma/plasma-desktop::gentoo
 kde-plasma/plasma-login-sessions::gentoo
 kde-plasma/plasma-meta::gentoo
 kde-plasma/plasma-workspace::gentoo
-
-# Keep tightly coupled, non-forked Plasma components aligned with SonicDE 6.7.3.
-# Review these two pins when the SonicDE overlay advances to a newer series.
->kde-plasma/kscreenlocker-6.7.3::gentoo
->kde-plasma/powerdevil-6.7.3-r1::gentoo

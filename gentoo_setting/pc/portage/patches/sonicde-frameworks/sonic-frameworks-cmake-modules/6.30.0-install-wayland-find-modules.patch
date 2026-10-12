@@ -1,0 +1,20 @@
+--- a/find-modules/CMakeLists.txt
++++ b/find-modules/CMakeLists.txt
+@@ -30,6 +30,7 @@ install(FILES
+     FindPoppler.cmake
+     FindPulseAudio.cmake
+     FindQHelpGenerator.cmake
++    FindQtWaylandScanner.cmake
+     FindReuseTool.cmake
+     FindSasl2.cmake
+     FindSeccomp.cmake
+@@ -37,6 +38,9 @@ install(FILES
+     FindTaglib.cmake
+     FindUDev.cmake
++    FindWayland.cmake
++    FindWaylandProtocols.cmake
++    FindWaylandScanner.cmake
+     FindX11_XCB.cmake
+     FindXCB.cmake
+
+     DESTINATION ${FIND_MODULES_INSTALL_DIR}

@@ -4,7 +4,10 @@
 # SonicDE releases track the matching ~amd64 Plasma series and reuse the
 # components that are not forked by SonicDE.
 dev-libs/kirigami-addons ~amd64
+kde-apps/gwenview ~amd64
+kde-apps/thumbnailers ~amd64
 kde-plasma/* ~amd64
+sys-libs/kpmcore ~amd64
 
 # The overlay currently provides silver-sddm only as a live theme package.
 =x11-misc/silver-sddm-9999::sonicde **

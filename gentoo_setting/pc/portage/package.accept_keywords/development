@@ -1,5 +1,4 @@
 # Development tools shared with the WSL profile.
-app-editors/neovim ~amd64
 app-shells/thefuck ~amd64
 dev-lang/bun-bin ~amd64
 dev-lang/rust-bin ~amd64

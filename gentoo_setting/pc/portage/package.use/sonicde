@@ -19,8 +19,9 @@ kde-plasma/kwin lock -systemd
 kde-plasma/kwin-x11 lock
 kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
 # move sonicde-base/sonic-meta sonicde-base/sonicde-meta
-sonicde-base/sonicde-meta bluetooth crash-handler crypt discover display-manager elogind flatpak kwallet networkmanager sddm smart thunderbolt wallpapers X -browser-integration -firewall -grub -pulseaudio -rdp -sdk -systemd -unsupported -webengine
+sonicde-base/sonicde-meta bluetooth crash-handler crypt display-manager elogind kwallet networkmanager smart thunderbolt wallpapers -browser-integration -firewall -pulseaudio -systemd -webengine
 sonicde-base/sonic-win lock -systemd
 sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
 sonicde-frameworks/sonic-frameworks-image-formats avif
 x11-misc/sddm elogind -systemd
+x11-themes/gentoo-artwork pixmaps -grub
