@@ -6,8 +6,10 @@ kde-plasma/plasma-pa no_lto
 media-gfx/krita no_lto
 media-libs/pulseaudio-qt no_lto
 net-p2p/ktorrent no_lto
-sonicde-base/sonic-desktop no_lto
-sonicde-base/sonic-meta no_lto
+# move sonicde-base/sonic-desktop sonicde-base/sonic-desktop-interface
+sonicde-base/sonic-desktop-interface no_lto
+# move sonicde-base/sonic-meta sonicde-base/sonicde-meta
+sonicde-base/sonicde-meta no_lto
 sonicde-base/sonic-win no_lto
 sonicde-base/sonic-workspace no_lto
 x11-drivers/xf86-input-libinput no_lto
