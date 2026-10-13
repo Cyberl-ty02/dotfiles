@@ -22,8 +22,18 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 `dolphin` 与 `plasma-pa` 使用 SonicDE overlay 的实现。以下 KDE 应用没有
 等价 SonicDE 替代，继续作为显式 world 包保留：`ark`、`filelight`、
 `gwenview`、`kwalletmanager`、`yakuake`、`discover` 和 `print-manager`。
-`sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换；
-`sddm` 已由 `sonicde-meta` 和 `silver-sddm` 依赖，不再重复写入 world。
+`sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换。
+登录管理器选择 Sonic Login Manager。由于 XLibre 在 OpenRC 环境中依赖
+`gui-libs/display-manager-init`，本地 Portage 补丁移除了 `soniclogin` 对
+`display-manager`/`xdm` 的虚拟服务声明，避免其与同名真实服务冲突；OpenRC
+直接启用 `soniclogin` 服务。冷启动登录验证成功后，SDDM、Silver SDDM 及其
+专用 Portage 配置均已移除。
+
+SonicDE 的 X11 会话出于兼容性仍声明 `XDG_CURRENT_DESKTOP=KDE`。用户级
+`xdg-desktop-portal/portals.conf` 明确选择 SonicDE portal 后端，同时保留
+KWallet secret portal 和 Sonic Workspace notification portal。Sonic overlay
+当前未为 portal 声明其构建时必需的 `dev-libs/libei`，因此将其显式保留在
+desktop manifest 和 PC world 中，避免再次只剩 preserved library 而无法重建。
 
 ## 应用
 

@@ -1,5 +1,4 @@
 # Avoid accidental live SonicDE core dependency chains.
-# Keep silver-sddm-9999 unmasked; it is theme-only and may not have a release ebuild.
 =kde-plasma/kwin-9999::sonicde
 =kde-plasma/plasma-workspace-9999::sonicde
 =sonicde-base/sonic-desktop-interface-9999::sonicde

@@ -1,0 +1,15 @@
+From: Gentoo local configuration
+Subject: [PATCH] openrc: avoid real and virtual display-manager collision
+
+OpenRC rejects a dependency graph where display-manager and xdm are both
+real services from gui-libs/display-manager-init and virtual services
+provided by soniclogin.  Use the real soniclogin service name directly.
+
+--- a/services/openrc/soniclogin.in
++++ b/services/openrc/soniclogin.in
+@@ -21,5 +21,4 @@
+     before alsasound
+     want logind
+     use xfs
+-    provide xdm display-manager
+ }
