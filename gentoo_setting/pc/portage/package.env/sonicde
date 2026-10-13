@@ -13,4 +13,3 @@ sonicde-base/sonicde-meta no_lto
 sonicde-base/sonic-win no_lto
 sonicde-base/sonic-workspace no_lto
 x11-drivers/xf86-input-libinput no_lto
-x11-misc/silver-sddm no_lto

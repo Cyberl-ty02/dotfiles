@@ -4,6 +4,7 @@ app-i18n/fcitx-gtk:5
 app-i18n/fcitx-qt:5
 app-i18n/fcitx-rime:5
 app-i18n/fcitx:5
+dev-libs/libei
 kde-plasma/discover
 media-fonts/nerdfonts
 media-fonts/noto
@@ -16,5 +17,4 @@ sys-apps/flatpak
 www-client/firefox
 x11-base/xlibre-server
 x11-base/xorg-server::xlibre
-x11-misc/silver-sddm
 x11-misc/xclip

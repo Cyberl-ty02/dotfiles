@@ -32,6 +32,7 @@ dev-lang/bun-bin
 dev-lang/rust-bin
 dev-lang/rust-bin:1.94.1
 dev-lang/rust-bin:1.95.0
+dev-libs/libei
 dev-python/uv
 dev-util/clinfo
 dev-util/nvidia-cuda-toolkit
@@ -90,5 +91,4 @@ x11-apps/xdpyinfo
 x11-base/xlibre-server
 x11-base/xorg-server::xlibre
 x11-drivers/nvidia-drivers
-x11-misc/silver-sddm
 x11-misc/xclip
