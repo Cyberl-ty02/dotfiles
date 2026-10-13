@@ -1,10 +1,5 @@
 # Windows development settings
 
-> Editor migration in progress: the target is Scoop Emacs with the shared Doom
-> private configuration. The Neovim sections below document the current
-> pre-migration state only. Follow `EMACS_HANDOFF.md` on the Windows host and
-> remove those legacy paths after native validation.
-
 This directory is a self-contained chezmoi source for the Windows host. It
 keeps portable text configuration in Git while leaving credentials, SSH keys,
 shell history, browser data, extension state, and machine-specific caches
@@ -14,13 +9,15 @@ The managed settings cover:
 
 - Git identity through machine-local chezmoi data, plus portable Git defaults;
 - WSL networking, Git Bash, Windows PowerShell 5.1, Windows Terminal, and Yazi;
-- the shared cross-platform Neovim configuration and VSCodium preferences;
+- the shared cross-platform Doom Emacs configuration and VSCodium preferences;
 - domestic registries for Cargo, npm, Bun, pip, Pixi, and uv.
 
 Chezmoi copies ordinary configuration into the user profile. The generated
-PowerShell loader sources the tracked profile from this checkout, while
-`%LOCALAPPDATA%\nvim` remains a junction to the repository's shared
-`dot_config\nvim`. This avoids maintaining duplicate copies.
+PowerShell loader sources the tracked profile from this checkout. The Doom
+framework and generated package state remain in Emacs' native Windows default,
+`%APPDATA%\.emacs.d`, while Doom's default `%APPDATA%\.config\doom` links to
+the repository's shared
+`dot_config\doom` directory.
 
 ## Deploy
 
@@ -32,7 +29,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\windows_setting\bootst
 
 The default command installs chezmoi through an existing Scoop installation if
 needed, applies configuration, and connects already-installed PowerShell and
-Neovim. It does not bulk-install applications. Git name and email are reused
+Doom Emacs. It does not bulk-install applications. Git name and email are reused
 from the current global Git configuration or requested once; they are written
 only to chezmoi's local configuration.
 
@@ -106,6 +103,7 @@ After the first deployment, normal synchronization is:
 ```powershell
 git pull --ff-only
 chezmoi apply
+.\windows_setting\install_doom.ps1
 ```
 
 Chezmoi's generated config records `windows_setting` as its source directory,
@@ -115,7 +113,7 @@ so the short `chezmoi apply` command works from any directory. Use
 ## PowerShell 5.1
 
 `powershell/profile.ps1` provides PSReadLine history search, an optional
-oh-my-posh prompt, UTF-8 native-tool I/O, Neovim editor variables, proxy
+oh-my-posh prompt, UTF-8 native-tool I/O, Doom Emacs editor variables, proxy
 helpers, and a few small development aliases. It deliberately does not require
 PowerShell 7 or modify the execution policy. Chezmoi owns the sole all-hosts
 loader at `Documents\WindowsPowerShell\profile.ps1`; host-specific profiles are
@@ -130,21 +128,24 @@ Get-ProxyStatus
 nproxy
 ```
 
-## Neovim
+## Doom Emacs
 
-`../dot_config/nvim` remains the single configuration for Windows, Gentoo WSL,
-and Gentoo PC. LazyVim follows upstream and checks for updates at most once per
-day; run `:Lazy sync` for an immediate update. Windows plugin/runtime data stays
-separate in `%LOCALAPPDATA%\nvim-data`.
+Scoop supplies Emacs, while the official Doom framework checkout and generated
+package state stay outside Git in `%APPDATA%\.emacs.d`. The shared private
+configuration remains `../dot_config/doom` and is linked at deployment time,
+so Windows and Gentoo consume the same reviewed files.
 
-The standalone Neovim installer remains available for repair:
+Install, repair, or resynchronize Doom with:
 
 ```powershell
-.\windows_setting\install_nvim.ps1
+.\windows_setting\install_doom.ps1
 ```
 
-The Neovim installer refuses to replace an unrelated existing configuration;
-use `-BackupExisting` only after reviewing that directory.
+Use `-SkipSync` only when updating the link or origin offline. The installer
+refuses to replace unrelated framework or private configuration directories;
+`-BackupExisting` preserves them before proceeding. PowerShell and Git Bash use
+small wrappers under `~/.local/bin`; Emacs and Doom discover their native
+default paths without shell-specific directory overrides.
 
 ## Windows Terminal and Yazi
 
@@ -154,13 +155,13 @@ then merges only the preferences in `terminal/preferences.json` into each
 existing Terminal settings file. Generated Azure, Visual Studio, WSL, and other
 machine-specific profiles remain local and are never copied into this repository.
 
-Yazi overrides only its `edit` opener. It invokes `nvim` through `PATH`, so the
-configuration has no Scoop version path and works whether Yazi starts inside or
-outside PowerShell.
+Yazi overrides only its `edit` opener and calls the terminal Doom wrapper. It
+uses an existing Emacs server when available and otherwise starts Doom in the
+current terminal, while remaining independent of a specific Scoop version.
 
 ## Gentoo
 
 The repository root is also a safe chezmoi source for Gentoo. Its root
-`.chezmoiignore` restricts deployment to the portable shell and Neovim files,
+`.chezmoiignore` restricts deployment to portable shell and Doom-related files,
 leaving Portage, `doas.conf`, documentation, and Windows files as explicit
 system-administration inputs rather than home-directory targets.

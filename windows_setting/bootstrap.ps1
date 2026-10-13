@@ -121,8 +121,8 @@ if ($DryRun) {
 
 Invoke-NativeCommand -FilePath $chezmoi.Source -ArgumentList ($commonArguments + @("apply", "--verbose"))
 
-if (Get-Command nvim.exe -ErrorAction SilentlyContinue) {
-    & (Join-Path $source "install_nvim.ps1")
+if (Get-Command emacs.exe -ErrorAction SilentlyContinue) {
+    & (Join-Path $source "install_doom.ps1")
 }
 
 Write-Host "Windows development settings are synchronized."

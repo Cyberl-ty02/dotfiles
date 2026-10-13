@@ -21,9 +21,9 @@ Pixi 与 uv 的用户级镜像由根目录 chezmoi source 直接管理。镜像�
 
 ## Windows
 
-`windows_setting/` 保存 Windows 与 WSL 的宿主侧配置。Linux 侧默认编辑器使用
-Doom Emacs；Windows 的目标方案是 Scoop Emacs 加同一份 Doom 私有配置，迁移
-边界和验收步骤见 `windows_setting/EMACS_HANDOFF.md`。
+`windows_setting/` 保存 Windows 与 WSL 的宿主侧配置。Linux 与 Windows 均使用
+同一份 Doom Emacs 私有配置；Windows 框架与生成状态留在 Emacs 默认的
+`%APPDATA%\.emacs.d`，仓库只保存可迁移的个人配置和部署入口。
 
 VSCodium 的可迁移用户设置由各端 chezmoi source 部署；通用与平台扩展清单
 集中在 `vscodium/`，避免依赖编辑器内的第三方 Settings Sync 插件。
@@ -31,9 +31,8 @@ VSCodium 的可迁移用户设置由各端 chezmoi source 部署；通用与平�
 ## 其他配置
 
 仓库根目录中的 `dot_*` 文件保存 Gentoo PC/WSL 共用的 Shell、Git 通用选项与
-开发工具配置；`dot_config/doom/` 保存 PC、WSL 与 root 共用的 Doom Emacs
-私有配置。Neovim 已退出目标配置；迁移完成前保留的 Windows 旧入口仅供回滚，
-不得继续扩展。Git 身份、SSH 密钥和主机凭据不受管理。
+开发工具配置；`dot_config/doom/` 保存 PC、WSL、Windows 与 root 共用的 Doom
+Emacs 私有配置。Git 身份、SSH 密钥和主机凭据不受管理。
 
 先预览用户配置，不会写入 `$HOME`：
 

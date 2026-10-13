@@ -1,5 +1,5 @@
 # Keep Yazi's built-in open rules and replace only their `edit` opener.
 [opener]
 edit = [
-    { run = "nvim %s", desc = "Neovim", block = true, for = "windows" },
+    { run = 'call "%USERPROFILE%\.local\bin\doom-editor.cmd" %s', desc = "Doom Emacs", block = true, for = "windows" },
 ]
