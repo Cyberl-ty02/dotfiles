@@ -28,11 +28,13 @@ $installRoots = @(
 $gui = $installRoots |
     ForEach-Object { Join-Path $_ "UniGetUI.exe" } |
     Where-Object { Test-Path -LiteralPath $_ } |
-    Select-Object -First 1
-$cli = $installRoots |
-    ForEach-Object { Join-Path $_ "uniget.exe" } |
-    Where-Object { Test-Path -LiteralPath $_ } |
-    Select-Object -First 1
+    ForEach-Object { Get-Item -LiteralPath $_ } |
+    Sort-Object { [version]$_.VersionInfo.FileVersion } -Descending |
+    Select-Object -First 1 -ExpandProperty FullName
+$cli = if ($gui) {
+    $candidate = Join-Path (Split-Path -Parent $gui) "uniget.exe"
+    if (Test-Path -LiteralPath $candidate) { $candidate }
+}
 
 if (-not $gui) {
     throw "UniGetUI is not installed. Install Devolutions.UniGetUI with winget first."

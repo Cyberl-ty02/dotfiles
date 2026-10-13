@@ -31,8 +31,15 @@ alias ll='ls -lh'
 alias la='ls -lah'
 alias l='ls -CF'
 
-if command -v nvim >/dev/null 2>&1; then
-    export EDITOR=nvim VISUAL=nvim GIT_EDITOR=nvim
-    alias vi=nvim
-    alias vim=nvim
+dotfiles_bin="$HOME/.local/bin"
+if [[ -d $dotfiles_bin && :$PATH: != *":$dotfiles_bin:"* ]]; then
+    export PATH="$dotfiles_bin:$PATH"
+fi
+unset dotfiles_bin
+
+if command -v doom-editor.cmd >/dev/null 2>&1; then
+    export EDITOR=doom-editor.cmd VISUAL=doom-editor.cmd GIT_EDITOR=doom-editor.cmd
+    alias e=doom-emacs.cmd
+    alias vi=doom-editor.cmd
+    alias vim=doom-editor.cmd
 fi

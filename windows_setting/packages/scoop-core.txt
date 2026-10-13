@@ -7,7 +7,7 @@ fzf
 gh
 git
 lazygit
-neovim
+emacs
 oh-my-posh
 pixi
 ripgrep

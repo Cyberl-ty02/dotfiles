@@ -7,6 +7,11 @@ $dotfilesInteractiveConsole =
     -not [Console]::IsInputRedirected -and
     -not [Console]::IsOutputRedirected
 
+$dotfilesLocalBin = Join-Path $env:USERPROFILE ".local\bin"
+if ((Test-Path -LiteralPath $dotfilesLocalBin) -and
+    -not (($env:PATH -split ";") -contains $dotfilesLocalBin)) {
+    $env:PATH = "$dotfilesLocalBin;$env:PATH"
+}
 # Keep legacy .NET clients compatible with modern HTTPS endpoints.
 try {
     [Net.ServicePointManager]::SecurityProtocol =
@@ -27,10 +32,10 @@ try {
     Write-Verbose "Unable to configure UTF-8 console I/O: $($_.Exception.Message)"
 }
 
-if (Get-Command nvim.exe -ErrorAction SilentlyContinue) {
-    $env:EDITOR = "nvim"
-    $env:VISUAL = "nvim"
-    $env:GIT_EDITOR = "nvim"
+if (Get-Command doom-editor.cmd -ErrorAction SilentlyContinue) {
+    $env:EDITOR = "doom-editor.cmd"
+    $env:VISUAL = "doom-editor.cmd"
+    $env:GIT_EDITOR = "doom-editor.cmd"
 }
 if (-not $env:PYTHONUTF8) {
     $env:PYTHONUTF8 = "1"
@@ -116,10 +121,20 @@ function Reload-PowerShellProfile {
     . $global:DotfilesPowerShellProfile
 }
 
+function Edit-WithDoomEmacs {
+    & doom-emacs.cmd @args
+}
+
+function Invoke-DoomCli {
+    & doom.cmd @args
+}
+
 Set-Alias -Name mkcd -Value Enter-NewDirectory -Scope Global -Force
-if (Get-Command nvim.exe -ErrorAction SilentlyContinue) {
-    Set-Alias -Name vi -Value nvim.exe -Scope Global -Force
-    Set-Alias -Name vim -Value nvim.exe -Scope Global -Force
+if (Get-Command doom-emacs.cmd -ErrorAction SilentlyContinue) {
+    Set-Alias -Name e -Value Edit-WithDoomEmacs -Scope Global -Force
+    Set-Alias -Name vi -Value doom-editor.cmd -Scope Global -Force
+    Set-Alias -Name vim -Value doom-editor.cmd -Scope Global -Force
+    Set-Alias -Name doom -Value Invoke-DoomCli -Scope Global -Force
 }
 if (Get-Command lazygit.exe -ErrorAction SilentlyContinue) {
     Set-Alias -Name lg -Value lazygit.exe -Scope Global -Force
@@ -176,5 +191,5 @@ if ($dotfilesInteractiveConsole) {
     }
 }
 
-Remove-Variable -Name dotfilesInteractiveConsole, dotfilesUtf8, dotfilesScoopCmd,
+Remove-Variable -Name dotfilesInteractiveConsole, dotfilesLocalBin, dotfilesUtf8, dotfilesScoopCmd,
     dotfilesPosh, dotfilesThemeName, dotfilesThemeRoot, dotfilesTheme -ErrorAction SilentlyContinue

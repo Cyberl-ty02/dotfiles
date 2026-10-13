@@ -1,7 +1,7 @@
 .git/
 README.md
 bootstrap.ps1
-install_nvim.ps1
+install_doom.ps1
 integrations/
 packages/
 powershell/

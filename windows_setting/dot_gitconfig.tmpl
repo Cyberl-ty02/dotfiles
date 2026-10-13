@@ -3,6 +3,7 @@
 	email = {{ .gitEmail | quote }}
 [core]
 	autocrlf = input
+	editor = doom-editor.cmd
 [init]
 	defaultBranch = main
 [fetch]
@@ -21,3 +22,5 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[include]
+	path = ~/.gitconfig.local

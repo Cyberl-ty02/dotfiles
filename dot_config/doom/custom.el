@@ -25,3 +25,11 @@
 
 (dolist (hook '(conf-mode-hook prog-mode-hook text-mode-hook))
   (add-hook hook #'dotfiles/terminal-editor-background))
+
+;; Windows editor launchers use emacsclient when a GUI instance is already
+;; running. Keep the server local to Windows; Linux sessions retain their
+;; existing service and daemon policy.
+(when (featurep :system 'windows)
+  (require 'server)
+  (unless (server-running-p)
+    (server-start)))
