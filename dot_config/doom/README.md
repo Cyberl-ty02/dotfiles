@@ -5,9 +5,10 @@ WSL profiles. Chezmoi deploys it as `~/.config/doom`; the root deployment
 helper copies the same reviewed files with root ownership instead of letting
 root execute files writable by the regular user.
 
-Doom itself lives in each account's `~/.config/emacs` checkout so framework,
-package, cache, and generated state remain account-local. Run `doom upgrade`
-to follow upstream and `doom sync` after changing `init.el` or `packages.el`.
+Doom itself lives in each account's `~/.config/emacs` checkout of the official
+`doomemacs/core` repository so framework, package, cache, and generated state
+remain account-local. Run `doom upgrade` to follow upstream and `doom sync`
+after changing `init.el` or `packages.el`.
 
 Deploy the regular-user configuration and framework:
 
@@ -23,7 +24,8 @@ gentoo_setting/scripts/deploy-doom.sh --root
 ```
 
 Add `--upgrade` to either command to ask Doom to update its own checkout and
-managed packages before synchronizing. Root never executes a regular-user-
+managed packages before synchronizing. The helper verifies every managed
+private-config file after deployment. Root never executes a regular-user-
 writable configuration directory.
 
 Terminal editing buffers inherit the terminal emulator's background. GUI

@@ -1,5 +1,10 @@
 # Windows development settings
 
+> Editor migration in progress: the target is Scoop Emacs with the shared Doom
+> private configuration. The Neovim sections below document the current
+> pre-migration state only. Follow `EMACS_HANDOFF.md` on the Windows host and
+> remove those legacy paths after native validation.
+
 This directory is a self-contained chezmoi source for the Windows host. It
 keeps portable text configuration in Git while leaving credentials, SSH keys,
 shell history, browser data, extension state, and machine-specific caches
