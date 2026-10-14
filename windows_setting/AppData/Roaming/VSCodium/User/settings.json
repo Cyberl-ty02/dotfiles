@@ -189,5 +189,13 @@
         "*.xlsx": "cweijan.officeViewer"
     },
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.startupEditor": "none"
+    "workbench.startupEditor": "none",
+    "yaml.disableSchemaDetection": [
+        "**/.github/workflows/*.yml",
+        "**/.github/workflows/*.yaml",
+        "**/.gitea/workflows/*.yml",
+        "**/.gitea/workflows/*.yaml",
+        "**/.forgejo/workflows/*.yml",
+        "**/.forgejo/workflows/*.yaml"
+    ]
 }

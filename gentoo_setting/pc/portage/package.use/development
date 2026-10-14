@@ -5,3 +5,4 @@ dev-db/postgresql llvm zstd
 dev-lang/rust rust-analyzer rust-src rustfmt
 dev-vcs/git curl gpg pcre perl webdav
 sys-devel/gcc jit lto
+sys-devel/mold mimalloc
