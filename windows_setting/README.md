@@ -13,7 +13,7 @@ The managed settings cover:
 - domestic registries for Cargo, npm, Bun, pip, Pixi, and uv.
 
 Chezmoi copies ordinary configuration into the user profile. The generated
-PowerShell loader sources the tracked profile from this checkout. The Doom
+PowerShell profile is rendered from the tracked source in this checkout. The Doom
 framework and generated package state remain in Emacs' native Windows default,
 `%APPDATA%\.emacs.d`, while Doom's default `%APPDATA%\.config\doom` links to
 the repository's shared
@@ -48,7 +48,7 @@ Optional installation is explicit and split by purpose:
 # Extra tools useful only for some machines
 .\windows_setting\bootstrap.ps1 -InstallOptionalPackages
 
-# VSCodium and Windows Terminal through winget
+# Git, Node.js/npm, VSCodium, and Windows Terminal through winget
 .\windows_setting\bootstrap.ps1 -InstallWindowsApps
 
 # Curated common and Windows-specific VSCodium extensions
@@ -58,6 +58,8 @@ Optional installation is explicit and split by purpose:
 The package lists and shared `../vscodium/` extension manifests are
 intentionally conservative. Large local models, hardware utilities, game
 tools, recovery media, and niche applications are not automatically reproduced.
+Web development keeps npm from the winget-managed Node.js LTS package and Bun
+from Scoop. pnpm and Yarn are intentionally omitted.
 
 ## UniGetUI integration
 
@@ -115,9 +117,10 @@ so the short `chezmoi apply` command works from any directory. Use
 `powershell/profile.ps1` provides PSReadLine history search, an optional
 oh-my-posh prompt, UTF-8 native-tool I/O, Doom Emacs editor variables, proxy
 helpers, and a few small development aliases. It deliberately does not require
-PowerShell 7 or modify the execution policy. Chezmoi owns the sole all-hosts
-loader at `Documents\WindowsPowerShell\profile.ps1`; host-specific profiles are
-left unmanaged.
+PowerShell 7 or modify the execution policy. Chezmoi renders it into the sole
+all-hosts profile at `Documents\WindowsPowerShell\profile.ps1`; this avoids
+dot-sourcing a repository path that Windows may classify as remote under
+`RemoteSigned`. Host-specific profiles are left unmanaged.
 
 The proxy helpers default to `127.0.0.1:7890` and can be customized through
 `PROXY_HOST`, `PROXY_HTTP_PORT`, and `PROXY_SOCKS_PORT`:
@@ -150,7 +153,7 @@ default paths without shell-specific directory overrides.
 ## Windows Terminal and Yazi
 
 Windows Terminal customizations are intentionally additive. Chezmoi installs a
-JSON fragment containing the portable Gruvbox theme and Scoop Git Bash profile,
+JSON fragment containing the portable Gruvbox theme and winget Git Bash profile,
 then merges only the preferences in `terminal/preferences.json` into each
 existing Terminal settings file. Generated Azure, Visual Studio, WSL, and other
 machine-specific profiles remain local and are never copied into this repository.

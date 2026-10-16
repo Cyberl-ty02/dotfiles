@@ -5,7 +5,6 @@ fastfetch
 fd
 fzf
 gh
-git
 lazygit
 emacs
 oh-my-posh

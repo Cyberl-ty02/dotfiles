@@ -53,7 +53,9 @@ foreach ($settingsPath in $settingsPaths) {
     # the former dotfiles-owned copies; generated and third-party entries stay.
     if ($settings.profiles.PSObject.Properties["list"]) {
         $profileList = @($settings.profiles.list | Where-Object {
-            $_.guid -ne $gitBashGuid -and $_.name -ne "Git Bash (Scoop)"
+            $_.guid -ne $gitBashGuid -and
+            $_.name -ne "Git Bash (Scoop)" -and
+            $_.name -ne "Git Bash"
         })
         Set-ObjectProperty -InputObject $settings.profiles -Name "list" -Value $profileList
     }
