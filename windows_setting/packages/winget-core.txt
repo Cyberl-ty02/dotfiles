@@ -1,3 +1,5 @@
 Devolutions.UniGetUI
+Git.Git
 Microsoft.WindowsTerminal
+OpenJS.NodeJS.LTS
 VSCodium.VSCodium

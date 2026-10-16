@@ -1,11 +1,11 @@
 {
     "profiles": [
         {
-            "commandline": "\"%USERPROFILE%\\scoop\\apps\\git\\current\\bin\\bash.exe\" --login -i",
+            "commandline": "\"%ProgramFiles%\\Git\\bin\\bash.exe\" --login -i",
             "guid": "{5b8b2d9f-5655-4d9a-a427-cf494de4e17a}",
             "hidden": false,
-            "icon": "%USERPROFILE%\\scoop\\apps\\git\\current\\ucrt64\\share\\git\\git-for-windows.ico",
-            "name": "Git Bash (Scoop)",
+            "icon": "%ProgramFiles%\\Git\\mingw64\\share\\git\\git-for-windows.ico",
+            "name": "Git Bash",
             "startingDirectory": "%USERPROFILE%"
         }
     ],
