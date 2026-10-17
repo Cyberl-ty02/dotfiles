@@ -148,7 +148,9 @@ Use `-SkipSync` only when updating the link or origin offline. The installer
 refuses to replace unrelated framework or private configuration directories;
 `-BackupExisting` preserves them before proceeding. PowerShell and Git Bash use
 small wrappers under `~/.local/bin`; Emacs and Doom discover their native
-default paths without shell-specific directory overrides.
+default paths without shell-specific directory overrides. The wrappers clear
+Git Bash's inherited `HOME` only for native Emacs processes so both shells use
+the same `%APPDATA%\.emacs.d` framework and `%APPDATA%\.config\doom` config.
 
 ## Windows Terminal and Yazi
 
