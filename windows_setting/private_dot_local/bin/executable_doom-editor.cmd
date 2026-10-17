@@ -8,4 +8,4 @@ if not errorlevel 1 (
     emacsclient.exe --tty %*
     exit /b %errorlevel%
 )
-call "%~dp0doom.cmd" emacs -- -nw %*
+emacs.exe --init-directory "%APPDATA%\.emacs.d" -nw %*
