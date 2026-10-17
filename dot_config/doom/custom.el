@@ -14,15 +14,17 @@
 
 (global-hl-line-mode 1)
 
-;; Let every terminal frame inherit its terminal emulator's background,
-;; including Doom's dashboard and Fundamental-mode buffers. Face attributes
-;; are frame-local, so graphical frames keep the complete Doom theme.
-(defun dotfiles/terminal-transparent-background (&optional frame)
-  (dolist (frame (if frame (list frame) (frame-list)))
-    (unless (display-graphic-p frame)
-      (dolist (face '(default fringe line-number line-number-current-line))
-        (when (facep face)
-          (set-face-attribute face frame :background "unspecified-bg"))))))
+;; Let every text-terminal frame inherit its terminal emulator's background,
+;; including Doom's dashboard and Fundamental-mode buffers. A TTY-specific
+;; override spec is recalculated for existing and future frames; graphical
+;; frames do not match it and retain the complete Doom theme.
+(defun dotfiles/terminal-transparent-background (&optional _frame)
+  (dolist (face '(default fringe hl-line line-number line-number-current-line))
+    (when (facep face)
+      (face-spec-set
+       face
+       '((((type tty)) . (:background "unspecified-bg")))
+       'face-override-spec))))
 
 (add-hook 'doom-load-theme-hook #'dotfiles/terminal-transparent-background)
 (add-hook 'window-setup-hook #'dotfiles/terminal-transparent-background)
