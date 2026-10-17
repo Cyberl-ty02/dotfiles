@@ -14,17 +14,19 @@
 
 (global-hl-line-mode 1)
 
-;; Preserve Doom's normal dashboard/theme, but let terminal editing buffers use
-;; the terminal emulator's own background. Face remapping is buffer-local, so
-;; this does not mutate Doom themes or graphical frames.
-(defun dotfiles/terminal-editor-background ()
-  (unless (display-graphic-p)
-    (dolist (face '(default fringe line-number line-number-current-line))
-      (when (facep face)
-        (face-remap-add-relative face :background "unspecified-bg")))))
+;; Let every terminal frame inherit its terminal emulator's background,
+;; including Doom's dashboard and Fundamental-mode buffers. Face attributes
+;; are frame-local, so graphical frames keep the complete Doom theme.
+(defun dotfiles/terminal-transparent-background (&optional frame)
+  (dolist (frame (if frame (list frame) (frame-list)))
+    (unless (display-graphic-p frame)
+      (dolist (face '(default fringe line-number line-number-current-line))
+        (when (facep face)
+          (set-face-attribute face frame :background "unspecified-bg"))))))
 
-(dolist (hook '(conf-mode-hook prog-mode-hook text-mode-hook))
-  (add-hook hook #'dotfiles/terminal-editor-background))
+(add-hook 'doom-load-theme-hook #'dotfiles/terminal-transparent-background)
+(add-hook 'window-setup-hook #'dotfiles/terminal-transparent-background)
+(add-hook 'after-make-frame-functions #'dotfiles/terminal-transparent-background)
 
 ;; Windows editor launchers use emacsclient when a GUI instance is already
 ;; running. Keep the server local to Windows; Linux sessions retain their
