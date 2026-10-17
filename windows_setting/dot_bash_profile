@@ -40,6 +40,7 @@ unset dotfiles_bin
 if command -v doom-editor.cmd >/dev/null 2>&1; then
     export EDITOR=doom-editor.cmd VISUAL=doom-editor.cmd GIT_EDITOR=doom-editor.cmd
     doom() { doom.cmd "$@"; }
+    emacs() { doom.cmd emacs -- "$@"; }
     alias e=doom-emacs.cmd
     alias vi=doom-editor.cmd
     alias vim=doom-editor.cmd

@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; This is Doom's default theme. In particular, keep the dashboard themed;
-;; terminal transparency is applied only to editing buffers in custom.el.
+;; This is Doom's default theme. Terminal frames inherit their emulator's
+;; background, while graphical frames retain the complete theme.
 (setq doom-theme 'doom-one)
 
 ;; Use the installed Nerd Font in GUI frames so Doom's private-use glyphs
