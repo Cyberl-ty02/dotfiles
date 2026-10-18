@@ -19,7 +19,10 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 `x11-base/xlibre-drivers`。`x11-base/xwayland` 是独立兼容服务器且仍被
 `sonic-win` 依赖，因此保留。
 
-`dolphin` 与 `plasma-pa` 使用 SonicDE overlay 的实现。以下 KDE 应用没有
+文件管理器、音量组件和分区管理器分别显式选择 `sonic-ecco`、
+`sonic-audio-applet-pulse` 与 `sonic-partition-manager`；overlay 提供的
+`dolphin`、`plasma-pa`、`partitionmanager` dummy 仅用于满足旧包名依赖，
+不再作为 world 目标。以下 KDE 应用没有
 等价 SonicDE 替代，继续作为显式 world 包保留：`ark`、`filelight`、
 `gwenview`、`kwalletmanager`、`yakuake`、`discover` 和 `print-manager`。
 `sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换。
