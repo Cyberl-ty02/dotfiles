@@ -1,4 +1,4 @@
-app-admin/chezmoi-bin
+app-admin/chezmoi
 app-admin/doas
 app-editors/emacs
 app-eselect/eselect-repository
