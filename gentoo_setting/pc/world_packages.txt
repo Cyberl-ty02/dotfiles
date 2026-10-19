@@ -1,4 +1,4 @@
-app-admin/chezmoi-bin
+app-admin/chezmoi
 app-admin/doas
 app-admin/eclean-kernel
 app-admin/sysklogd
