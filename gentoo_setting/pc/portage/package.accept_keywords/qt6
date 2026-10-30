@@ -1,6 +1,7 @@
 # Follow the testing Qt revisions required by the KDE, SonicDE, and Krita graph.
 dev-qt/qt5compat ~amd64
 dev-qt/qtbase ~amd64
+dev-qt/qtcharts ~amd64
 dev-qt/qtconnectivity ~amd64
 dev-qt/qtdeclarative ~amd64
 dev-qt/qtimageformats ~amd64
