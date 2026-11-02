@@ -6,7 +6,7 @@
 
 ## Gentoo
 
-- `gentoo_setting/wsl/`：WSL2 Gentoo，使用 GCC，侧重 CLI/开发与 WSLg。
+- `gentoo_setting/wsl/`：WSL2 Gentoo，以 Clang/LLVM 为主并保留 GCC 回退，侧重 CLI/开发与 WSLg。
 - `gentoo_setting/pc/`：实体 PC Gentoo，使用 Clang/LLVM，并包含桌面、NVIDIA 与 Secure Boot 配置。
 - `gentoo_setting/manifests/`：按角色拆分的可选软件清单，不会自动安装。
 - `gentoo_setting/scripts/`：只做显式预览、部署和验证的小型辅助脚本。
