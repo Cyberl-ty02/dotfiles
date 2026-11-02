@@ -61,6 +61,26 @@ tools, recovery media, and niche applications are not automatically reproduced.
 Web development keeps npm from the winget-managed Node.js LTS package and Bun
 from Scoop. pnpm and Yarn are intentionally omitted.
 
+### Scoop uv persistence
+
+Scoop 0.11.16 and later stores uv's cache, managed Python installations, and
+installed tools under `~/scoop/persist/uv`. The Scoop manifest sets the
+corresponding `UV_*` environment variables and may print a migration note after
+an upgrade. The note requires action only when an older `%LOCALAPPDATA%\uv` or
+`%APPDATA%\uv` directory contains runtime data from before the migration.
+
+The managed `%APPDATA%\uv\uv.toml` in this source is still the documented
+Windows user-configuration location and must remain there. It is configuration,
+not runtime data, so it should not be moved into Scoop's persistence directory.
+Use these commands to inspect the active locations after an upgrade:
+
+```powershell
+uv cache dir
+uv python dir
+uv tool dir
+uv tool list
+```
+
 ## UniGetUI integration
 
 UniGetUI remains an optional inventory and recovery layer, not a chezmoi

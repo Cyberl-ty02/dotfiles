@@ -1,3 +1,7 @@
+# This user configuration stays at %APPDATA%\uv\uv.toml. Scoop stores uv's
+# cache, managed Python installations, and tools separately under
+# ~/scoop/persist/uv through UV_* environment variables.
+#
 # uv consults this index before its built-in PyPI index, which remains the
 # fallback if the domestic mirror does not contain a package.
 [[index]]
