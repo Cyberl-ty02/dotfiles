@@ -1,3 +1,10 @@
+From: Gentoo local configuration
+Subject: [PATCH] install Wayland find modules required by remaining Qt/KDE clients
+
+SonicDE 6.31.0 still ships these helpers but omits them from the install list.
+Keep them available for consumers outside the X11-only desktop fork.
+Reviewed against the upstream 6.31.0 find-modules/CMakeLists.txt.
+
 --- a/find-modules/CMakeLists.txt
 +++ b/find-modules/CMakeLists.txt
 @@ -30,6 +30,7 @@ install(FILES

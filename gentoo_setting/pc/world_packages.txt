@@ -30,7 +30,6 @@ dev-db/postgresql
 dev-java/openjdk-bin
 dev-lang/bun-bin
 dev-lang/rust-bin
-dev-libs/libei
 dev-python/uv
 dev-util/clinfo
 dev-util/nvidia-cuda-toolkit
@@ -44,7 +43,6 @@ kde-apps/gwenview
 kde-apps/kwalletmanager
 kde-apps/yakuake
 kde-plasma/discover
-kde-plasma/print-manager
 mail-client/thunderbird
 media-fonts/nerdfonts
 media-fonts/noto
@@ -67,6 +65,7 @@ sonicde-base/sonic-audio-applet-pulse
 sonicde-base/sonic-desktop-interface
 sonicde-base/sonic-ecco
 sonicde-base/sonic-partition-manager
+sonicde-base/sonic-print-management
 sonicde-base/sonicde-meta
 sys-apps/fd
 sys-apps/flatpak

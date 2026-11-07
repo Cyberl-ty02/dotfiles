@@ -23,6 +23,7 @@ sh -n "$settings/scripts/bootstrap-user.sh"
 sh -n "$settings/scripts/deploy-doom.sh"
 sh -n "$settings/scripts/sync-vscodium.sh"
 sh -n "$settings/scripts/verify.sh"
+bash -n "$settings/scripts/upgrade-sonicde.sh"
 bash -n "$repo_root/dot_bashrc"
 zsh -n "$repo_root/dot_zshrc"
 

@@ -1,0 +1,3 @@
+# rEFInd 0.14.2-r4 requires <sys-boot/gnu-efi-4.0.0.
+# Review this guard when the rEFInd dependency is updated.
+>=sys-boot/gnu-efi-4.0.0

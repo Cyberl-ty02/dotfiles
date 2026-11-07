@@ -14,11 +14,18 @@ PC 与 WSL 共用的用户级开发工具国内镜像已经迁入仓库根目录
 | `../../dot_pixi/config.toml` | `~/.pixi/config.toml` | Pixi Conda and PyPI mirrors |
 
 开发工具配置优先使用 CERNET 高校联合镜像。Portage distfiles 采用 USTC、
-华为、阿里、官方和 TUNA 的顺序；TUNA 因 Git 同步可能排队而仅作末级备用，
+华为、阿里、TUNA 和官方的顺序，全部国内镜像优先于官方 CDN；
 CERNET 当前会把部分请求转至连接超时的参与镜像，因此只保留为 Portage Git
-备用。Go Proxy 因 CERNET 当前未提供兼容端点，
+备用。PC 的 gentoo-zh 使用已核验支持浅克隆的南京大学镜像；未核验国内镜像的
+GURU/SonicDE/XLibre overlay 保留上游地址，不采用来源不明的镜像。
+Go Proxy 因 CERNET 当前未提供兼容端点，
 按华为、阿里、官方和源码直连的顺序回退。这里只能存放公开 URL，
 不得加入 registry token、密码或私有源凭据。
+
+PC 升级时可通过 `SONICDE_OFFICIAL_SOURCES=1` 调用
+`scripts/upgrade-sonicde.sh`，仅在该进程内将主树、gentoo-zh 与 distfiles
+改为官方地址，保留签名校验；磁盘上的日常默认仍为国内镜像。
+Gentoo-Zh 镜像依据：https://gentoozh.org/en/mirrorlist/ 。
 
 临时绕过镜像时，优先使用工具自己的命令行参数或环境变量：
 

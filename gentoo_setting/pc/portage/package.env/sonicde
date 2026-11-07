@@ -1,15 +1,12 @@
 # Current Clang/mold build exceptions for SonicDE and related desktop packages.
 kde-apps/kldap no_lto
-kde-plasma/bluedevil no_lto
-kde-plasma/kdecoration no_lto
-kde-plasma/plasma-pa no_lto
 media-gfx/krita no_lto
-media-libs/pulseaudio-qt no_lto
 net-p2p/ktorrent no_lto
-# move sonicde-base/sonic-desktop sonicde-base/sonic-desktop-interface
+sonicde-base/sonic-audio-applet-pulse no_lto
+sonicde-base/sonic-bluetooth-runtime no_lto
+sonicde-base/sonic-decoration no_lto
 sonicde-base/sonic-desktop-interface no_lto
-# move sonicde-base/sonic-meta sonicde-base/sonicde-meta
-sonicde-base/sonicde-meta no_lto
+sonicde-base/sonic-pulseaudio-library no_lto
 sonicde-base/sonic-win no_lto
 sonicde-base/sonic-workspace no_lto
 x11-drivers/xf86-input-libinput no_lto
