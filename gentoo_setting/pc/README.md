@@ -5,12 +5,20 @@
 
 ## 桌面包策略
 
-SonicDE 6.7.5 替换 Plasma 的桌面核心：`plasma-desktop`、
+2026-11-07 已完成 SonicDE 6.8、XLibre 25.1.11 和 NVIDIA 620.70.06 的安装，
+完整依赖预演剩余 0 个更新。用户重启后已核验 X11 会话、SonicDE 合成器、
+NVIDIA 620、音频、输入法与 portal 接口。
+迁移执行记录与回退方案见
+[`sonicde-6.8-upgrade.md`](sonicde-6.8-upgrade.md)。
+
+SonicDE 替换 Plasma 的桌面核心：`plasma-desktop`、
 `kwin`、`plasma-workspace` 和 `kinfocenter` 分别由
 `sonic-desktop-interface`、`sonic-win`、`sonic-workspace` 和
 `sonic-system-info` 提供。SonicDE overlay 的同名 dummy 包用于满足仍引用
-KDE 包名的依赖；其他 KDE Frameworks、Plasma 组件和 KDE 应用继续使用
-Gentoo ebuild。
+KDE 包名的依赖。`package.mask/sonicde-providers` 为 overlay 已提供替代的
+Frameworks、Plasma 和应用组件屏蔽 `::gentoo` 实现，避免新版官方包覆盖
+兼容包；未提供替代的 KDE 应用和库继续使用 Gentoo ebuild。
+`plasma68_x11` 只屏蔽 Gentoo Plasma 6.8+，允许 SonicDE 6.8 兼容包。
 
 XLibre 是与 SonicDE 配套使用的 X11 显示服务器，但不是 SonicDE 的硬依赖。
 本配置同时启用两个 overlay：`x11-base/xlibre-server` 替代 Gentoo 的
@@ -22,9 +30,10 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 文件管理器、音量组件和分区管理器分别显式选择 `sonic-ecco`、
 `sonic-audio-applet-pulse` 与 `sonic-partition-manager`；overlay 提供的
 `dolphin`、`plasma-pa`、`partitionmanager` dummy 仅用于满足旧包名依赖，
-不再作为 world 目标。以下 KDE 应用没有
+不再作为 world 目标。打印管理器也改为显式选择 `sonic-print-management`，
+`print-manager` 仅保留为兼容依赖。以下 KDE 应用没有
 等价 SonicDE 替代，继续作为显式 world 包保留：`ark`、`filelight`、
-`gwenview`、`kwalletmanager`、`yakuake`、`discover` 和 `print-manager`。
+`gwenview`、`kwalletmanager`、`yakuake` 和 `discover`。
 `sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换。
 登录管理器选择 Sonic Login Manager。由于 XLibre 在 OpenRC 环境中依赖
 `gui-libs/display-manager-init`，本地 Portage 补丁移除了 `soniclogin` 对
@@ -35,12 +44,13 @@ X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy�
 SonicDE 的 X11 会话出于兼容性仍声明 `XDG_CURRENT_DESKTOP=KDE`。用户级
 `xdg-desktop-portal/portals.conf` 明确选择 SonicDE portal 后端，同时保留
 KWallet secret portal 和 Sonic Workspace notification portal。Sonic overlay
-当前未为 portal 声明其构建时必需的 `dev-libs/libei`，因此将其显式保留在
-desktop manifest 和 PC world 中，避免再次只剩 preserved library 而无法重建。
+6.8 的 portal ebuild 已声明 `dev-libs/libei` 依赖，现已移除此前缺失依赖时添加的
+显式 world/manifest 目标，库继续由 portal 的依赖自动保留。
 
 ## 应用
 
-先备份并安装 Portage 配置，然后同步所有仓库：
+以下为首次部署说明；现有机器的 6.8 迁移应使用上述专项步骤，
+保留 `/etc/portage` 中的主机专用文件。先备份并安装 Portage 配置，然后同步所有仓库：
 
 ```bash
 doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
@@ -54,7 +64,10 @@ doas emerge --sync
 
 主树日常通过 USTC Git 镜像浅克隆并增量同步。CERNET 联合入口作为第一备用，
 但部分成员镜像只支持 Git dumb HTTP，启用时必须同时设置 `sync-depth = 0`，
-首次同步会下载完整历史。官方 Git 排在 TUNA 前面，避免 TUNA 同步排队影响更新。
+首次同步会下载完整历史。TUNA 作为额外国内备用，官方 Git 排在国内源之后。
+gentoo-zh 日常使用已验证支持浅克隆的南京大学镜像。升级时需要直连官方源，
+可对升级脚本设置 `SONICDE_OFFICIAL_SOURCES=1`；该开关只影响当前进程，
+不会改写磁盘上的国内默认地址。
 上面的迁移命令会保留非 Git 主树并让 Portage 重新克隆；
 不能仅改 `sync-type` 后继续在原 rsync 目录更新。Git 同步会使用由 Portage 包管理的本地
 Gentoo Release Key 验证提交签名，并按 Portage 默认策略刷新密钥以发现撤销状态，

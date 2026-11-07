@@ -20,3 +20,4 @@ dev-qt/qttranslations ~amd64
 dev-qt/qtwayland ~amd64
 dev-qt/qtwebchannel ~amd64
 dev-qt/qtwebengine ~amd64
+dev-qt/qtvirtualkeyboard ~amd64
