@@ -7,3 +7,7 @@ sys-kernel/gentoo-sources
 
 # Keep distribution-kernel virtuals aligned with the selected XanMod provider.
 virtual/dist-kernel::gentoo
+
+# The synchronized 7.3 virtuals only offer masked Gentoo CJK providers;
+# XanMod currently supplies 7.2.14. Review together with the next XanMod update.
+>=virtual/dist-kernel-7.3::gentoo-zh

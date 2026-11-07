@@ -1,9 +1,0 @@
-# SonicDE supplies these forked desktop components. Block their Gentoo
-# counterparts so Portage consistently selects the SonicDE packages/dummies.
-kde-plasma/kinfocenter::gentoo
-kde-plasma/kwin::gentoo
-kde-plasma/kwin-x11::gentoo
-kde-plasma/plasma-desktop::gentoo
-kde-plasma/plasma-login-sessions::gentoo
-kde-plasma/plasma-meta::gentoo
-kde-plasma/plasma-workspace::gentoo

@@ -1,1 +1,2 @@
-virtual/dist-kernel::gentoo-zh
+# Only unmask the virtual provided by the selected XanMod release.
+=virtual/dist-kernel-7.2.14-r100::gentoo-zh

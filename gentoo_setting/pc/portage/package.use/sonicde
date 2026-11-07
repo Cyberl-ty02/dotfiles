@@ -6,21 +6,24 @@ dev-qt/qtbase concurrent cups dbus gui icu libinput libproxy network opengl sql 
 dev-qt/qtdeclarative opengl widgets
 dev-qt/qttools opengl qdbus qml widgets
 kde-frameworks/kconfig qml
-kde-frameworks/kglobalaccel X
-kde-frameworks/kguiaddons wayland
-kde-frameworks/kidletime wayland
 kde-frameworks/kimageformats avif
 kde-frameworks/kio acl
-kde-frameworks/kwindowsystem wayland X
+kde-frameworks/kwindowsystem X
 kde-frameworks/prison qml
 kde-frameworks/sonnet qml
 kde-plasma/discover firmware flatpak
 kde-plasma/kwin lock -systemd
 kde-plasma/kwin-x11 lock
-kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
-# move sonicde-base/sonic-meta sonicde-base/sonicde-meta
+kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
 sonicde-base/sonicde-meta bluetooth crash-handler crypt display-manager elogind kwallet networkmanager smart thunderbolt wallpapers -browser-integration -firewall -pulseaudio -systemd -webengine
 sonicde-base/sonic-win lock -systemd
-sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast X -systemd
+sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
 sonicde-frameworks/sonic-frameworks-image-formats avif
 x11-themes/gentoo-artwork pixmaps -grub
+
+# The compatibility package must match sonic-power-management[+filecaps].
+kde-plasma/powerdevil filecaps
+sonicde-frameworks/sonic-frameworks-settings qml
+sonicde-frameworks/sonic-frameworks-io acl
+sonicde-frameworks/sonic-frameworks-barcode qml
+sonicde-frameworks/sonic-frameworks-spell-check qml
