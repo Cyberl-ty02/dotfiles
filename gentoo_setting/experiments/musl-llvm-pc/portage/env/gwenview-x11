@@ -1,0 +1,2 @@
+# Use the upstream switch for Wayland-only gesture protocols on SonicDE/X11.
+MYCMAKEARGS="${MYCMAKEARGS-} -DGWENVIEW_NO_WAYLAND_GESTURES=ON"

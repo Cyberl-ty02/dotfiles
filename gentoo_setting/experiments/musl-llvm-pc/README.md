@@ -198,6 +198,13 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 目标下关闭自身 Wayland 后端；LevelDB 关闭 tcmalloc。后者避免 Fcitx 动态加载
 Rime 时触发 musl initial-exec TLS 错误，不使用全局 `LD_PRELOAD` 绕过问题。
 
+软件补齐批次还为 Yakuake 26.04.3 关闭可选 Wayland 后端，避免拉入与 SonicDE
+ECM 不兼容的 KWayland；新依赖计划通过，实际安装仍在队列中。Gwenview 26.04.3
+通过版本限定的 `package.env` 使用上游 `GWENVIEW_NO_WAYLAND_GESTURES=ON`，
+仅关闭 Wayland 专用手势协议。只读挂载真实 musl 根的独立 CMake 检查中，默认配置
+因缺少 WaylandProtocols 失败，X11 配置成功；正常 Portage 构建和运行尚待完成。
+这些应用配置保留全局 Qt/Wayland 客户端库，不修改 SonicDE ECM 或 Qt 提供的模块。
+
 [`patchsets/`](patchsets/) 按软件、适用版本及修改层级保存补丁，不维护完整本地
 overlay 副本。各组记录了验证状态、应用检查和上游修复后的移除条件：
 
