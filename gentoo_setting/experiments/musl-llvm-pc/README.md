@@ -18,6 +18,7 @@ Windows 配置不在本次变更范围内。
 | ICU 中文日期、人民币、排序、GB18030 转换 | 独立程序通过 |
 | 原生 CUDA 编译和 RTX 4060 计算 | Clang、libc++ 与小补丁通过最小 kernel；不是完整 CUDA SDK/PyTorch 验收 |
 | NVIDIA 开源内核模块 | 五个模块在 musl/Clang 下编译通过；尚未安装、签名、加载新模块 |
+| NVIDIA 原生图形兼容 | 私有补丁加载器下 EGL 1.5 / OpenGL 4.6 离屏渲染及像素回读通过；未验证桌面、PRIME 或外接显示 |
 | Flatpak 1.18.4 | musl 原生构建完成 |
 | 微信 4.1.13.26 | 中文登录界面显示通过，未登录；输入法、音视频待验证 |
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
@@ -112,6 +113,12 @@ kwriteconfig6 --file plasma-localerc --group Formats --key LANG zh_CN.UTF-8
 kwriteconfig6 --file plasma-localerc --group Translations --key LANGUAGE zh_CN:en_US
 ```
 
+切换前可先用 `cp -a ~/.config/plasma-localerc ~/.config/plasma-localerc.before-musl`
+保存已有用户配置；文件不存在时跳过备份。若要切换英文桌面，将上面两项分别改为
+`en_US.UTF-8` 和 `en_US`，然后退出桌面重新登录。系统脚本的备份只覆盖系统文件，
+不会代替这份用户配置备份。若语言仍不符合预期，检查 `locale` 输出中的 `LC_*`、
+shell 启动文件中的 `LANG` / `LANGUAGE`，以及系统设置中各项格式覆盖。
+
 首次登录检查：
 
 ```bash
@@ -140,6 +147,14 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 
 gcompat 不是完整 glibc。NVIDIA 计算、原生图形库、PRIME 和外接显示分别验收；
 不能从 `nvidia-smi` 或最小 CUDA kernel 通过推导整个显示栈通过。
+
+最新图形实验参考 Chimera 的 [NVIDIA 草案 PR](https://github.com/chimera-linux/cports/pull/6531)，
+固定到 `c26532983c3b811c2d6b310058761bba39491bbe`，仅在私有目录构建带 IFUNC/TLS
+补丁的 musl 加载器、gcompat 和兼容 shim，并修改驱动库的实验副本。
+原系统及实验根的默认 libc 均未替换。在本机 RTX 4060 / 620.70.06 上，创建
+EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组仍报不支持的
+重定位类型 37。这个上游实现仍是草案，本地也尚未打包成可维护的安装方案。
+该结果不覆盖 XLibre 驱动加载、显示输出、PRIME、休眠恢复或 Vulkan。
 
 ## 新根与回退
 
