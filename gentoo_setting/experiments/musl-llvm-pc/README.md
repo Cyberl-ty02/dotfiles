@@ -13,10 +13,16 @@ ClamTk 6.18-r2 已安装，该批次结束时新根已通过 Portage 登记 32 �
 正、负样本扫描通过，正式病毒库更新仍待验收。ClamTk 的版本限定中文补丁已重建，
 私有显示中标题和各组控件的中文绘制通过。
 
-其余软件已逐项预演，43 项原生软件的合并预演通过，当前正在构建。Firefox／Thunderbird
+其余软件已逐项预演；软件补齐批次连同旧功能恢复，共 48 个直接选择项的合并预演通过，
+当前正在构建。其中包括 PostgreSQL LLVM/JIT、NetworkManager iwd、Btrfs udev 和
+XLibre Xvfb，最终安装结果仍须逐项核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
+修复，并通过全新根沙箱编译安装，见[补丁组](patchsets/lowdown-3.1.1/)。Firefox／Thunderbird
 加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后预演不再选择 GCC；大型应用分批构建。
 KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ、LocalSend、FlClash
 的 glibc 预编译界面另行验证，不把通过关键词检查当作 ABI 兼容已经通过。
+
+本轮下载对国内镜像临时使用 `no_proxy` 直连，其余地址保留本地代理；
+默认镜像顺序仍是国内优先。路由调整不关闭 Manifest 或二进制包签名校验。
 
 Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl 版 C++ 运行库。
 复用已验签的 Alpine 约 2.7MiB `libstdc++`，在私有目录中通过了 JavaScript、中文

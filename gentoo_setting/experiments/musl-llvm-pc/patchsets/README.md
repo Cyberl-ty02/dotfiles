@@ -9,6 +9,8 @@
 | [Sonic 图像编辑](sonic-quick-image-editor/) | 0.7.0.1；SonicDE overlay `a5e6600f3dbd67b02ca61a095e036c8a908fe0cc` | 全新 musl 根使用配方补丁和用户源码补丁编译安装通过 | 配方声明 Highway，源码改用可用的 CMake 包 |
 | [Sonic 登录管理器](sonic-login-manager/) | 6.8.0.3 源码 | 应用/撤回检查及 musl/Clang 编译安装通过 | 头文件直接包含 POSIX 类型定义 |
 | [ClamTk 翻译目录](clamtk-6.18/) | 6.18-r2 源码 | 独立应用/撤回、用户补丁重建和私有显示中文界面通过 | 程序显式绑定正确的 gettext 目录 |
+| [lowdown 配置宏](lowdown-3.1.1/) | 3.1.1 源码 | 上游修复回补；应用/撤回及全新根沙箱编译安装通过 | 目标版本包含上游 cc78c692 |
+| [ipset 导出表](ipset-7.24/) | 7.24-r1 源码 | 本地补丁；全新根沙箱编译安装及帮助命令通过 | 上游导出表不再要求不存在的符号 |
 | [CUDA 宿主数学调用](cuda-13.4/) | 本轮 CUDA 13.4 CRT 头文件 | 原生最小 kernel 通过，完整 SDK 未验收 | 头文件不再依赖这些 glibc 私有数学入口，或官方支持本目标 |
 | [gcompat 加载器路径](gcompat-1.1.0/) | GURU gcompat 1.1.0 ebuild | 配方草案；对应手工路径已验证，完整 ebuild 未验收 | 配方提供正确的 amd64 加载器路径且完成安装验证 |
 
