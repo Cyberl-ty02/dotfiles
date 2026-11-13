@@ -24,6 +24,7 @@ Windows 配置不在本次变更范围内。
 | 微信 4.1.13.26 | 中文登录界面显示通过，未登录；输入法、音视频待验证 |
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
 | root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
+| 全新根安装后检查 | 中文 locale、上海时区、音量界面和系统级 Flatpak 主包通过；新根 VSCodium 实际提交中文通过 |
 | SonicDE / XLibre / Rime | 全新根安装及私有显示中的桌面 shell、窗口管理器、中文绘制和 PipeWire 检查通过，尚未真机登录 |
 | 中文输入 | 私有 X11 显示中，原生 Qt 6、GTK 3 及 Flatpak VSCodium 均通过 Fcitx 5/Rime 实际键入并提交“你好”；其他应用仍需检查 |
 | 全新 stage3 安装基础 | 默认沙箱与 UID 250 下完整桌面安装通过，共 926 个包；Pillow truetype 已恢复，未引入 GCC |
@@ -67,6 +68,10 @@ bash scripts/install-flatpak-apps.sh --user
 再次运行默认命令可恢复国内缓存。官方 GPG 校验保持启用，代理沿用调用环境。
 已经选择系统级安装的机器，不必再用 `--user` 重复安装相同应用。
 
+全新根也已运行系统级安装脚本并检查两个主包，VSCodium 通过实际 Fcitx/Rime
+中文输入。此次先复用了已校验的实验缓存，尚不代表从空缓存下载的全流程测试；
+主包部署、输入测试也不代替真实会话中的 Portal、音视频和全部扩展验收。
+
 清单只固定应用 ID。运行时、SDK、Locale、Mesa 和匹配的 NVIDIA 图形扩展由
 Flatpak 自动解析，不把本机 `620-70-06` 写成所有新机器的固定版本。
 VSCodium 当前采用 Freedesktop SDK 26.08，体积比普通运行时大，可能包含 glibc
@@ -89,7 +94,8 @@ bash scripts/configure-locale.sh --lang zh_CN.UTF-8 --timezone Asia/Shanghai
 脚本备份旧配置到 `/var/backups/locale-setup/`，配置 `/etc/env.d/02locale`、
 `/etc/timezone`、`/etc/localtime`，再执行 `env-update`。glibc 分支生成 locale，
 musl 分支不调用 `locale-gen`，也不复制 glibc 的 locale archive。
-该脚本已分别在真实 musl/glibc 根的独立配置夹中测试，不改当前桌面的语言。
+该脚本已分别在真实 musl/glibc 根的独立配置夹中测试，随后也在全新 musl 根
+实际配置通过，不改当前桌面的语言。
 
 切换本机登录默认语言为英文仍可保留上海时区：
 
@@ -198,8 +204,10 @@ GLib/HarfBuzz 后移除该临时设置，再按最终 USE 重建 Pillow。关闭
 全新根随后也通过独立 Xvfb、私有 D-Bus 和隔离用户配置下的桌面运行检查，
 窗口管理器与 shell 的进程、总线接口、中文绘制及 PipeWire 兼容套接字均通过。
 测试使用软件 QML、关闭合成，没有真实硬件设备或系统总线；不代表音频播放、
-登录管理器、Portal、显卡输出已经通过。原实验根的音量界面已补齐；新根的
-安装后补齐与系统配置检查另行记录，不能把两个根的结果混为一谈。
+登录管理器、Portal、显卡输出已经通过。新根的音量界面已补齐，保留 PipeWire
+服务端；中文 locale、上海时区和系统级 Flatpak 主包的安装后检查均已通过。
+针对构建日志的 libc++ 提示，也在私有显示中实际右键打开面板菜单，窗口管理器
+与 shell 保持运行；当前组合未复现该操作导致的崩溃，不据此保证其他菜单与会话稳定性。
 
 Gentoo musl profile 已屏蔽 `kde-plasma/powerdevil[filecaps]`。SonicDE 实现与
 兼容包也须保持一致，即 `sonicde-base/sonic-power-management -filecaps` 和
