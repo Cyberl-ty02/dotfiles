@@ -20,6 +20,7 @@ Windows 配置不在本次变更范围内。
 | NVIDIA 开源内核模块 | 五个模块在 musl/Clang 下编译通过；尚未安装、签名、加载新模块 |
 | NVIDIA 原生图形兼容 | 私有补丁加载器下 EGL 1.5 / OpenGL 4.6 离屏渲染及像素回读通过；未验证桌面、PRIME 或外接显示 |
 | Flatpak 1.18.4 | musl 原生构建完成 |
+| Flatpak NVIDIA 运行时 | 官方 glibc/NVIDIA 扩展的 CUDA 显存往返、EGL/OpenGL 离屏渲染通过；不代表应用全部 GPU 功能通过 |
 | 微信 4.1.13.26 | 中文登录界面显示通过，未登录；输入法、音视频待验证 |
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
 | root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
@@ -173,6 +174,16 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 `ipc-sandbox`、`network-sandbox`、`pid-sandbox` 配置下，源码安装官方 hello 通过，
 编译日志确认 UID/GID 250:250，安装后程序输出正确，未引入 GCC 或 glibc。
 这验证了安装基础，不表示完整桌面、新内核或真机启动已经通过。
+
+从这个全新根预演完整桌面时，仍会出现 GLib → docutils → Pillow → HarfBuzz →
+GLib 的引导循环。候选方案先临时设置 `dev-python/pillow -truetype`，安装
+GLib/HarfBuzz 后移除该临时设置，再按最终 USE 重建 Pillow。关闭后完整依赖预演
+通过，未计划引入 GCC、glibc、GNU Emacs 或 QtWebEngine；完整安装及恢复步骤
+尚待在该新根实际执行。不能把带临时开关的配置当作最终配置直接复制。
+
+Gentoo musl profile 已屏蔽 `kde-plasma/powerdevil[filecaps]`。SonicDE 实现与
+兼容包也须保持一致，即 `sonicde-base/sonic-power-management -filecaps` 和
+`kde-plasma/powerdevil -filecaps`；这与是否以 root 解压 stage3 是两回事。
 
 Btrfs 候选布局是在原文件系统中新增 `@musl`，保留原 `@`、`@home` 和原引导入口。
 子卷不是磁盘分区，不能把它重命名为 `/dev/nvme1n1p2`。先使用隔离用户配置，完成
