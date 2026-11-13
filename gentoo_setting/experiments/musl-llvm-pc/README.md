@@ -6,11 +6,22 @@
 Windows 配置不在本次变更范围内。
 
 桌面批次通过不代表旧 `world` 已全部迁移。逐项核对清单见
-[`world-migration.tsv`](world-migration.tsv)，记录本轮旧系统 91 个直接选择的当前去向；
-“待原生预演”表示尚未补齐，不能理解为不支持 musl。PostgreSQL、ClamAV、ClamTk
-尚未安装，正在补做依赖预演。PostgreSQL 软件安装、旧数据库转储恢复与校验分开进行；
-ClamAV 的签名更新与实际扫描也需单独验收。新根此前 `--oneshot` 安装留下空 `world`，
-正在用 Portage 登记已审核的软件选择，登记完成前不要运行 `depclean`。
+[`world-migration.tsv`](world-migration.tsv)，按批次检查点记录旧系统 91 个直接选择的去向；
+“待原生预演”表示尚未补齐，不能理解为不支持 musl。PostgreSQL 18.6、ClamAV 1.5.3、
+ClamTk 6.18-r2 已安装，该批次结束时新根已通过 Portage 登记 32 项软件选择。迁移验收期间不运行
+`depclean`。PostgreSQL 工具执行通过，未初始化或迁移数据库；ClamAV 自定义无害签名的
+正、负样本扫描通过，正式病毒库更新仍待验收。ClamTk 的版本限定中文补丁已重建，
+私有显示中标题和各组控件的中文绘制通过。
+
+其余软件已逐项预演，43 项原生软件的合并预演通过，当前正在构建。Firefox／Thunderbird
+加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后预演不再选择 GCC；大型应用分批构建。
+KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ、LocalSend、FlClash
+的 glibc 预编译界面另行验证，不把通过关键词检查当作 ABI 兼容已经通过。
+
+Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl 版 C++ 运行库。
+复用已验签的 Alpine 约 2.7MiB `libstdc++`，在私有目录中通过了 JavaScript、中文
+文本和人民币格式化测试，未安装 GCC 编译器或 glibc。此路线尚未打包进 Portage，
+不把私有测试通过写成主系统已经安装，也不全局修改 `LD_LIBRARY_PATH`。
 
 ## 实验基线与已验证范围
 
