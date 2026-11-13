@@ -1,0 +1,164 @@
+# Gentoo musl / LLVM PC 迁移实验
+
+**状态：进行中，尚未从新根真机启动。** 本目录是可回退的实验记录，不能当作
+已经完成的新机安装教程。现有 `pc/`、`manifests/desktop.txt` 和
+`manifests/nvidia.txt` 仍服务于原 glibc 系统；不要整棵复制到 musl stage3。
+Windows 配置不在本次变更范围内。
+
+## 实验基线与已验证范围
+
+本轮从官方 `stage3-amd64-musl-llvm-openrc-20261108T170107Z.tar.xz` 开始，
+已核对发布签名和 SHA512。对应 profile 是
+`default/linux/amd64/23.0/musl/llvm`，原生工具链为 Clang/LLVM、LLD 和 libc++。
+它仍是实验 profile，stage3 可下载不等于完整桌面已经可用。
+
+| 项目 | 当前结果 |
+| --- | --- |
+| musl 原生 UTF-8 文件名、内容、中文编码 | 通过 |
+| ICU 中文日期、人民币、排序、GB18030 转换 | 独立程序通过 |
+| 原生 CUDA 编译和 RTX 4060 计算 | Clang、libc++ 与小补丁通过最小 kernel；不是完整 CUDA SDK/PyTorch 验收 |
+| NVIDIA 开源内核模块 | 五个模块在 musl/Clang 下编译通过；尚未安装、签名、加载新模块 |
+| Flatpak 1.18.4 | musl 原生构建完成 |
+| 微信 4.1.13.26 | 中文登录界面显示通过，未登录；输入法、音视频待验证 |
+| VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
+| root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
+| SonicDE / XLibre / Rime | 依赖预演通过，源码构建中；尚未登录新桌面 |
+| 真机新根、Secure Boot、回退启动 | 未验证 |
+
+选定扩展为 Python、debugpy、Jupyter、Jupyter Renderers、Ruff、rust-analyzer、
+Tinymist 和 Office。扩展激活不代表 notebook kernel 执行、调试、所有语言服务、
+登录凭据或其余扩展全部通过。旧 glibc 版 Ruff、rust-analyzer、Tinymist 在当前
+gcompat 下崩溃，不能直接把旧扩展目录复制给原生 musl 编辑器。
+
+原生 musl 版 Ruff 的实际诊断、rust-analyzer/Tinymist 的最小 LSP 请求也已通过。
+这条原生工具路线与 Flatpak 内的 glibc 扩展路线分开验证，不混用库路径。
+
+## Flatpak 主包与一键安装
+
+主包清单在 [`scripts/flatpak-apps.txt`](scripts/flatpak-apps.txt)。当前默认：
+
+- `com.tencent.WeChat`
+- `com.vscodium.codium`
+
+腾讯会议 `com.tencent.wemeet` 尚待验证。`com.wps.Office` 是国际版，不能当作
+现有中文 WPS 12 的等价替代，因此二者暂不进入默认清单。
+
+先在目标系统安装 Flatpak 本体、CA 证书和字体。在博客式 root chroot 内执行：
+
+```bash
+bash scripts/install-flatpak-apps.sh --system
+```
+
+脚本在 root 下默认选择 `--system`，写入目标系统 `/var/lib/flatpak`，不依赖
+目标普通用户已登录桌面。先按安装指南准备 `/proc`、`/sys`、`/dev`、`/dev/pts`、
+网络、DNS、系统时间和代理。不要把当前受限测试环境的 bwrap 参数写入正常安装流程。
+
+只想为已登录的普通用户安装时执行：
+
+```bash
+bash scripts/install-flatpak-apps.sh --user
+```
+
+两种模式都支持 `--dry-run`。默认优先中科大缓存，临时使用官方源加 `--official`；
+再次运行默认命令可恢复国内缓存。官方 GPG 校验保持启用，代理沿用调用环境。
+已经选择系统级安装的机器，不必再用 `--user` 重复安装相同应用。
+
+清单只固定应用 ID。运行时、SDK、Locale、Mesa 和匹配的 NVIDIA 图形扩展由
+Flatpak 自动解析，不把本机 `620-70-06` 写成所有新机器的固定版本。
+VSCodium 当前采用 Freedesktop SDK 26.08，体积比普通运行时大，可能包含 glibc
+开发工具；这不等于向 musl 主系统安装 GCC。Flatpak 的库不能满足宿主 Portage
+依赖。此前在同一 musl 根中成功 emerge 的库，由 Portage 按版本、USE 和 ABI 复用。
+
+更新时按所选范围执行 `flatpak update --system` 或 `flatpak update --user`。
+首次登录后检查应用入口、文件选择、字体、Fcitx、音频、摄像头、共享屏幕和 GPU。
+安装脚本不在 chroot 中启动这些服务或 GUI。
+
+## locale 与时区
+
+目标 Gentoo 根内以 root 执行，支持 musl 和 glibc 两种 profile：
+
+```bash
+bash scripts/configure-locale.sh --dry-run
+bash scripts/configure-locale.sh --lang zh_CN.UTF-8 --timezone Asia/Shanghai
+```
+
+脚本备份旧配置到 `/var/backups/locale-setup/`，配置 `/etc/env.d/02locale`、
+`/etc/timezone`、`/etc/localtime`，再执行 `env-update`。glibc 分支生成 locale，
+musl 分支不调用 `locale-gen`，也不复制 glibc 的 locale archive。
+该脚本已分别在真实 musl/glibc 根的独立配置夹中测试，不改当前桌面的语言。
+
+切换本机登录默认语言为英文仍可保留上海时区：
+
+```bash
+bash scripts/configure-locale.sh --lang en_US.UTF-8 --timezone Asia/Shanghai
+unset LC_ALL
+source /etc/profile
+```
+
+重登后桌面和用户 D-Bus 才会继承新环境。仅对一个命令切换语言：
+
+```bash
+env LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 date
+LC_ALL=C.UTF-8 emerge --sync
+```
+
+不要把上面的临时 `LC_ALL` 写进所有登录会话。已有 SonicDE 用户配置
+`~/.config/plasma-localerc` 也可能覆盖系统默认语言；在新系统的目标普通用户下
+检查系统设置中的区域与语言，不直接覆盖共享旧家目录。必要时先备份该文件，
+再按系统实际提供的 `kwriteconfig6` 修改对应组：
+
+```bash
+kwriteconfig6 --file plasma-localerc --group Formats --key LANG zh_CN.UTF-8
+kwriteconfig6 --file plasma-localerc --group Translations --key LANGUAGE zh_CN:en_US
+```
+
+首次登录检查：
+
+```bash
+locale
+date +'%F %T %Z'
+fc-match 'sans-serif:lang=zh-cn'
+fc-match emoji
+flatpak run --command=sh com.vscodium.codium -c 'locale -a; locale'
+```
+
+`LANG=zh_CN.UTF-8` 被接受不代表 musl 拥有 glibc 同等的日期、货币、排序或
+iconv 数据。当前原生 libc 的中文格式化和 GB18030 转换存在缺口，ICU 独立验证
+通过；应用是否使用 ICU、输入法是否实际输入中文，仍须逐项检查。
+Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-languages` 补充中文和
+英文，不手工指定语言扩展子路径。它的中文分片是 `/zh`，不是 `/zh_CN`。
+
+## LLVM 构建与补丁边界
+
+[`portage/`](portage/) 中的 Darts 配置只给旧版本选择 Clang C++14，以兼容其
+`std::random_shuffle`，不回退 GCC。先合并到目标 Portage 配置，避免覆盖自定义文件。
+
+[`patches/`](patches/) 保留两个小型实验补丁：
+
+- gcompat amd64 加载器路径修正：手工路径已验证，完整 ebuild 草案尚未单独验收。
+- CUDA 13.4 宿主数学调用：原生最小 kernel 通过，尚未覆盖完整 SDK 和数学边界。
+
+gcompat 不是完整 glibc。NVIDIA 计算、原生图形库、PRIME 和外接显示分别验收；
+不能从 `nvidia-smi` 或最小 CUDA kernel 通过推导整个显示栈通过。
+
+## 新根与回退
+
+现有实验根曾非特权解压，并调整过 Portage 用户和嵌套沙箱，仅用于验证。
+正式新根要从已验签 stage3 以正确权限重新建立，恢复标准 Portage 用户、目录归属
+和沙箱，再复用已审核配置与受控本地构建包，不直接把实验目录改名后启动。
+
+Btrfs 候选布局是在原文件系统中新增 `@musl`，保留原 `@`、`@home` 和原引导入口。
+子卷不是磁盘分区，不能把它重命名为 `/dev/nvme1n1p2`。先使用隔离用户配置，完成
+多次启动、桌面使用、更新、备份与回退验证，再单独决定旧根清理范围。
+
+本轮不默认安装 GNU Emacs。Neomacs 仍是待验证候选；现有系统和 Windows 的
+Emacs 配置保留。若最终保留独立 glibc 根，应明确它需要单独创建、更新、配置用户
+与会话接口，不是安装一个 chroot 软件包便自动完成。
+
+## 资料
+
+- [Gentoo musl 项目](https://wiki.gentoo.org/wiki/Project:Musl)
+- [Flatpak 基本概念](https://docs.flatpak.org/en/latest/basic-concepts.html)
+- [中科大 Flathub 缓存](https://mirrors.ustc.edu.cn/help/flathub.html)
+- [Chimera NVIDIA/musl 研究](https://chimera-linux.org/news/2026/11/musl-nvidia.html)
+- [Neomacs](https://github.com/eval-exec/neomacs)

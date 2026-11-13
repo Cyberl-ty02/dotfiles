@@ -1,0 +1,3 @@
+# Application IDs only; runtimes/drivers are resolved by Flatpak.
+com.tencent.WeChat
+com.vscodium.codium

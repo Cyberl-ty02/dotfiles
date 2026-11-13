@@ -3,6 +3,10 @@
 本目录保存不能由用户级 chezmoi 直接部署的 Gentoo 系统策略，以及用于重建
 机器的说明和角色清单。仓库根目录才是 PC/WSL 共用的 chezmoi source。
 
+musl/LLVM PC 的独立迁移记录、chroot 可用的 Flatpak 安装及 locale 脚本见
+[`experiments/musl-llvm-pc/`](experiments/musl-llvm-pc/)。该路线尚未完成新根真机
+启动验收，不能用它替换已运行机器的 `pc/` 配置或整棵 `/etc/portage`。
+
 ## 软件源同步的 locale
 
 PC/WSL 各自的 `eix-sync.conf` 部署到 `/etc/eix-sync.conf`。其中的 eix
