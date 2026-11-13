@@ -25,9 +25,11 @@ KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ�
 默认镜像顺序仍是国内优先。路由调整不关闭 Manifest 或二进制包签名校验。
 
 Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl 版 C++ 运行库。
-复用已验签的 Alpine 约 2.7MiB `libstdc++`，在私有目录中通过了 JavaScript、中文
-文本和人民币格式化测试，未安装 GCC 编译器或 glibc。此路线尚未打包进 Portage，
-不把私有测试通过写成主系统已经安装，也不全局修改 `LD_LIBRARY_PATH`。
+复用已验签的 Alpine 约 2.7MiB `libstdc++` 后，独立官方 stage3 中已通过正常
+Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 无未解析依赖。
+未安装 GCC 编译器或 glibc，也不全局修改库路径。配方已整理为
+[补丁组](patchsets/bun-1.4.4/)；主桌面实验根的集成安装排在软件批次之后，
+完整博客构建仍待验证。
 
 ## 实验基线与已验证范围
 
@@ -61,6 +63,25 @@ gcompat 下崩溃，不能直接把旧扩展目录复制给原生 musl 编辑器
 
 原生 musl 版 Ruff 的实际诊断、rust-analyzer/Tinymist 的最小 LSP 请求也已通过。
 这条原生工具路线与 Flatpak 内的 glibc 扩展路线分开验证，不混用库路径。
+
+## Neomacs 与默认编辑器
+
+Neomacs 尚未完成 musl 编译和运行验证，不把已有 Gentoo live 配方视为安装通过；
+新根继续不默认安装 GNU Emacs。固定上游 `aacf29294ab30aed5736e1eabcb3b83122593fce`
+后，真正 musl 根的依赖预演通过，共四个新包，不选择 GCC 或 glibc；已排在软件
+补齐批次之后，空间不足时保护退出。Neomacs 安装并验证可用后，在目标根内以 root 执行：
+
+```bash
+eselect editor set neomacs
+eselect editor list
+eselect editor show
+source /etc/profile
+```
+
+eselect 的 editor 模块支持按程序名或绝对路径设置自定义编辑器，设置成功后也会
+列出当前选择，无需修改模块或伪装成 `emacs`。文件须已安装到 `/usr/bin/neomacs`。
+若 shell 或 Git 另行覆盖 `EDITOR`、`VISUAL`、`core.editor`，还需在迁移后的隔离
+用户配置中核对；仅设置 eselect 不代表 GUI、中文输入或原 Doom 配置已经兼容。
 
 ## Flatpak 主包与一键安装
 
