@@ -1,0 +1,7 @@
+# XLibre/X11 target. Fcitx 5.1.21 expects a legacy Wayland CMake finder
+# absent from the selected SonicDE ECM. Other Wayland client libraries remain.
+=app-i18n/fcitx-5.1.21:5 -wayland
+
+# Fcitx dlopens Rime -> LevelDB. tcmalloc initial-exec TLS fails on stock musl.
+# Verified by typing nihao<space> into a native Qt6 window and receiving 你好.
+dev-libs/leveldb -tcmalloc

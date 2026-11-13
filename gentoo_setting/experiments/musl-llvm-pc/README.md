@@ -24,6 +24,8 @@ Windows 配置不在本次变更范围内。
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
 | root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
 | SonicDE / XLibre / Rime | 依赖预演通过，源码构建中；尚未登录新桌面 |
+| 原生中文输入 | 私有 X11 显示中，Qt 6 → Fcitx 5 → Rime 实际键入并提交“你好”通过；GTK、Flatpak 输入法待验证 |
+| 全新 stage3 安装基础 | 正确权限解压后，默认 Portage 沙箱与 UID 250 编译、安装、运行官方 hello 通过；完整桌面安装仍待验证 |
 | 真机新根、Secure Boot、回退启动 | 未验证 |
 
 选定扩展为 Python、debugpy、Jupyter、Jupyter Renderers、Ruff、rust-analyzer、
@@ -140,6 +142,10 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 [`portage/`](portage/) 中的 Darts 配置只给旧版本选择 Clang C++14，以兼容其
 `std::random_shuffle`，不回退 GCC。先合并到目标 Portage 配置，避免覆盖自定义文件。
 
+`package.use/native-desktop` 还记录两项已验证调整：Fcitx 5.1.21 在本轮 X11
+目标下关闭自身 Wayland 后端；LevelDB 关闭 tcmalloc。后者避免 Fcitx 动态加载
+Rime 时触发 musl initial-exec TLS 错误，不使用全局 `LD_PRELOAD` 绕过问题。
+
 [`patches/`](patches/) 保留两个小型实验补丁：
 
 - gcompat amd64 加载器路径修正：手工路径已验证，完整 ebuild 草案尚未单独验收。
@@ -161,6 +167,12 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 现有实验根曾非特权解压，并调整过 Portage 用户和嵌套沙箱，仅用于验证。
 正式新根要从已验签 stage3 以正确权限重新建立，恢复标准 Portage 用户、目录归属
 和沙箱，再复用已审核配置与受控本地构建包，不直接把实验目录改名后启动。
+
+独立全新根现已建立：63,870 个归档条目的属主、权限与符号链接核验一致，
+282 个 stage3 基础包保持原样。随后在默认 `sandbox`、`userpriv`、`usersandbox`、
+`ipc-sandbox`、`network-sandbox`、`pid-sandbox` 配置下，源码安装官方 hello 通过，
+编译日志确认 UID/GID 250:250，安装后程序输出正确，未引入 GCC 或 glibc。
+这验证了安装基础，不表示完整桌面、新内核或真机启动已经通过。
 
 Btrfs 候选布局是在原文件系统中新增 `@musl`，保留原 `@`、`@home` 和原引导入口。
 子卷不是磁盘分区，不能把它重命名为 `/dev/nvme1n1p2`。先使用隔离用户配置，完成
