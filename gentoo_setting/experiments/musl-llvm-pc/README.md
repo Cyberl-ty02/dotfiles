@@ -25,7 +25,7 @@ Windows 配置不在本次变更范围内。
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
 | root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
 | SonicDE / XLibre / Rime | 依赖预演通过，源码构建中；尚未登录新桌面 |
-| 原生中文输入 | 私有 X11 显示中，Qt 6 → Fcitx 5 → Rime 实际键入并提交“你好”通过；GTK、Flatpak 输入法待验证 |
+| 中文输入 | 私有 X11 显示中，原生 Qt 6、GTK 3 及 Flatpak VSCodium 均通过 Fcitx 5/Rime 实际键入并提交“你好”；其他应用仍需检查 |
 | 全新 stage3 安装基础 | 正确权限解压后，默认 Portage 沙箱与 UID 250 编译、安装、运行官方 hello 通过；完整桌面安装仍待验证 |
 | 真机新根、Secure Boot、回退启动 | 未验证 |
 
@@ -147,10 +147,17 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 目标下关闭自身 Wayland 后端；LevelDB 关闭 tcmalloc。后者避免 Fcitx 动态加载
 Rime 时触发 musl initial-exec TLS 错误，不使用全局 `LD_PRELOAD` 绕过问题。
 
-[`patches/`](patches/) 保留两个小型实验补丁：
+[`patchsets/`](patchsets/) 按软件、适用版本及修改层级保存补丁，不维护完整本地
+overlay 副本。各组记录了验证状态、应用检查和上游修复后的移除条件：
 
 - gcompat amd64 加载器路径修正：手工路径已验证，完整 ebuild 草案尚未单独验收。
 - CUDA 13.4 宿主数学调用：原生最小 kernel 通过，尚未覆盖完整 SDK 和数学边界。
+- Sonic 图像编辑 0.7.0.1：补充 Highway 配方依赖并改用标准 `hwy` CMake Config，
+  等效修正已在 musl/Clang 下编译安装通过。
+
+配方元数据补丁与源码用户补丁分开：`/etc/portage/patches/` 不能补齐缺失的
+`DEPEND`。正在运行的实验构建暂用原有已验证配方快照，新根会单独验证补丁组路径，
+避免切换中重复应用源码补丁。
 
 gcompat 不是完整 glibc。NVIDIA 计算、原生图形库、PRIME 和外接显示分别验收；
 不能从 `nvidia-smi` 或最小 CUDA kernel 通过推导整个显示栈通过。

@@ -1,0 +1,11 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -41,7 +41,7 @@
+ 
+ find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS Core Qml Quick Concurrent ShaderTools REQUIRED)
+ find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED Config)
+-find_package(HWY ${REQUIRED_HWY_VERSION} REQUIRED)
++find_package(hwy ${REQUIRED_HWY_VERSION} CONFIG REQUIRED)
+ 
+ set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KQuickImageEditor")
+ set(KQuickImageEditor_INSTALL_INCLUDEDIR ${KDE_INSTALL_INCLUDEDIR}/KQuickImageEditor)
