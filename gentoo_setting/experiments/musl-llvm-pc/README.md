@@ -5,6 +5,13 @@
 `manifests/nvidia.txt` 仍服务于原 glibc 系统；不要整棵复制到 musl stage3。
 Windows 配置不在本次变更范围内。
 
+桌面批次通过不代表旧 `world` 已全部迁移。逐项核对清单见
+[`world-migration.tsv`](world-migration.tsv)，记录本轮旧系统 91 个直接选择的当前去向；
+“待原生预演”表示尚未补齐，不能理解为不支持 musl。PostgreSQL、ClamAV、ClamTk
+尚未安装，正在补做依赖预演。PostgreSQL 软件安装、旧数据库转储恢复与校验分开进行；
+ClamAV 的签名更新与实际扫描也需单独验收。新根此前 `--oneshot` 安装留下空 `world`，
+正在用 Portage 登记已审核的软件选择，登记完成前不要运行 `depclean`。
+
 ## 实验基线与已验证范围
 
 本轮从官方 `stage3-amd64-musl-llvm-openrc-20261108T170107Z.tar.xz` 开始，
@@ -209,6 +216,16 @@ GLib/HarfBuzz 后移除该临时设置，再按最终 USE 重建 Pillow。关闭
 针对构建日志的 libc++ 提示，也在私有显示中实际右键打开面板菜单，窗口管理器
 与 shell 保持运行；当前组合未复现该操作导致的崩溃，不据此保证其他菜单与会话稳定性。
 
+启动准备时已补齐新根自己的五个仓库副本，固定到已验证版本，profile 不再依赖
+测试进程的临时仓库挂载。国内镜像优先及 Gentoo 同步签名检查保留；验收期间暂不
+自动同步，以避免构建基线漂移。XanMod/CJKTTY 的内核依赖预演通过，尚未完成
+新内核构建与签名。Secure Boot 工具所需的 GNU binutils、LLVM 的 libgcc ABI 库
+与 GNU GCC 编译器套件是不同的软件包，不通过删掉必要依赖来伪造 LLVM 安装结果。
+
+NVIDIA 620.70.06 的开源 `nvidia-modprobe` 也已从官方源码、按固定 Gentoo Manifest
+校验后在全新根用 Clang/musl 编译，版本与帮助运行通过，只依赖原生 `libc.so`。
+目前未安装、未设置 setuid、未用它加载模块；这项结果不代表驱动拆包与显示集成完成。
+
 Gentoo musl profile 已屏蔽 `kde-plasma/powerdevil[filecaps]`。SonicDE 实现与
 兼容包也须保持一致，即 `sonicde-base/sonic-power-management -filecaps` 和
 `kde-plasma/powerdevil -filecaps`；这与是否以 root 解压 stage3 是两回事。
@@ -216,6 +233,13 @@ Gentoo musl profile 已屏蔽 `kde-plasma/powerdevil[filecaps]`。SonicDE 实现
 Btrfs 候选布局是在原文件系统中新增 `@musl`，保留原 `@`、`@home` 和原引导入口。
 子卷不是磁盘分区，不能把它重命名为 `/dev/nvme1n1p2`。先使用隔离用户配置，完成
 多次启动、桌面使用、更新、备份与回退验证，再单独决定旧根清理范围。
+
+最终布局按原安装教程统一根子卷名：验收通过后，从救援环境挂载 Btrfs 顶层，
+将旧 `@` 改名为 `@glibc-backup`，将新 `@musl` 改名为 `@`。同步修正两套系统的
+`fstab`、rEFInd 根参数及按名称引用子卷的备份任务；如果 initramfs 固化了旧路径，
+也要重新生成。分别验证新根启动和旧根回退后，再决定何时删除旧根。
+改名后不会留下另一份 `@musl`，无需删除额外分区，也不改分区 UUID。新机全新安装
+可直接使用 `@`、`@home`；迁移期间的临时名字不必长期保留。
 
 本轮不默认安装 GNU Emacs。Neomacs 仍是待验证候选；现有系统和 Windows 的
 Emacs 配置保留。若最终保留独立 glibc 根，应明确它需要单独创建、更新、配置用户

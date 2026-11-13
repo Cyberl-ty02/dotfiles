@@ -1,0 +1,92 @@
+旧world项目	当前状态	新根原生版本	说明
+app-admin/chezmoi	待原生预演		待 musl profile 与实际依赖预演
+app-admin/doas	待原生预演		待 musl profile 与实际依赖预演
+app-admin/eclean-kernel	待原生预演		待 musl profile 与实际依赖预演
+app-admin/sysklogd	待原生预演		待 musl profile 与实际依赖预演
+app-antivirus/clamav	待原生预演		待 musl profile 与实际依赖预演
+app-antivirus/clamtk	待原生预演		待 musl profile 与实际依赖预演
+app-editors/emacs	按方案排除		按用户要求不安装 GNU Emacs；Neomacs 待验证
+app-editors/nano	原生已装	app-editors/nano-9.2	
+app-editors/vscodium	Flatpak已装		com.vscodium.codium
+app-eselect/eselect-repository	待原生预演		待 musl profile 与实际依赖预演
+app-i18n/fcitx-configtool:5	原生已装	app-i18n/fcitx-configtool-5.1.14	
+app-i18n/fcitx-gtk:5	原生已装	app-i18n/fcitx-gtk-5.1.7	
+app-i18n/fcitx-qt:5	原生已装	app-i18n/fcitx-qt-5.1.14	
+app-i18n/fcitx-rime:5	原生已装	app-i18n/fcitx-rime-5.1.14	
+app-i18n/fcitx:5	原生已装	app-i18n/fcitx-5.1.21	
+app-misc/fastfetch	待原生预演		待 musl profile 与实际依赖预演
+app-misc/resolve-march-native	待原生预演		待 musl profile 与实际依赖预演
+app-misc/yazi	待原生预演		待 musl profile 与实际依赖预演
+app-office/wps-office	兼容待验收		保留中文 WPS 体验；国际版不作为等价替代
+app-portage/eix	待原生预演		待 musl profile 与实际依赖预演
+app-portage/gentoolkit	待原生预演		待 musl profile 与实际依赖预演
+app-shells/thefuck	待原生预演		待 musl profile 与实际依赖预演
+app-shells/zsh	待原生预演		待 musl profile 与实际依赖预演
+app-text/tree	待原生预演		待 musl profile 与实际依赖预演
+app-text/typst	待原生预演		待 musl profile 与实际依赖预演
+dev-build/ninja	原生已装	dev-build/ninja-1.13.2-r1	
+dev-build/xmake	待原生预演		待 musl profile 与实际依赖预演
+dev-cpp/highway	原生已装	dev-cpp/highway-1.4.0	
+dev-db/postgresql	待原生预演		待 musl profile 与实际依赖预演
+dev-java/openjdk-bin	待原生预演		待 musl profile 与实际依赖预演
+dev-lang/bun-bin	待原生预演		待 musl profile 与实际依赖预演
+dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	
+dev-python/uv	待原生预演		待 musl profile 与实际依赖预演
+dev-util/clinfo	待原生预演		待 musl profile 与实际依赖预演
+dev-util/nvidia-cuda-toolkit	拆分待完成		原生 CUDA 分组件已验证，完整 SDK 未安装
+dev-util/pixi	待原生预演		待 musl profile 与实际依赖预演
+dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	
+dev-util/vulkan-tools	待原生预演		待 musl profile 与实际依赖预演
+dev-vcs/git	原生已装	dev-vcs/git-2.56.0-r1	
+kde-apps/ark	待原生预演		待 musl profile 与实际依赖预演
+kde-apps/filelight	待原生预演		待 musl profile 与实际依赖预演
+kde-apps/gwenview	待原生预演		待 musl profile 与实际依赖预演
+kde-apps/kwalletmanager	待原生预演		待 musl profile 与实际依赖预演
+kde-apps/yakuake	待原生预演		待 musl profile 与实际依赖预演
+kde-plasma/discover	待原生预演		待 musl profile 与实际依赖预演
+mail-client/thunderbird	待原生预演		待 musl profile 与实际依赖预演
+media-fonts/nerdfonts	待原生预演		待 musl profile 与实际依赖预演
+media-fonts/noto	原生已装	media-fonts/noto-20261001	
+media-fonts/noto-cjk	原生已装	media-fonts/noto-cjk-20190416	
+media-gfx/krita	待原生预演		待 musl profile 与实际依赖预演
+media-video/vlc	待原生预演		待 musl profile 与实际依赖预演
+net-firewall/firewalld	待原生预演		待 musl profile 与实际依赖预演
+net-im/telegram-desktop-bin	待原生预演		待 musl profile 与实际依赖预演
+net-im/tencent-qq	待原生预演		待 musl profile 与实际依赖预演
+net-im/wechat	Flatpak已装		com.tencent.WeChat
+net-im/wemeet	兼容待验收		腾讯会议路线待实际验证
+net-misc/chrony	待原生预演		待 musl profile 与实际依赖预演
+net-misc/localsend-bin	待原生预演		待 musl profile 与实际依赖预演
+net-misc/networkmanager	原生已装	net-misc/networkmanager-1.58.1-r1	
+net-p2p/ktorrent	待原生预演		待 musl profile 与实际依赖预演
+net-print/cups-meta	待原生预演		待 musl profile 与实际依赖预演
+net-print/gutenprint	待原生预演		待 musl profile 与实际依赖预演
+net-proxy/flclash-bin	待原生预演		待 musl profile 与实际依赖预演
+sonicde-base/sonic-audio-applet-pulse	原生已装	sonicde-base/sonic-audio-applet-pulse-6.8.0	
+sonicde-base/sonic-desktop-interface	原生已装	sonicde-base/sonic-desktop-interface-6.8.0.3	
+sonicde-base/sonic-ecco	原生已装	sonicde-base/sonic-ecco-26.08.2	
+sonicde-base/sonic-partition-manager	待原生预演		待 musl profile 与实际依赖预演
+sonicde-base/sonic-print-management	原生已装	sonicde-base/sonic-print-management-6.8.0	
+sonicde-base/sonicde-meta	原生已装	sonicde-base/sonicde-meta-6.8.0	
+sys-apps/fd	待原生预演		待 musl profile 与实际依赖预演
+sys-apps/flatpak	原生已装	sys-apps/flatpak-1.18.4	
+sys-apps/ripgrep	待原生预演		待 musl profile 与实际依赖预演
+sys-boot/efibootmgr	待原生预演		待 musl profile 与实际依赖预演
+sys-boot/mokutil	待原生预演		待 musl profile 与实际依赖预演
+sys-boot/refind	待原生预演		待 musl profile 与实际依赖预演
+sys-boot/shim	待原生预演		待 musl profile 与实际依赖预演
+sys-devel/mold	按方案排除		LLVM 新根保留 LLD
+sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	
+sys-fs/genfstab	待原生预演		待 musl profile 与实际依赖预演
+sys-kernel/linux-firmware	待原生预演		待 musl profile 与实际依赖预演
+sys-kernel/xanmod-kernel	待原生预演		待 musl profile 与实际依赖预演
+sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	
+sys-process/btop	待原生预演		待 musl profile 与实际依赖预演
+sys-process/cronie	待原生预演		待 musl profile 与实际依赖预演
+virtual/dist-kernel	待原生预演		待 musl profile 与实际依赖预演
+www-client/firefox	待原生预演		待 musl profile 与实际依赖预演
+x11-apps/xdpyinfo	待原生预演		待 musl profile 与实际依赖预演
+x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	
+x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	
+x11-drivers/nvidia-drivers	拆分待完成		原生模块/工具与专有图形兼容拆分尚未完成
+x11-misc/xclip	原生已装	x11-misc/xclip-0.13	
