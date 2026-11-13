@@ -24,9 +24,9 @@ Windows 配置不在本次变更范围内。
 | 微信 4.1.13.26 | 中文登录界面显示通过，未登录；输入法、音视频待验证 |
 | VSCodium 1.143.17232 | 八个选定扩展激活、中文 notebook 读取、ZeroMQ 原生模块中文消息往返通过 |
 | root chroot 系统级 Flatpak 安装 | 无 D-Bus 环境中部署通过，安装后触发器复核通过；重复运行可跳过已安装应用 |
-| SonicDE / XLibre / Rime | 依赖预演通过，源码构建中；尚未登录新桌面 |
+| SonicDE / XLibre / Rime | 全新根安装及私有显示中的桌面 shell、窗口管理器、中文绘制和 PipeWire 检查通过，尚未真机登录 |
 | 中文输入 | 私有 X11 显示中，原生 Qt 6、GTK 3 及 Flatpak VSCodium 均通过 Fcitx 5/Rime 实际键入并提交“你好”；其他应用仍需检查 |
-| 全新 stage3 安装基础 | 正确权限解压后，默认 Portage 沙箱与 UID 250 编译、安装、运行官方 hello 通过；完整桌面安装仍待验证 |
+| 全新 stage3 安装基础 | 默认沙箱与 UID 250 下完整桌面安装通过，共 926 个包；Pillow truetype 已恢复，未引入 GCC |
 | 真机新根、Secure Boot、回退启动 | 未验证 |
 
 选定扩展为 Python、debugpy、Jupyter、Jupyter Renderers、Ruff、rust-analyzer、
@@ -154,10 +154,15 @@ overlay 副本。各组记录了验证状态、应用检查和上游修复后的
 - CUDA 13.4 宿主数学调用：原生最小 kernel 通过，尚未覆盖完整 SDK 和数学边界。
 - Sonic 图像编辑 0.7.0.1：补充 Highway 配方依赖并改用标准 `hwy` CMake Config，
   等效修正已在 musl/Clang 下编译安装通过。
+- Sonic 登录管理器 6.8.0.3：为 POSIX ID 类型补充标准头文件；全新根正常沙箱构建通过。
 
 配方元数据补丁与源码用户补丁分开：`/etc/portage/patches/` 不能补齐缺失的
-`DEPEND`。正在运行的实验构建暂用原有已验证配方快照，新根会单独验证补丁组路径，
-避免切换中重复应用源码补丁。
+`DEPEND`。新根已通过图像编辑组件的补丁组安装路径，来源保持 `sonicde`。
+旧实验根的私有配方快照仅作对照，切换时避免重复应用源码补丁。
+
+桌面 meta 的 `pulseaudio` 选项用于选择音量界面；音频服务端仍由
+`media-video/pipewire[sound-server]` 提供。合并配置时移除旧的冲突 `-pulseaudio`
+条目，不因使用 PipeWire 而漏装该界面，也不重复启用独立 PulseAudio daemon。
 
 gcompat 不是完整 glibc。NVIDIA 计算、原生图形库、PRIME 和外接显示分别验收；
 不能从 `nvidia-smi` 或最小 CUDA kernel 通过推导整个显示栈通过。
@@ -185,8 +190,16 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 从这个全新根预演完整桌面时，仍会出现 GLib → docutils → Pillow → HarfBuzz →
 GLib 的引导循环。候选方案先临时设置 `dev-python/pillow -truetype`，安装
 GLib/HarfBuzz 后移除该临时设置，再按最终 USE 重建 Pillow。关闭后完整依赖预演
-通过，未计划引入 GCC、glibc、GNU Emacs 或 QtWebEngine；完整安装及恢复步骤
-尚待在该新根实际执行。不能把带临时开关的配置当作最终配置直接复制。
+通过，未计划引入 GCC、glibc、GNU Emacs 或 QtWebEngine。随后两阶段引导已在
+该新根实际完成，Pillow 已恢复 `truetype`，临时开关已删除，默认沙箱保留。
+随后完整桌面安装通过，已安装 926 个包，图像编辑组件来自 SonicDE 上游配方加
+补丁组；新内核与真机启动仍待验收。不能把带临时开关的配置当作最终配置直接复制。
+
+全新根随后也通过独立 Xvfb、私有 D-Bus 和隔离用户配置下的桌面运行检查，
+窗口管理器与 shell 的进程、总线接口、中文绘制及 PipeWire 兼容套接字均通过。
+测试使用软件 QML、关闭合成，没有真实硬件设备或系统总线；不代表音频播放、
+登录管理器、Portal、显卡输出已经通过。原实验根的音量界面已补齐；新根的
+安装后补齐与系统配置检查另行记录，不能把两个根的结果混为一谈。
 
 Gentoo musl profile 已屏蔽 `kde-plasma/powerdevil[filecaps]`。SonicDE 实现与
 兼容包也须保持一致，即 `sonicde-base/sonic-power-management -filecaps` 和

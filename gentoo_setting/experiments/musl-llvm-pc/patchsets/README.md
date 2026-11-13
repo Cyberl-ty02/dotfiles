@@ -6,7 +6,8 @@
 
 | 补丁组 | 适用范围 | 当前状态 | 移除条件 |
 | --- | --- | --- | --- |
-| [Sonic 图像编辑](sonic-quick-image-editor/) | 0.7.0.1；SonicDE overlay `a5e6600f3dbd67b02ca61a095e036c8a908fe0cc` | 等效修正在 musl/Clang/Highway 1.4.0 下编译安装通过 | 配方声明 Highway，源码改用可用的 CMake 包 |
+| [Sonic 图像编辑](sonic-quick-image-editor/) | 0.7.0.1；SonicDE overlay `a5e6600f3dbd67b02ca61a095e036c8a908fe0cc` | 全新 musl 根使用配方补丁和用户源码补丁编译安装通过 | 配方声明 Highway，源码改用可用的 CMake 包 |
+| [Sonic 登录管理器](sonic-login-manager/) | 6.8.0.3 源码 | 应用/撤回检查及 musl/Clang 编译安装通过 | 头文件直接包含 POSIX 类型定义 |
 | [CUDA 宿主数学调用](cuda-13.4/) | 本轮 CUDA 13.4 CRT 头文件 | 原生最小 kernel 通过，完整 SDK 未验收 | 头文件不再依赖这些 glibc 私有数学入口，或官方支持本目标 |
 | [gcompat 加载器路径](gcompat-1.1.0/) | GURU gcompat 1.1.0 ebuild | 配方草案；对应手工路径已验证，完整 ebuild 未验收 | 配方提供正确的 amd64 加载器路径且完成安装验证 |
 
@@ -18,5 +19,5 @@
 不通过降低 patch 校验、强制覆盖或忽略失败维持旧补丁。修改仓库 ebuild 后，后续
 `emerge --sync` 可能清除本地差异，需要重新检查；本目录不安装自动重放钩子。
 
-当前运行中的实验构建仍保留已验证的私有配方快照，避免中途改变其来源。那份快照
-只用于本地续接，不是本仓库的交付形式；后续新根会单独验证补丁组应用路径。
+原实验根保留已验证的私有配方快照作对照，不是本仓库的交付形式；全新根已通过
+图像编辑组件的补丁组安装路径。完整桌面、登录和硬件启动仍按迁移验收项继续验证。

@@ -5,3 +5,7 @@
 # Fcitx dlopens Rime -> LevelDB. tcmalloc initial-exec TLS fails on stock musl.
 # Verified by typing nihao<space> into a native Qt6 window and receiving 你好.
 dev-libs/leveldb -tcmalloc
+
+# The meta flag selects the volume UI. PipeWire supplies the sound server.
+sonicde-base/sonicde-meta pulseaudio
+media-video/pipewire sound-server flatpak

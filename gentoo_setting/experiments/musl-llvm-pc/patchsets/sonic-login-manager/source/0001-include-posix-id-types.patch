@@ -1,0 +1,11 @@
+--- a/src/daemon/SelfProvisioner.h
++++ b/src/daemon/SelfProvisioner.h
+@@ -6,6 +6,8 @@
+ 
+ #ifndef SONICLOGIN_SELFPROVISIONER_H
+ #define SONICLOGIN_SELFPROVISIONER_H
++
++#include <sys/types.h>
+ 
+ #include <QString>
+ 

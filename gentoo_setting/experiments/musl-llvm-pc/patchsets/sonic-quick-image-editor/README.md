@@ -8,17 +8,18 @@ Highway 提供的是 `hwy` CMake Config 包及 `hwy::hwy` 目标。
 - `repository/0001-declare-highway-dependency.patch`：只补 `DEPEND`，运行依赖随原配方的 `${DEPEND}` 继承。
 - `source/0001-use-hwy-cmake-config.patch`：只改 CMake 包发现方式。
 
-等效修正已通过 musl、Clang 22、libc++、Highway 1.4.0 源码编译安装。
-补丁组应用路径先在独立工作副本检查，不把当前运行中的构建切换到新来源。
+修正已通过 musl、Clang 22、libc++、Highway 1.4.0 源码编译安装。
+随后全新 stage3 根也通过上游配方加版本限定用户补丁完成安装，日志确认用户补丁
+实际应用，VDB 来源为 `sonicde`，不再依赖临时 `musl-pc-lab` 修复配方。
 
 在目标 Gentoo/chroot 内，以仓库克隆在 `/root/dotfiles` 为例：
 
 ```bash
 group=/root/dotfiles/gentoo_setting/experiments/musl-llvm-pc/patchsets/sonic-quick-image-editor
-git -C /var/db/repos/sonicde diff -- sonicde-base/sonic-quick-image-editor
-git -C /var/db/repos/sonicde apply --check "$group/repository/0001-declare-highway-dependency.patch"
+git -c safe.directory=/var/db/repos/sonicde -C /var/db/repos/sonicde diff -- sonicde-base/sonic-quick-image-editor
+git -c safe.directory=/var/db/repos/sonicde -C /var/db/repos/sonicde apply --check "$group/repository/0001-declare-highway-dependency.patch"
 # 检查通过且确认该路径没有自己的未保存修改后再执行
-git -C /var/db/repos/sonicde apply "$group/repository/0001-declare-highway-dependency.patch"
+git -c safe.directory=/var/db/repos/sonicde -C /var/db/repos/sonicde apply "$group/repository/0001-declare-highway-dependency.patch"
 ```
 
 源码补丁通过 Portage 版本限定的用户补丁目录应用：
