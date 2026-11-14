@@ -51,3 +51,6 @@ net-wireless/iwd ~amd64
 
 # Exact GSP firmware data for the accepted open NVIDIA modules.
 =sys-firmware/nvidia-gsp-firmware-620.70.06::gentoo-zh ~amd64
+
+# CUDA core archives + existing Flatpak SDK, not host glibc/compiler.
+=dev-util/cuda-sdk-flatpak-13.4.1::gentoo-zh ~amd64

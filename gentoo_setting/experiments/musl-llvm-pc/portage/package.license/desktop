@@ -9,3 +9,6 @@ sys-kernel/linux-firmware linux-fw-redistributable no-source-code
 
 # Exact GSP firmware data for the accepted open NVIDIA modules.
 =sys-firmware/nvidia-gsp-firmware-620.70.06::gentoo-zh NVIDIA-2025
+
+# CUDA core archives + existing Flatpak SDK, not host glibc/compiler.
+=dev-util/cuda-sdk-flatpak-13.4.1::gentoo-zh NVIDIA-CUDA

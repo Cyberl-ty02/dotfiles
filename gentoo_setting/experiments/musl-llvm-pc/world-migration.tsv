@@ -33,7 +33,7 @@ dev-lang/bun-bin	原生已装	dev-lang/bun-bin-1.4.4	安装已核对；运行及
 dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-python/uv	原生已装	dev-python/uv-0.13.4-r1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/clinfo	原生已装	dev-util/clinfo-3.1.26.09.26	安装已核对；运行及旧数据按迁移验收范围检查
-dev-util/nvidia-cuda-toolkit	数据层已安装／运行链待补齐	dev-util/cuda-clang-device-headers-13.4.1	正常 Portage 安装与变量 sinf sm_89 PTX 通过；无宿主运行库／完整 NVCC／GPU 执行验收
+dev-util/nvidia-cuda-toolkit	原生数据层及托管核心 SDK 已安装／完整套件待补齐	dev-util/cuda-clang-device-headers-13.4.1 + dev-util/cuda-sdk-flatpak-13.4.1	原生 PTX、托管 NVCC/CMake/CTest/GPU sinf 通过；SDK 内已有 GCC16.2，未向宿主安装 GCC/glibc；完整数学库/PyTorch/新内核启动未验收
 dev-util/pixi	原生已装	dev-util/pixi-0.84.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/vulkan-tools	原生已装	dev-util/vulkan-tools-1.4.357.0	安装已核对；运行及旧数据按迁移验收范围检查

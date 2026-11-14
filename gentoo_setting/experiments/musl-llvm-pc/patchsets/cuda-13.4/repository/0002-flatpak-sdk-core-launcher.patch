@@ -1,0 +1,205 @@
+--- /dev/null
++++ b/dev-util/cuda-sdk-flatpak/cuda-sdk-flatpak-13.4.1.ebuild
+@@ -0,0 +1,47 @@
++# Copyright 2026 Gentoo Authors
++# Distributed under the terms of the GNU General Public License v2
++EAPI=8
++DESCRIPTION="Versioned CUDA NVCC/core-runtime archives and managed Flatpak SDK launcher"
++HOMEPAGE="https://developer.nvidia.com/cuda-toolkit https://docs.flatpak.org/"
++SRC_URI="
++	https://developer.download.nvidia.com/compute/cuda/redist/cccl/linux-x86_64/cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/cuda_crt/linux-x86_64/cuda_crt-linux-x86_64-13.4.59-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/linux-x86_64/cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/linux-x86_64/cuda_nvcc-linux-x86_64-13.4.59-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/libnvvm/linux-x86_64/libnvvm-linux-x86_64-13.4.59-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/libcurand/linux-x86_64/libcurand-linux-x86_64-10.4.4.49-archive.tar.xz
++"
++S="${WORKDIR}/${P}"
++LICENSE="NVIDIA-CUDA Apache-2.0-with-LLVM-exceptions BSD GPL-2"
++SLOT="13.4"
++KEYWORDS="~amd64"
++RESTRICT="bindist mirror"
++RDEPEND=">=sys-apps/flatpak-1.18 >=dev-lang/python-3.11 app-arch/tar app-arch/xz-utils"
++BDEPEND="app-arch/tar app-arch/xz-utils"
++
++src_unpack() {
++	mkdir -p "${S}" || die
++	local archive root
++	for archive in ${A}; do
++		root=${archive%.tar.xz}
++		tar -xOf "${DISTDIR}/${archive}" "${root}/LICENSE" > "${S}/${root}.LICENSE" || die
++	done
++}
++src_prepare() { default; }
++src_configure() { :; }
++src_compile() { :; }
++src_install() {
++	insinto "/usr/share/${PN}/${PV}"
++	newins "${FILESDIR}/components-${PV}.json" components.json
++	insinto "/usr/share/${PN}/${PV}/archives"
++	local archive
++	for archive in ${A}; do doins "${DISTDIR}/${archive}"; done
++	dobin "${FILESDIR}/cuda-sdk"
++	dodoc *.LICENSE
++}
++pkg_postinst() {
++	elog "Install org.freedesktop.Sdk//26.08 and matching NVIDIA GL extension with Flatpak --system."
++	elog "As your user: cuda-sdk nvcc --version; cuda-sdk nvcc ...; cuda-sdk ./program"
++	elog "This is a glibc SDK environment, not native musl output. No host GCC/glibc dependency."
++	elog "Only NVCC/core cudart and device headers/libdevice are provided, not all CUDA math libraries."
++}
+--- /dev/null
++++ b/dev-util/cuda-sdk-flatpak/Manifest
+@@ -0,0 +1,6 @@
++DIST cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz 1403032 BLAKE2B 68c41b102ce2da286f6f7060db5acbd7b8c374d3db2d0f9258dd1c81f7b7e269501bf936088e673bf3842e8ceca7a9e96ec0aaff9d5c3b38585566a659f4f780 SHA512 45faa1cc337a4a00e3146db6b8a56e677e0f179bc9a120e957f70b2fbbe074e6d06ddfd9fd4cc0ed7015cac5eb3e2a798092b3cff6e8e28a8595551bff2edd10
++DIST cuda_crt-linux-x86_64-13.4.59-archive.tar.xz 101972 BLAKE2B 61f70540d5de212818a0cdc07d4f98a9798080edef2053c5a53241b2c9b63fbf061180f41e267066bd455be85f31a4b0b9ec9b2894b8dd6a1568490894dd72bf SHA512 a8e6428df5e183dae97ec95f6a0620236e614f66a65cadc81edcd3b0435c2c863b116d970791c17c8d603b4a9f40b5729ab80b9ab8bde65a30c04bbf85646190
++DIST cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz 1702296 BLAKE2B 8b8b14c4397573315df11cef7b6bb8ebb882edc5fad22dabd8158a8431ec812b721ef5ec85ae9cf68d8b1cf37715672c529e53e332657e561beed771cc6bd76f SHA512 61e54d151f9e5d574908f6be98c822f7337ea91b94821cf903c7b34551c9a78d71b4b587be1bec951094097f108ae849f3193dac7471a86d57ddde76681794fc
++DIST cuda_nvcc-linux-x86_64-13.4.59-archive.tar.xz 33303216 BLAKE2B 72c205a667848c836a221d71f0cba0bf122aedd3a0aac1782ba330046c77902f8313ea139e6b1b4c895a927976b4bc4e616869f28750ec02408e303d03a36dbe SHA512 5d9239dc2c8f76ffc1764019044db178923797c2e1094e766083033416751d2f9739f688875556814297cedf0c1217a39074adc3d5ada0e97c0414279c54c978
++DIST libnvvm-linux-x86_64-13.4.59-archive.tar.xz 51311984 BLAKE2B 9f342f8c8a2c3683f5e2e45d0fd2cf78906a1e75a0a940c81d54af0c827d571202a80a72c67da7907d96cec3e138707770a89cd29901e9ef9e8c6a13ce4e374c SHA512 153f58c94e6a8cf4bb80cf7b56f627cdc7862fb90a5e3ea2a140f43c4950b0f363fcfbc963ebaeaf211be016ab92f820541558f90f39426b5247c1dc863c4310
++DIST libcurand-linux-x86_64-10.4.4.49-archive.tar.xz 86991676 BLAKE2B 6926466a5ef3c8d20e63fa5cdd9a561b6257ba9f780c115e27261ff08f293367fb43af9b5f1c28805819617510a5f05bbfc66d184e2d9dd9d1947a7be55a4e42 SHA512 e427e816edc09baa5d8e95407bc57335f364b19c3e5eb067f0bad772f99ee8629f02d63b99291c68961ae5435256a77c50827bb451609f83e503d2b981ee5dd8
+--- /dev/null
++++ b/dev-util/cuda-sdk-flatpak/files/cuda-sdk
+@@ -0,0 +1,74 @@
++#!/usr/bin/python3
++"""Run versioned CUDA core tools in the existing managed Flatpak SDK."""
++import fcntl, hashlib, json, os, shutil, subprocess, sys, tempfile
++from pathlib import Path
++
++VERSION = "13.4.1"
++DATA = Path("/usr/share/cuda-sdk-flatpak") / VERSION
++
++def main():
++    if sys.argv[1:] == ["--help"]:
++        print("Usage: cuda-sdk [COMMAND [ARGS...]]; default: bash. Examples: cuda-sdk nvcc --version; cuda-sdk ./program")
++        print("Uses the managed glibc SDK. Set CUDA_SDK_NETWORK=1 only when network access is needed.")
++        return
++    if os.geteuid() == 0:
++        raise SystemExit("Run cuda-sdk as your desktop user; install its package/runtime as root in chroot.")
++    config_bytes = (DATA / "components.json").read_bytes()
++    config = json.loads(config_bytes)
++    runtime = config["runtime"]
++    if subprocess.run(["flatpak", "info", "--system", runtime], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode:
++        raise SystemExit("Missing system SDK: flatpak install --system flathub org.freedesktop.Sdk//26.08")
++    cache = Path(os.environ.get("XDG_CACHE_HOME", str(Path.home() / ".cache"))) / "cuda-sdk-flatpak" / VERSION
++    cache.mkdir(mode=0o700, parents=True, exist_ok=True)
++    fingerprint = hashlib.sha256(config_bytes).hexdigest()
++    toolkit = cache / "toolkit"
++    with (cache / "prepare.lock").open("a+") as lock:
++        fcntl.flock(lock, fcntl.LOCK_EX)
++        marker = toolkit / ".source-manifest.sha256"
++        ready = marker.is_file() and marker.read_text().strip() == fingerprint and (toolkit / "bin/nvcc").is_file()
++        if not ready:
++            if shutil.disk_usage(cache).free < 1024**3:
++                raise SystemExit("CUDA tool cache needs at least 1GiB free for safe preparation.")
++            temp = Path(tempfile.mkdtemp(prefix=".prepare-", dir=cache))
++            try:
++                for component in config["components"]:
++                    archive = DATA / "archives" / component["name"]
++                    digest = hashlib.sha256()
++                    with archive.open("rb") as stream:
++                        for block in iter(lambda: stream.read(4 * 1024**2), b""):
++                            digest.update(block)
++                    if digest.hexdigest() != component["sha256"]:
++                        raise RuntimeError("CUDA archive hash mismatch: " + component["name"])
++                    members = [component["root"] + "/" + name for name in component["members"]]
++                    subprocess.run(["tar", "-xf", str(archive), "-C", str(temp), "--strip-components=1", "--no-same-owner", *members], check=True)
++                (temp / "lib64").symlink_to("lib")
++                (temp / "version.txt").write_text("CUDA Version " + VERSION + "\n")
++                (temp / ".source-manifest.sha256").write_text(fingerprint + "\n")
++                if toolkit.exists():
++                    shutil.rmtree(toolkit)
++                temp.rename(toolkit)
++            finally:
++                if temp.exists():
++                    shutil.rmtree(temp)
++        build = cache / "flatpak"
++        (build / "files").mkdir(parents=True, exist_ok=True)
++        (build / "metadata").write_text("[Application]\nname=local.gentoo.CudaSdk\nruntime=" + runtime + "\nsdk=" + runtime + "\n")
++    cwd = str(Path.cwd())
++    network = "--share=network" if os.environ.get("CUDA_SDK_NETWORK") == "1" else "--unshare=network"
++    command = sys.argv[1:] or ["/bin/bash"]
++    args = ["flatpak", "build", "--runtime", "--readonly", "--die-with-parent", network,
++            "--device=dri", "--nofilesystem=host", "--filesystem=" + cwd,
++            "--filesystem=" + str(cache), "--filesystem=" + str(toolkit) + ":ro",
++            "--env=CUDA_HOME=" + str(toolkit), "--env=CUDA_WORKDIR=" + cwd,
++            "--env=LANG=" + os.environ.get("LANG", "C.UTF-8"),
++            "--env=LC_ALL=" + os.environ.get("LC_ALL", ""),
++            str(build), "/bin/sh", "-c",
++            'export PATH="$CUDA_HOME/bin:$PATH"; export LD_LIBRARY_PATH="$CUDA_HOME/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; cd "$CUDA_WORKDIR" || exit; exec "$@"',
++            "cuda-sdk", *command]
++    for key in ("LC_MESSAGES", "LC_CTYPE", "LC_TIME", "LC_NUMERIC", "LC_COLLATE", "TZ"):
++        if key in os.environ:
++            args.insert(args.index(str(build)), "--env=" + key + "=" + os.environ[key])
++    os.execvp(args[0], args)
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ b/dev-util/cuda-sdk-flatpak/files/components-13.4.1.json
+@@ -0,0 +1,66 @@
++{
++  "version": "13.4.1",
++  "runtime": "org.freedesktop.Sdk/x86_64/26.08",
++  "nvidia_runtime": "org.freedesktop.Platform.GL.nvidia-620-70-06/x86_64/1.4",
++  "components": [
++    {
++      "name": "cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz",
++      "sha256": "7c973e70d8f8d732f801fe2297c9cb5a541f22824fa6ad64ac4f0e183f9c4397",
++      "root": "cccl-linux-x86_64-13.3.4.2.1-archive",
++      "members": [
++        "include"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cccl/linux-x86_64/cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz"
++    },
++    {
++      "name": "cuda_crt-linux-x86_64-13.4.59-archive.tar.xz",
++      "sha256": "0a62d47788ffc1ec9d85c248d61a0941b8f0c47c6eeba9a26e27c01955094d3c",
++      "root": "cuda_crt-linux-x86_64-13.4.59-archive",
++      "members": [
++        "include"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_crt/linux-x86_64/cuda_crt-linux-x86_64-13.4.59-archive.tar.xz"
++    },
++    {
++      "name": "cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz",
++      "sha256": "ec3df9f91560db23a064c6b395d4fde17b2893f5bf954c6bd193dd03a44de522",
++      "root": "cuda_cudart-linux-x86_64-13.4.49-archive",
++      "members": [
++        "include",
++        "lib"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/linux-x86_64/cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz"
++    },
++    {
++      "name": "cuda_nvcc-linux-x86_64-13.4.59-archive.tar.xz",
++      "sha256": "0c08d1df80b5d0bd081778d392446ab50a6a54b047c0136b39c8dbfdf2cfed3f",
++      "root": "cuda_nvcc-linux-x86_64-13.4.59-archive",
++      "members": [
++        "include",
++        "bin"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/linux-x86_64/cuda_nvcc-linux-x86_64-13.4.59-archive.tar.xz"
++    },
++    {
++      "name": "libnvvm-linux-x86_64-13.4.59-archive.tar.xz",
++      "sha256": "8966b24692ef664b77a3d3411a0c82b4960a2d6a179e0281dac0752c5c1518c7",
++      "root": "libnvvm-linux-x86_64-13.4.59-archive",
++      "members": [
++        "nvvm/bin",
++        "nvvm/libdevice"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libnvvm/linux-x86_64/libnvvm-linux-x86_64-13.4.59-archive.tar.xz"
++    },
++    {
++      "name": "libcurand-linux-x86_64-10.4.4.49-archive.tar.xz",
++      "sha256": "f08512d67cf25de22026638127a1635280e594b03a92f0592d33acfacad4c7fc",
++      "root": "libcurand-linux-x86_64-10.4.4.49-archive",
++      "members": [
++        "include/curand_mtgp32_kernel.h",
++        "include/curand_mtgp32.h",
++        "include/curand.h"
++      ],
++      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcurand/linux-x86_64/libcurand-linux-x86_64-10.4.4.49-archive.tar.xz"
++    }
++  ]
++}

@@ -2,11 +2,13 @@
 set -euo pipefail
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 dry_run=false
+cuda_sdk=false
 scope=
 remote_url=https://mirrors.ustc.edu.cn/flathub
 for arg in "$@"; do
     case "$arg" in
         --dry-run) dry_run=true ;;
+        --cuda-sdk) cuda_sdk=true ;;
         --user|--system)
             [[ -z "$scope" || "$scope" == "$arg" ]] || { printf "Choose one installation scope\n" >&2; exit 2; }
             scope=$arg ;;
@@ -16,6 +18,9 @@ for arg in "$@"; do
 done
 if [[ -z "$scope" ]]; then
     if (( EUID == 0 )); then scope=--system; else scope=--user; fi
+fi
+if "$cuda_sdk" && [[ "$scope" != --system ]]; then
+    printf "CUDA SDK launcher requires --system installation.\n" >&2; exit 2
 fi
 if ! "$dry_run"; then
     if [[ "$scope" == --user ]] && (( EUID == 0 )); then
@@ -65,3 +70,10 @@ for language in zh en; do
 done
 run flatpak config "$scope" --set extra-languages "$extra_languages"
 run flatpak install "$scope" --noninteractive flathub "${packages[@]}"
+
+if "$cuda_sdk"; then
+    # Use the target driver version, not a live-ISO/chroot host driver's detection.
+    run flatpak install "$scope" --noninteractive flathub \
+        org.freedesktop.Sdk//26.08 \
+        org.freedesktop.Platform.GL.nvidia-620-70-06//1.4
+fi

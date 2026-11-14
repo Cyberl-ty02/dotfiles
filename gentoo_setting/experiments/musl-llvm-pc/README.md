@@ -49,7 +49,7 @@ NVIDIA 用户态和 CUDA 运行链四项专项集成。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-模块及 GSP 批次复核后新根有 1,201 个依赖包、87 个 world 选择，Neomacs 已安装并选为默认编辑器。
+CUDA SDK 批次复核后新根有 1,202 个依赖包、88 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
 34 项对齐操作已完成（21 个新依赖、13 项 USE 重建），包括 LLVM SPIR-V translator、
 libclc、Mesa CLC 和 cargo-c；随后又安装 Firefox 的五项较小前置。最终
@@ -63,7 +63,7 @@ libclang 的问题；普通用户、隔离网络、空白 profile 的中文页�
 
 CUDA 的[最小数据包补丁](patchsets/cuda-13.4/)已完成正常 Portage 安装，并以安装后的
 头文件和 libdevice 通过普通用户变量 sinf 的 sm_89 PTX 编译验证。它只提供 Clang device-only 头文件和 libdevice，
-不代表完整 CUDA 运行环境；宿主运行库、兼容工具与 NVIDIA 用户态继续分项验收。
+另一个 Portage 包 `dev-util/cuda-sdk-flatpak-13.4.1` 提供官方 NVCC／核心 cudart 的压缩归档和 `cuda-sdk` 入口，复用现有 Freedesktop SDK 26.08。普通用户 NVCC 编译、CMake／CTest 与 RTX 4060 数学计算通过，无原生 GCC／glibc 依赖；SDK 内实际使用已有 GCC 16.2，产物为 glibc ELF。完整数学库、PyTorch、原生 NVIDIA 显示及新内核硬件启动仍未验收。
 
 
 ## 实验基线与已验证范围
@@ -78,6 +78,7 @@ CUDA 的[最小数据包补丁](patchsets/cuda-13.4/)已完成正常 Portage 安
 | musl 原生 UTF-8 文件名、内容、中文编码 | 通过 |
 | ICU 中文日期、人民币、排序、GB18030 转换 | 独立程序通过 |
 | 原生 CUDA 编译和 RTX 4060 计算 | Clang／libc++ musl 程序结合静态 cudart、gcompat 和小补丁通过最小 kernel；不是完整 SDK/PyTorch 验收 |
+| 托管 CUDA 核心 SDK | NVCC 13.4、CMake／CTest、32 个 sinf GPU 回读通过；使用 Flatpak SDK 内现有 GCC 16.2，不代表完整数学库或新内核启动 |
 | NVIDIA 开源内核模块 | 五个开源模块以 UID250 编译安装，匹配新内核并逐个公钥验签；GSP 已由 Portage 安装，尚未真实加载 |
 | NVIDIA 原生图形兼容 | 私有补丁加载器下 EGL 1.5 / OpenGL 4.6 离屏渲染及像素回读通过；未验证桌面、PRIME 或外接显示 |
 | Flatpak 1.18.4 | musl 原生构建完成 |
@@ -204,7 +205,7 @@ LocalSend 私有 X11 中文界面通过，真实局域网发现／文件传输�
 主包部署、输入测试也不代替真实会话中的 Portal、音视频和全部扩展验收。
 
 清单只固定应用 ID。运行时、SDK、Locale、Mesa 和匹配的 NVIDIA 图形扩展由
-Flatpak 自动解析，不把本机 `620-70-06` 写成所有新机器的固定版本。
+Flatpak 自动解析。可选 `--system --cuda-sdk` 为本候选内核显式部署 SDK 26.08 和 NVIDIA 620-70-06 扩展，避免 chroot 按安装介质驱动选择错误版本；其他机器或驱动升级须先修改该选项中的精确版本，不能直接照搬。详见 [CUDA 补丁组](patchsets/cuda-13.4/)。
 VSCodium 当前采用 Freedesktop SDK 26.08，体积比普通运行时大，可能包含 glibc
 开发工具；这不等于向 musl 主系统安装 GCC。Flatpak 的库不能满足宿主 Portage
 依赖。此前在同一 musl 根中成功 emerge 的库，由 Portage 按版本、USE 和 ABI 复用。
@@ -340,7 +341,7 @@ ECM 不兼容的 KWayland；已正常编译安装。Gwenview 26.04.3
 overlay 副本。各组记录了验证状态、应用检查和上游修复后的移除条件：
 
 - gcompat amd64 加载器路径修正：手工路径已验证，完整 ebuild 草案尚未单独验收。
-- CUDA 13.4：最小数据包正常安装及 PTX 通过；旧最小 GPU kernel 仍依赖静态 cudart／gcompat，完整运行链和数学边界未验收。
+- CUDA 13.4：原生 device-only 数据包安装及 PTX 通过；Portage 管理的 Flatpak SDK 核心 NVCC／cudart 路线也已通过普通用户 CMake 和 GPU 数学测试。完整数学库、RDC、PyTorch 和真实项目仍待验收。
 - Sonic 图像编辑 0.7.0.1：补充 Highway 配方依赖并改用标准 `hwy` CMake Config，
   等效修正已在 musl/Clang 下编译安装通过。
 - Sonic 登录管理器 6.8.0.3：为 POSIX ID 类型补充标准头文件；全新根正常沙箱构建通过。
@@ -374,6 +375,7 @@ CJK 及 initramfs 的 NVMe／Btrfs 检查通过。通用设备固件、rEFInd、
 NVIDIA 五模块与同版本 GSP 的[补丁组](patchsets/nvidia-620.70.06/)已通过正常安装
 和载荷／签名检查；尚未完成用户态、真实模块加载或显示验收。批次使用同一写锁与已测试的
 子进程清理机制，签名材料限于只读源文件，私钥副本仅保留在新根的 root 私有目录。
+用户已选择普通动态抢占的 `preempt=full`；候选 `/etc/kernel/cmdline` 目前仅登记这一项，尚不是完整可启动命令行。确定根 UUID／子卷后须与原有必要参数合并到新启动入口，首次启动再检查实际抢占模式；这不启用 PREEMPT_RT，也未改变当前运行内核。
 真实 EFI 分区未写入；内核、initramfs 存储驱动、固件、fstab、真实用户及回退启动
 均需后续验收，当前不能切换启动。
 
