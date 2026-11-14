@@ -39,17 +39,16 @@ Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 
 包含类型、测试、内容、runtime、Hexo 和生成物检查；复用现有只读 node_modules，
 不是新机空缓存依赖安装证明。原博客源码与依赖哈希保持不变。
 
-截至 2026-11-15 的 Firefox 批次复核，旧系统 91 项 world 选择中，74 项已有同名原生安装，Telegram
+截至 2026-11-15 的 Firefox 批次复核，旧系统 91 项 world 选择中，77 项已有同名原生安装，Telegram
 以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，JDK 改为 Dragonwell Standard
 21 LTS；微信、VSCodium、LocalSend、Thunderbird ESR 与 QQ 使用 Flatpak；
 mold 按方案排除。
-剩余为一项普通应用（FlClash）、
-三项固件／引导选择（通用 linux-firmware、rEFInd、shim），以及 WPS、腾讯会议、
+剩余为一项普通应用（FlClash），以及 WPS、腾讯会议、
 NVIDIA 用户态和 CUDA 运行链四项专项集成。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-CUDA SDK 批次复核后新根有 1,202 个依赖包、88 个 world 选择，Neomacs 已安装并选为默认编辑器。
+启动载荷批次复核后新根有 1,208 个依赖包、92 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
 34 项对齐操作已完成（21 个新依赖、13 项 USE 重建），包括 LLVM SPIR-V translator、
 libclc、Mesa CLC 和 cargo-c；随后又安装 Firefox 的五项较小前置。最终
@@ -371,13 +370,43 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 `firewalld`、`sysklogd`、`chronyd`（default）；未实际启动服务。Sonic 登录器自身
 提供 display-manager，不另启 xdm；iwd 由 D-Bus 激活，PipeWire 保持用户会话启动。
 XanMod 和 virtual/dist-kernel 已在独立实验根安装并登记更新；新内核的签名、
-CJK 及 initramfs 的 NVMe／Btrfs 检查通过。通用设备固件、rEFInd、shim 尚未安装。
+CJK 检查通过。通用设备固件、Intel 微码、rEFInd 和 shim 已用官方配方正常安装；rEFInd 的 musl／Clang 修复直接复用上游，无新增 overlay 或本地配方补丁。
 NVIDIA 五模块与同版本 GSP 的[补丁组](patchsets/nvidia-620.70.06/)已通过正常安装
 和载荷／签名检查；尚未完成用户态、真实模块加载或显示验收。批次使用同一写锁与已测试的
 子进程清理机制，签名材料限于只读源文件，私钥副本仅保留在新根的 root 私有目录。
 用户已选择普通动态抢占的 `preempt=full`；候选 `/etc/kernel/cmdline` 目前仅登记这一项，尚不是完整可启动命令行。确定根 UUID／子卷后须与原有必要参数合并到新启动入口，首次启动再检查实际抢占模式；这不启用 PREEMPT_RT，也未改变当前运行内核。
-真实 EFI 分区未写入；内核、initramfs 存储驱动、固件、fstab、真实用户及回退启动
-均需后续验收，当前不能切换启动。
+真实 EFI 分区未写入；fstab、完整根启动参数、真实用户与回退启动仍未完成，当前不能切换启动。
+
+本候选的可复用启动配置为 [`dracut.conf.d/50-musl-migration.conf`](dracut.conf.d/50-musl-migration.conf)
+及 [`modprobe.d/50-nvidia-migration.conf`](modprobe.d/50-nvidia-migration.conf)。
+前者使用通用根发现、不捕获当前宿主命令行，加入 NVMe、i915、Wi-Fi／蓝牙、有线网和
+五个 NVIDIA 模块，省略 nouveau；后者配置 nouveau 黑名单和 NVIDIA DRM modeset。
+`linux-firmware` 采用 zstd 压缩，与实际内核压缩固件支持匹配；关闭其和 Intel 微码包的
+独立 initramfs 安装动作，由 dracut 统一组装。Intel 微码保留 split-ucode，镜像早期归档
+中已确认包含本 CPU `0x000b0671` 的修订 `0x0137`，并未在线更新当前 CPU。
+
+新机须先生成自己的签名材料、安装模块与固件、复核此处目标版本及驱动选择；
+候选签名环境文件只指定路径，不含密钥，也不关闭普通软件的 userpriv／沙箱。在目标
+root chroot 中，从本实验目录安装配置后重建（以下命令不部署 EFI）：
+
+```bash
+emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode sys-boot/refind sys-boot/shim
+install -Dm644 dracut.conf.d/50-musl-migration.conf /etc/dracut.conf.d/50-musl-migration.conf
+install -Dm644 modprobe.d/50-nvidia-migration.conf /etc/modprobe.d/50-nvidia-migration.conf
+# 替换为自己已安装、已签名且模块匹配的目标版本，不能使用安装介质的 uname -r
+kernel=7.2.14-musl-x64v3
+dracut --force --kver "$kernel" "/boot/initramfs-$kernel.img"
+lsinitrd "/boot/initramfs-$kernel.img"
+```
+
+本轮约 173MiB 的最终镜像已解包检查 NVMe、核显、Wi-Fi、NVIDIA／GSP 和早期 Intel
+微码；镜像内两项 NVMe 模块及五项 NVIDIA 模块以预期公开证书通过实际 CMS 验签。
+10 个 UEFI 载荷（含 rEFInd、Btrfs 驱动和 MokManager）通过本机证书验证，但不代表
+主板／shim 信任链已验证。私钥目录未进入镜像，小型文件的私钥标记扫描也通过。
+受限实验进程内 dracut 的五条 mknod 权限警告已保留：已确认镜像 init 有 devtmpfs
+挂载逻辑且内核启用 DEVTMPFS；最终行为仍以真机启动为准，不为消除警告放宽宿主权限。
+不要在本阶段运行 `refind-install` 或沿用原 glibc 脚本硬编码的 `/usr/lib64/refind`；
+本 musl 根实际载荷位于 `/usr/lib/refind`。
 
 
 现有实验根曾非特权解压，并调整过 Portage 用户和嵌套沙箱，仅用于验证。

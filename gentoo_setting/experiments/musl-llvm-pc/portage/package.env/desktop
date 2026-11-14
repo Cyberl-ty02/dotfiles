@@ -12,3 +12,7 @@
 
 # Exact local kernel signing scope; private key is never exported.
 =sys-kernel/xanmod-kernel-7.2.14 kernel-signing-local
+
+# Signing is confined to root install phase; compile retains ordinary userpriv.
+sys-boot/refind boot-signing-local
+sys-boot/shim boot-signing-local

@@ -73,12 +73,12 @@ sys-apps/flatpak	原生已装	sys-apps/flatpak-1.18.4	安装已核对；运行�
 sys-apps/ripgrep	原生已装	sys-apps/ripgrep-15.2.0	安装已核对；运行及旧数据按迁移验收范围检查
 sys-boot/efibootmgr	原生已装	sys-boot/efibootmgr-18-r2	安装已核对；运行及旧数据按迁移验收范围检查
 sys-boot/mokutil	原生已装	sys-boot/mokutil-0.7.2	安装已核对；运行及旧数据按迁移验收范围检查
-sys-boot/refind	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
-sys-boot/shim	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
+sys-boot/refind	原生已装	sys-boot/refind-0.14.2-r4	官方 musl/Clang 配方及 Btrfs EFI 驱动已安装签名；不执行 refind-install，真实 EFI／启动待验收
+sys-boot/shim	原生已装	sys-boot/shim-16.1_p7	官方 Manifest 验证的 Fedora 载荷已安装并追加本机签名；未部署真实 EFI，固件信任链待启动验收
 sys-devel/mold	按方案排除		LLVM 新根保留 LLD
 sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
 sys-fs/genfstab	原生已装	sys-fs/genfstab-31	安装已核对；运行及旧数据按迁移验收范围检查
-sys-kernel/linux-firmware	待安装／验证		原生预演通过，尚未安装
+sys-kernel/linux-firmware	原生已装	sys-kernel/linux-firmware-20261019	完整 redistributable 固件以 zstd 压缩安装；目标 Wi-Fi／核显与 initramfs 检查通过，真实设备待新根启动验收
 sys-kernel/xanmod-kernel	原生已安装	sys-kernel/xanmod-kernel-7.2.14	Clang、CJK16/32、签名与 initramfs 存储检查通过；尚未真机启动
 sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/btop	原生已装	sys-process/btop-1.4.7	安装已核对；运行及旧数据按迁移验收范围检查

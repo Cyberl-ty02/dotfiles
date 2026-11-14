@@ -12,3 +12,6 @@ sys-kernel/linux-firmware linux-fw-redistributable no-source-code
 
 # CUDA core archives + existing Flatpak SDK, not host glibc/compiler.
 =dev-util/cuda-sdk-flatpak-13.4.1::gentoo-zh NVIDIA-CUDA
+
+# Intel early microcode data for this machine.
+sys-firmware/intel-microcode intel-ucode

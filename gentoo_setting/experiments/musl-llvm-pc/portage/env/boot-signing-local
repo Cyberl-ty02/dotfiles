@@ -1,0 +1,4 @@
+MODULES_SIGN_KEY="/etc/kernel/secureboot/MOK.pem"
+MODULES_SIGN_CERT="/etc/kernel/secureboot/MOK.pem"
+SECUREBOOT_SIGN_KEY="/etc/kernel/secureboot/MOK.pem"
+SECUREBOOT_SIGN_CERT="/etc/kernel/secureboot/MOK.pem"

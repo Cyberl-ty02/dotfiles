@@ -78,3 +78,10 @@ x11-base/xorg-server::xlibre xvfb
 
 # Exact open modules for the accepted musl kernel; no user-space driver.
 =x11-drivers/nvidia-drivers-620.70.06::gentoo modules-only modules modules-sign -dist-kernel -X -abi_x86_32 -persistenced -powerd -static-libs -tools -wayland
+
+# Candidate UEFI payloads only; installer hooks keep real ESP disabled.
+sys-boot/refind btrfs secureboot -doc
+sys-boot/shim secureboot
+# Match FW_LOADER_COMPRESS_ZSTD; dracut assembles the candidate initramfs later.
+sys-kernel/linux-firmware compress-zstd -compress-xz -initramfs -dist-kernel
+sys-firmware/intel-microcode split-ucode -initramfs -dist-kernel -hostonly
