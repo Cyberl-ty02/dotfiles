@@ -166,3 +166,9 @@ kde-plasma/plasma-meta::gentoo
 # XLibre replaces the full X.Org server and its driver metapackage.
 x11-base/xorg-drivers::gentoo
 x11-base/xorg-server::gentoo
+
+# Unified Standard21 JVM policy: one host VM family/major.
+dev-java/openjdk
+dev-java/openjdk-bin
+dev-java/openjdk-jre-bin
+>=dev-java/dragonwell-bin-22

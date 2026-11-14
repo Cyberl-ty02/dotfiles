@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "purpose": "Reproduce the isolated VSCodium Java 21 acceptance; target user-profile deployment is a separate step",
+  "policy": {
+    "vendor": "Alibaba",
+    "edition": "Dragonwell Standard",
+    "java_major": 21,
+    "host_default_vm": "dragonwell-bin-21",
+    "application_runtime_scope": "Private glibc runtime for the Flatpak application; never a host default JVM"
+  },
+  "jdk": {
+    "version": "21.0.13.0.13+9",
+    "abi": "glibc",
+    "archive_root": "dragonwell-21.0.13.0.13+9-GA",
+    "url": "https://github.com/dragonwell-project/dragonwell21/releases/download/dragonwell-standard-21.0.13.0.13%2B9_jdk-21.0.13-ga/Alibaba_Dragonwell_Standard_21.0.13.0.13.9_x64_linux.tar.gz",
+    "size": 208945513,
+    "sha256": "e85053e90738dd18bae4cf756b627de145b2b88b517356d0a988c8b07fa9f947"
+  },
+  "extension": {
+    "id": "Oracle.oracle-java",
+    "version": "27.0.0",
+    "jdk_minimum": 21,
+    "bundled_jdk": false,
+    "url": "https://open-vsx.org/api/Oracle/oracle-java/27.0.0/file/Oracle.oracle-java-27.0.0.vsix",
+    "size": 153817746,
+    "sha256": "c977b4ed9b29888377dfa0d3aa0ceef136d8e530bcbd9e171485b892bfd65341",
+    "license": "Apache-2.0"
+  },
+  "settings_keys": [
+    "jdk.jdkhome",
+    "jdk.project.jdkhome"
+  ],
+  "validated": [
+    "extension activation",
+    "Java symbols and completion",
+    "javac --release 21 Chinese compile/run",
+    "DAP breakpoint/stack/evaluation with vendor Alibaba and runtime 21"
+  ],
+  "not_validated": [
+    "migration of existing Microsoft Java Debug/Test/Project Manager configurations",
+    "Maven/Gradle/JUnit",
+    "actual target user-profile deployment"
+  ]
+}

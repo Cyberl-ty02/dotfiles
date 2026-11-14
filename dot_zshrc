@@ -3,8 +3,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export EDITOR=emacs
-export VISUAL=emacs
+# Honor the editor selected by /etc/profile (including eselect editor).
+if [[ -z ${EDITOR:-} ]]; then
+  if command -v neomacs >/dev/null 2>&1; then
+    EDITOR=neomacs
+  else
+    EDITOR=emacs
+  fi
+fi
+export EDITOR
+export VISUAL="${VISUAL:-$EDITOR}"
 export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
 
 setopt HIST_IGNORE_ALL_DUPS

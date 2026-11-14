@@ -46,13 +46,16 @@ mold 按方案排除。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-新根当前 1,165 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
+新根当前 1,191 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
-新增软件后的 `@world --update --deep --newuse` 只读预演通过，未选择 GCC/glibc；
-仍列出 34 项对齐操作（21 个新依赖、13 项 USE 重建），尚未执行。
-它们包括基础 stage3 包与桌面 USE 的差异；这不属于 world 直接选择的缺失项。
-已通过精确关键词保留官方 stage3 的 platformdirs 4.12.4，避免非必要降版；
-下批先复核空间，再串行补齐，不能把依赖可解等同于已完成整体更新。
+34 项对齐操作已完成（21 个新依赖、13 项 USE 重建），包括 LLVM SPIR-V translator、
+libclc、Mesa CLC 和 cargo-c；随后又安装 Firefox 的五项较小前置。最终
+`@world --update --deep --newuse` 预演没有待合并项，未引入 GCC/glibc。
+官方 stage3 的 platformdirs 4.12.4 通过精确关键词保留，避免非必要降版。
+Firefox 已回补到 [153.7 ESR 配方](patchsets/firefox-153.7/)，新版预演通过；
+Node、语言包及本体源码预取校验通过；本体需在 20GiB 底线之外另留
+配方要求的 9700M 工作空间，当前没有启动大构建。
+
 
 ## 实验基线与已验证范围
 
@@ -109,7 +112,8 @@ source /etc/profile
 
 eselect 的 editor 模块支持按程序名或绝对路径设置自定义编辑器，设置成功后也会
 列出当前选择，无需修改模块或伪装成 `emacs`。文件须已安装到 `/usr/bin/neomacs`。
-若 shell 或 Git 另行覆盖 `EDITOR`、`VISUAL`、`core.editor`，还需在迁移后的隔离
+共享 Bash/Zsh 配置已改为尊重继承的编辑器选择；未设置时优先已安装 Neomacs。
+原 glibc 默认及独立 Windows 配置保留。Git 的 `core.editor` 等额外设置仍需在隔离
 用户配置中核对；仅设置 eselect 不代表 GUI、中文输入或原 Doom 配置已经兼容。
 
 ## Dragonwell 与其他二进制软件的包管理
@@ -129,6 +133,24 @@ RPATH 或启动脚本引用，不全局修改库路径。Flatpak 的应用和运
 FlClash 上游[暂不计划提供 Flathub 包](https://github.com/chen08209/FlClash/issues/1190)，
 理由涉及 Helper、TUN 与系统代理所需的系统权限。不能把同名社区包或仅提供本地
 代理的封装算作完整等价替代。当前仍保留它的兼容与 OpenRC 验证任务。
+
+### Java IDE 同样使用 Standard 21
+
+新环境统一 **Dragonwell Standard 21**，不使用 Java 25。Portage 已显式屏蔽其他
+OpenJDK provider 与 Dragonwell 22+，阻止后续依赖自动引入不同家族／主版本；宿主只有一个
+`dragonwell-bin-21` 系统 VM；Flatpak 内 Java 工具使用同一版本的私有 **glibc**
+构建，宿主使用 **musl** 构建，不混用进程内 JNI，也不注册第二个宿主默认 VM。
+
+当前 Red Hat Java 1.58 要求 JDK 25，不能只把路径改为 21。独立 profile 中已验证
+[Oracle Java 扩展 27](https://github.com/oracle/javavscode/releases/tag/v27.0.0)
+搭配 Standard 21：激活、符号、补全、中文编译运行及真实 DAP 断点／求值通过，
+调试目标报告 Alibaba／21。27 是扩展版本；扩展不捆绑 JDK。两项官方资产及哈希见
+[`java21-ide-assets.json`](scripts/java21-ide-assets.json)。它记录实验接受基线，
+不是已经运行过的用户配置迁移安装器。后续升级先复核 Java 21 支持和安全更新。
+
+原微软 Java Debug/Test/Project Manager 配置、Maven/Gradle/JUnit 和真实项目仍待
+迁移验收；原用户扩展保持原样。目标 profile 不启用要求 25 的扩展，不能用冻结
+旧版本冒充仍受维护的兼容路线。
 
 ## Flatpak 主包与一键安装
 
@@ -244,6 +266,38 @@ iconv 数据。当前原生 libc 的中文格式化和 GB18030 转换存在缺�
 Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-languages` 补充中文和
 英文，不手工指定语言扩展子路径。它的中文分片是 `/zh`，不是 `/zh_CN`。
 
+## 用户、对话与 IDE 数据迁移准备
+
+当前只完成分类与隔离测试，**尚未迁入真实目标 home、创建真实用户或新子卷**。
+保留 UID/GID、附加组和最终 home 路径，先核对目标冲突；服务用户由已安装软件包
+建立，不能复制整个旧 passwd/shadow 或把隔离映射中显示的 nobody 当作真实属主。
+
+| 数据 | 迁移方式与当前边界 |
+| --- | --- |
+| 对话 sessions、索引、SQLite | SQLite 有活跃 WAL；在线 backup 只能做单库预复制，最终应用停写后做一致性快照／增量核对 |
+| VSCodium User、工作区、WebStorage／Local Storage | 后两者是混合状态，私有保留后逐项验收，不当普通缓存删除；不将认证内容灌入测试 profile |
+| 用户配置、项目与个人文件 | 保留符号链接及相同 home 路径；venv、`.node`、ELF、`.eln` 分别检查 ABI，生成缓存按需重建 |
+| 用户身份与本机网络等配置 | 保留数字身份、组与权限；网络、蓝牙、钱包及凭据在对应受限步骤迁移和会话验收 |
+| PostgreSQL 与其他服务数据 | 不属于 home 快照；采用一致性备份及经过验证的逻辑恢复，不直接搬物理 PGDATA |
+
+VSCodium 实际源清单为 **56 项**：冻结前／副本／冻结后哈希与版本一致，隔离测试
+33 项 active、6 项声明式注册、17 项因 Java 政策、在线、远端或硬件等延期。
+11 项最小功能探针通过；注册不代表完整工作流。Makefile/debugpy 的首次只读夹具
+错误经独立可写执行副本复验解决；Xmake 经候选根私有 `flatpak-spawn --host`
+桥接后，用现有 Clang/libc++ 实际构建并运行中文 C++。源目录和 OS 沙箱保持。
+Oracle Java 21 是另一份独立 profile 验收，不混入上述 56 项计数。
+
+Neomacs 已通过 Doom 2.2.4 core 源码加载及 early-init 最小非交互初始化；未复制
+旧包缓存、`.eln` 或笔记，不代表全套 Doom 模块／插件及交互界面已经兼容。
+
+PostgreSQL 18.6 合成测试通过 UTF8/ICU 中文排序、约束、索引、逻辑 dump/restore，
+并由宿主 glibc pg_dump 对私有 musl 测试服务器导出、musl pg_restore 恢复验证。
+LLVM JIT 也实际执行通过。原数据库、角色密码与服务没有读取或迁移。
+
+正式数据切换先建立原 `@home` 的回退基线及独立写入测试树，避免两套系统共用
+可写旧配置；应用停写后再固定最终快照，核对权限、哈希及工作流。当前未执行
+快照、子卷改名或真实用户数据切换。详细边界集中在博客迁移文章和本机检查点。
+
 ## LLVM 构建与补丁边界
 
 新根的六类配置已按原顺序归并为各自的 `desktop` 文件，保留来源注释。
@@ -301,6 +355,14 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 该结果不覆盖 XLibre 驱动加载、显示输出、PRIME、休眠恢复或 Vulkan。
 
 ## 新根与回退
+
+目标根已静态登记 `elogind`（boot），以及 `dbus`、`NetworkManager`、`soniclogin`、
+`firewalld`、`sysklogd`、`chronyd`（default）；未实际启动服务。Sonic 登录器自身
+提供 display-manager，不另启 xdm；iwd 由 D-Bus 激活，PipeWire 保持用户会话启动。
+内核、固件、rEFInd、shim 和 virtual/dist-kernel 预演通过且无 GCC/glibc，但未安装。
+后续签名脚本已补同一写锁、候选根身份及完成 world 对齐的门槛；仅做静态准备，
+未读取签名私钥。`/boot`、模块目录、fstab 和真实用户仍待后续阶段建立。
+
 
 现有实验根曾非特权解压，并调整过 Portage 用户和嵌套沙箱，仅用于验证。
 正式新根要从已验签 stage3 以正确权限重新建立，恢复标准 Portage 用户、目录归属

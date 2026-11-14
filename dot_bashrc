@@ -17,8 +17,16 @@ fi
 
 # Put your fun stuff here.
 
-export EDITOR=emacs
-export VISUAL=emacs
+# Honor the editor selected by /etc/profile (including eselect editor).
+if [[ -z ${EDITOR:-} ]]; then
+    if command -v neomacs >/dev/null 2>&1; then
+        EDITOR=neomacs
+    else
+        EDITOR=emacs
+    fi
+fi
+export EDITOR
+export VISUAL="${VISUAL:-$EDITOR}"
 export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
 
 # Enable a local proxy: proxy [host] [http-port] [socks-port].

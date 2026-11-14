@@ -11,6 +11,11 @@ active worker, job results, logs, and remaining work. Older sections are history
 If that private checkpoint is absent, inspect the current environment; do not
 assume an experimental root or authorization process exists on another machine.
 
+The current migration targets Dragonwell Standard 21 for every JVM. Keep musl
+host and private glibc application runtimes distinct; do not fall back to a
+bundled JDK 25. The tested Java IDE alternative and its remaining acceptance
+limits are recorded in the experiment README.
+
 - Keep migration changes on `experiment/musl-llvm-migration`. Preserve `main`
   and Windows configuration synchronization. Do not deploy the blog implicitly.
 - Maintain versioned source/repository patches against recorded baselines;

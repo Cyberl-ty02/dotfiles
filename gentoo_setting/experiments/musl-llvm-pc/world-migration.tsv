@@ -61,7 +61,7 @@ net-misc/networkmanager	原生已装	net-misc/networkmanager-1.58.1-r1	安装已
 net-p2p/ktorrent	原生已装	net-p2p/ktorrent-26.04.3-r1	安装已核对；运行及旧数据按迁移验收范围检查
 net-print/cups-meta	原生已装	net-print/cups-meta-2	安装已核对；运行及旧数据按迁移验收范围检查
 net-print/gutenprint	原生已装	net-print/gutenprint-5.3.5	安装已核对；运行及旧数据按迁移验收范围检查
-net-proxy/flclash-bin	待安装／验证		Flutter/glibc 预编译界面待兼容验证，暂不直接安装
+net-proxy/flclash-bin	待安装／验证		静态 Core 可原生；glibc GTK/JNI 需同 ABI Standard21，OpenRC/TUN 尚未验收
 sonicde-base/sonic-audio-applet-pulse	原生已装	sonicde-base/sonic-audio-applet-pulse-6.8.0	安装已核对；运行及旧数据按迁移验收范围检查
 sonicde-base/sonic-desktop-interface	原生已装	sonicde-base/sonic-desktop-interface-6.8.0.3	安装已核对；运行及旧数据按迁移验收范围检查
 sonicde-base/sonic-ecco	原生已装	sonicde-base/sonic-ecco-26.08.2	安装已核对；运行及旧数据按迁移验收范围检查
@@ -73,18 +73,18 @@ sys-apps/flatpak	原生已装	sys-apps/flatpak-1.18.4	安装已核对；运行�
 sys-apps/ripgrep	原生已装	sys-apps/ripgrep-15.2.0	安装已核对；运行及旧数据按迁移验收范围检查
 sys-boot/efibootmgr	原生已装	sys-boot/efibootmgr-18-r2	安装已核对；运行及旧数据按迁移验收范围检查
 sys-boot/mokutil	原生已装	sys-boot/mokutil-0.7.2	安装已核对；运行及旧数据按迁移验收范围检查
-sys-boot/refind	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
-sys-boot/shim	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
+sys-boot/refind	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
+sys-boot/shim	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
 sys-devel/mold	按方案排除		LLVM 新根保留 LLD
 sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
 sys-fs/genfstab	原生已装	sys-fs/genfstab-31	安装已核对；运行及旧数据按迁移验收范围检查
 sys-kernel/linux-firmware	待安装／验证		原生预演通过，尚未安装
-sys-kernel/xanmod-kernel	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
+sys-kernel/xanmod-kernel	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
 sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/btop	原生已装	sys-process/btop-1.4.7	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/cronie	原生已装	sys-process/cronie-1.7.2-r1	安装已核对；运行及旧数据按迁移验收范围检查
-virtual/dist-kernel	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
-www-client/firefox	待安装／验证		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
+virtual/dist-kernel	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
+www-client/firefox	待安装／验证		153.7 ESR 官方回补及基线 helper 适配预演通过，无 GCC；五项前置已装、源码预取校验通过；本体及 Node 待足够空间
 x11-apps/xdpyinfo	原生已装	x11-apps/xdpyinfo-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	安装已核对；运行及旧数据按迁移验收范围检查
