@@ -22,7 +22,7 @@ ClamTk 6.18-r2 已安装，软件选择已通过 Portage 登记。迁移验收�
 四项功能开关已核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
 修复，并通过全新根沙箱编译安装，见[补丁组](patchsets/lowdown-3.1.1/)。Firefox／Thunderbird
 加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后原生预演不再选择 GCC；
-Thunderbird 现已选择官方 ESR Flatpak，Firefox 的原生 ESR 构建正在独立批次进行。
+Thunderbird 现已选择官方 ESR Flatpak，Firefox 的原生 ESR 构建及离线中文渲染检查已通过。
 KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ 和 LocalSend 已通过
 Flatpak 界面检查；FlClash 的 glibc 界面、Helper/TUN 和 OpenRC 集成仍待验证。
 
@@ -39,26 +39,30 @@ Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 
 包含类型、测试、内容、runtime、Hexo 和生成物检查；复用现有只读 node_modules，
 不是新机空缓存依赖安装证明。原博客源码与依赖哈希保持不变。
 
-截至 2026-11-14，旧系统 91 项 world 选择中，71 项已有同名原生安装，Telegram
+截至 2026-11-15 的 Firefox 批次复核，旧系统 91 项 world 选择中，72 项已有同名原生安装，Telegram
 以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，JDK 改为 Dragonwell Standard
 21 LTS；微信、VSCodium、LocalSend、Thunderbird ESR 与 QQ 使用 Flatpak；
 mold 按方案排除。
-剩余为两项普通应用（Firefox、FlClash）、
+剩余为一项普通应用（FlClash）、
 五项内核／引导选择，以及 WPS、腾讯会议、NVIDIA、CUDA 四项专项集成。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-上次配置复核时新根有 1,191 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
+Firefox 安装后复核时新根有 1,194 个依赖包、82 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
 34 项对齐操作已完成（21 个新依赖、13 项 USE 重建），包括 LLVM SPIR-V translator、
 libclc、Mesa CLC 和 cargo-c；随后又安装 Firefox 的五项较小前置。最终
 `@world --update --deep --newuse` 预演没有待合并项，未引入 GCC/glibc。
 官方 stage3 的 platformdirs 4.12.4 通过精确关键词保留，避免非必要降版。
-Firefox 已回补到 [153.7 ESR 配方](patchsets/firefox-153.7/)，新版预演通过；
-Node 和中文语言包已安装。本体首轮编译定位到静态 musl Rust 构建脚本无法动态
-加载 libclang，Firefox 专用 wrapper 的 UID 250／离线 Cargo 对照通过后正在重建。
-构建工作区已移至独立 Linux 文件系统，根分区保留 20GiB 底线；本体仍需配方
-要求的 9700M 工作余量，不能把预演或小型探针算作浏览器安装验收。
+Firefox 已按 [153.7 ESR 配方](patchsets/firefox-153.7/)正常沙箱构建安装，Node 和中文
+语言包已装。Firefox 专用 rustc wrapper 修复了静态 musl 宿主脚本无法动态加载
+libclang 的问题；普通用户、隔离网络、空白 profile 的中文页面渲染及截图目检通过，
+未验收 GPU、输入法、旧 profile 或 Widevine DRM。构建临时目录位于独立 Linux
+文件系统，根分区保留 20GiB 底线。
+
+CUDA 的[最小数据包补丁](patchsets/cuda-13.4/)已完成独立 PTX 编译验证，正常
+Portage 预演和安装排在内核批次后。它只提供 Clang device-only 头文件和 libdevice，
+不代表完整 CUDA 运行环境；宿主运行库、兼容工具与 NVIDIA 驱动继续分项验收。
 
 
 ## 实验基线与已验证范围
@@ -72,7 +76,7 @@ Node 和中文语言包已安装。本体首轮编译定位到静态 musl Rust �
 | --- | --- |
 | musl 原生 UTF-8 文件名、内容、中文编码 | 通过 |
 | ICU 中文日期、人民币、排序、GB18030 转换 | 独立程序通过 |
-| 原生 CUDA 编译和 RTX 4060 计算 | Clang、libc++ 与小补丁通过最小 kernel；不是完整 CUDA SDK/PyTorch 验收 |
+| 原生 CUDA 编译和 RTX 4060 计算 | Clang／libc++ musl 程序结合静态 cudart、gcompat 和小补丁通过最小 kernel；不是完整 SDK/PyTorch 验收 |
 | NVIDIA 开源内核模块 | 五个模块在 musl/Clang 下编译通过；尚未安装、签名、加载新模块 |
 | NVIDIA 原生图形兼容 | 私有补丁加载器下 EGL 1.5 / OpenGL 4.6 离屏渲染及像素回读通过；未验证桌面、PRIME 或外接显示 |
 | Flatpak 1.18.4 | musl 原生构建完成 |
@@ -363,9 +367,11 @@ EGL 1.5 / OpenGL 4.6 上下文、离屏清屏与像素回读通过；对照组�
 目标根已静态登记 `elogind`（boot），以及 `dbus`、`NetworkManager`、`soniclogin`、
 `firewalld`、`sysklogd`、`chronyd`（default）；未实际启动服务。Sonic 登录器自身
 提供 display-manager，不另启 xdm；iwd 由 D-Bus 激活，PipeWire 保持用户会话启动。
-内核、固件、rEFInd、shim 和 virtual/dist-kernel 预演通过且无 GCC/glibc，但未安装。
-后续签名脚本已补同一写锁、候选根身份及完成 world 对齐的门槛；仅做静态准备，
-未读取签名私钥。`/boot`、模块目录、fstab 和真实用户仍待后续阶段建立。
+五项内核／引导选择的无 GCC/glibc 预演已通过；XanMod 和 virtual/dist-kernel
+正在独立实验根构建，固件、rEFInd、shim 尚未安装。批次使用同一写锁与已测试的
+子进程清理机制，签名材料限于只读源文件，私钥副本仅保留在新根的 root 私有目录。
+真实 EFI 分区未写入；内核、initramfs 存储驱动、固件、fstab、真实用户及回退启动
+均需后续验收，当前不能切换启动。
 
 
 现有实验根曾非特权解压，并调整过 Portage 用户和嵌套沙箱，仅用于验证。

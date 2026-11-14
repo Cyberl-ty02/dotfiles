@@ -1,0 +1,141 @@
+diff --git a/dev-util/cuda-clang-device-headers/Manifest b/dev-util/cuda-clang-device-headers/Manifest
+new file mode 100644
+--- /dev/null
++++ b/dev-util/cuda-clang-device-headers/Manifest
+@@ -0,0 +1,5 @@
++DIST cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz 1403032 BLAKE2B 68c41b102ce2da286f6f7060db5acbd7b8c374d3db2d0f9258dd1c81f7b7e269501bf936088e673bf3842e8ceca7a9e96ec0aaff9d5c3b38585566a659f4f780 SHA512 45faa1cc337a4a00e3146db6b8a56e677e0f179bc9a120e957f70b2fbbe074e6d06ddfd9fd4cc0ed7015cac5eb3e2a798092b3cff6e8e28a8595551bff2edd10
++DIST cuda_crt-linux-x86_64-13.4.59-archive.tar.xz 101972 BLAKE2B 61f70540d5de212818a0cdc07d4f98a9798080edef2053c5a53241b2c9b63fbf061180f41e267066bd455be85f31a4b0b9ec9b2894b8dd6a1568490894dd72bf SHA512 a8e6428df5e183dae97ec95f6a0620236e614f66a65cadc81edcd3b0435c2c863b116d970791c17c8d603b4a9f40b5729ab80b9ab8bde65a30c04bbf85646190
++DIST cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz 1702296 BLAKE2B 8b8b14c4397573315df11cef7b6bb8ebb882edc5fad22dabd8158a8431ec812b721ef5ec85ae9cf68d8b1cf37715672c529e53e332657e561beed771cc6bd76f SHA512 61e54d151f9e5d574908f6be98c822f7337ea91b94821cf903c7b34551c9a78d71b4b587be1bec951094097f108ae849f3193dac7471a86d57ddde76681794fc
++DIST libnvvm-linux-x86_64-13.4.59-archive.tar.xz 51311984 BLAKE2B 9f342f8c8a2c3683f5e2e45d0fd2cf78906a1e75a0a940c81d54af0c827d571202a80a72c67da7907d96cec3e138707770a89cd29901e9ef9e8c6a13ce4e374c SHA512 153f58c94e6a8cf4bb80cf7b56f627cdc7862fb90a5e3ea2a140f43c4950b0f363fcfbc963ebaeaf211be016ab92f820541558f90f39426b5247c1dc863c4310
++DIST libcurand-linux-x86_64-10.4.4.49-archive.tar.xz 86991676 BLAKE2B 6926466a5ef3c8d20e63fa5cdd9a561b6257ba9f780c115e27261ff08f293367fb43af9b5f1c28805819617510a5f05bbfc66d184e2d9dd9d1947a7be55a4e42 SHA512 e427e816edc09baa5d8e95407bc57335f364b19c3e5eb067f0bad772f99ee8629f02d63b99291c68961ae5435256a77c50827bb451609f83e503d2b981ee5dd8
+diff --git a/dev-util/cuda-clang-device-headers/cuda-clang-device-headers-13.4.1.ebuild b/dev-util/cuda-clang-device-headers/cuda-clang-device-headers-13.4.1.ebuild
+new file mode 100644
+--- /dev/null
++++ b/dev-util/cuda-clang-device-headers/cuda-clang-device-headers-13.4.1.ebuild
+@@ -0,0 +1,85 @@
++# Copyright 2026 Gentoo Authors
++# Distributed under the terms of the GNU General Public License v2
++
++EAPI=8
++
++DESCRIPTION="CUDA 13.4 headers, CCCL and libdevice for Clang device-only PTX emission"
++HOMEPAGE="https://developer.nvidia.com/cuda-toolkit https://llvm.org/docs/CompileCudaWithLLVM.html"
++SRC_URI="
++	https://developer.download.nvidia.com/compute/cuda/redist/cccl/linux-x86_64/cccl-linux-x86_64-13.3.4.2.1-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/cuda_crt/linux-x86_64/cuda_crt-linux-x86_64-13.4.59-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/linux-x86_64/cuda_cudart-linux-x86_64-13.4.49-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/libnvvm/linux-x86_64/libnvvm-linux-x86_64-13.4.59-archive.tar.xz
++	https://developer.download.nvidia.com/compute/cuda/redist/libcurand/linux-x86_64/libcurand-linux-x86_64-10.4.4.49-archive.tar.xz
++"
++S="${WORKDIR}/${P}"
++
++LICENSE="NVIDIA-CUDA Apache-2.0-with-LLVM-exceptions BSD"
++SLOT="13.4"
++KEYWORDS="~amd64"
++RESTRICT="bindist mirror"
++
++# Data/headers only: deliberately no nvcc/ptxas/fatbinary/nvlink or libcudart.
++RDEPEND=">=llvm-core/clang-22.1.8:22[llvm_targets_NVPTX]"
++BDEPEND="app-arch/tar app-arch/xz-utils"
++
++CUDA_COMPONENT_ROOTS=(
++	cccl-linux-x86_64-13.3.4.2.1-archive
++	cuda_crt-linux-x86_64-13.4.59-archive
++	cuda_cudart-linux-x86_64-13.4.49-archive
++	libnvvm-linux-x86_64-13.4.59-archive
++	libcurand-linux-x86_64-10.4.4.49-archive
++)
++CUDA_DEVICE_PATH="/opt/cuda-clang-device-headers-${PV}"
++
++src_unpack() {
++	mkdir -p "${S}/component-licenses" || die
++	local root
++	for root in "${CUDA_COMPONENT_ROOTS[@]}"; do
++		case "${root}" in
++			libcurand-*)
++				# Clang22 runtime wrapper unconditionally includes this legacy header.
++				# Only its three-header closure is supplied, not the cuRAND library.
++				tar -xf "${DISTDIR}/${root}.tar.xz" -C "${S}" --strip-components=1 \
++					"${root}/include/curand_mtgp32_kernel.h" \
++					"${root}/include/curand_mtgp32.h" "${root}/include/curand.h" || die
++				;;
++			libnvvm-*)
++				tar -xf "${DISTDIR}/${root}.tar.xz" -C "${S}" --strip-components=1 \
++					"${root}/nvvm/libdevice" || die
++				;;
++			*)
++				tar -xf "${DISTDIR}/${root}.tar.xz" -C "${S}" --strip-components=1 \
++					"${root}/include" || die
++				;;
++		esac
++		tar -xOf "${DISTDIR}/${root}.tar.xz" "${root}/LICENSE" \
++			> "${S}/component-licenses/${root}.LICENSE" || die
++	done
++	printf 'CUDA Version %s\n' "${PV}" > "${S}/version.txt" || die
++}
++
++src_prepare() {
++	# This zero-context patch is restricted to one verified vendor CRT header.
++	echo "57d44776b0944872de79986ba133315ceac1873ba5a63516ec3ebbba7c5afc96  include/crt/math_functions.hpp" | sha256sum -c - || die
++	eapply --fuzz=0 "${FILESDIR}/cuda-13.4.59-musl-host-math.patch"
++	eapply_user
++}
++
++src_configure() { :; }
++src_compile() { :; }
++
++src_install() {
++	insinto "${CUDA_DEVICE_PATH}"
++	doins -r include nvvm version.txt
++	# Clang CUDA installation discovery expects the conventional directory layout.
++	# These remain empty; no glibc tools or CUDA host runtime are provided.
++	keepdir "${CUDA_DEVICE_PATH}/bin" "${CUDA_DEVICE_PATH}/lib64"
++	dodoc component-licenses/*
++}
++
++pkg_postinst() {
++	elog "Clang device-only data installed to ${CUDA_DEVICE_PATH}"
++	elog "Use --cuda-path=${CUDA_DEVICE_PATH} --cuda-device-only -S."
++	elog "No CUDA host linking/runtime, ptxas, nvcc, NVIDIA driver, or complete SDK is provided."
++}
+diff --git a/dev-util/cuda-clang-device-headers/files/cuda-13.4.59-musl-host-math.patch b/dev-util/cuda-clang-device-headers/files/cuda-13.4.59-musl-host-math.patch
+new file mode 100644
+--- /dev/null
++++ b/dev-util/cuda-clang-device-headers/files/cuda-13.4.59-musl-host-math.patch
+@@ -0,0 +1,26 @@
++--- a/include/crt/math_functions.hpp
+++++ b/include/crt/math_functions.hpp
++@@ -3003 +3003 @@
++-  if (__isnan(a)) {
+++  if (__builtin_isnan(a)) {
++@@ -3006 +3006 @@
++-  if (a == 0.0 || __isinf(a)) {
+++  if (a == 0.0 || __builtin_isinf(a)) {
++@@ -3028 +3028 @@
++-  if (__isnan(a)) {
+++  if (__builtin_isnan(a)) {
++@@ -3031 +3031 @@
++-  if (a == 0.0 || __isinf(a)) {
+++  if (a == 0.0 || __builtin_isinf(a)) {
++@@ -3058 +3058 @@
++-  if (__isnan(a)) {
+++  if (__builtin_isnan(a)) {
++@@ -3061 +3061 @@
++-  if (__isinf(a)) {
+++  if (__builtin_isinf(a)) {
++@@ -3204 +3204 @@
++-  if (__isnan(a)) {
+++  if (__builtin_isnan(a)) {
++@@ -3310 +3310 @@
++-  if (__isnan(a)) {
+++  if (__builtin_isnan(a)) {
+diff --git a/dev-util/cuda-clang-device-headers/metadata.xml b/dev-util/cuda-clang-device-headers/metadata.xml
+new file mode 100644
+--- /dev/null
++++ b/dev-util/cuda-clang-device-headers/metadata.xml
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
++<pkgmetadata>
++  <longdescription lang="en">Version-pinned CUDA headers, CCCL and libdevice for Clang device-only PTX emission. No NVIDIA host compiler tools, shared/static cudart or GPU driver are installed.</longdescription>
++</pkgmetadata>

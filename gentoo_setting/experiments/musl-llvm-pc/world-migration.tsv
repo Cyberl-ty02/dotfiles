@@ -84,7 +84,7 @@ sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.3
 sys-process/btop	原生已装	sys-process/btop-1.4.7	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/cronie	原生已装	sys-process/cronie-1.7.2-r1	安装已核对；运行及旧数据按迁移验收范围检查
 virtual/dist-kernel	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
-www-client/firefox	待安装／验证		153.7 ESR 官方回补，无 GCC；Node／中文语言包已装；musl Rust 宿主脚本 dlopen 修复对照通过，本体重建中
+www-client/firefox	原生已安装	www-client/firefox-153.7.0	UID250正常构建；world预演零项、普通用户离线中文渲染通过；GPU／输入法／DRM未验收
 x11-apps/xdpyinfo	原生已装	x11-apps/xdpyinfo-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	安装已核对；运行及旧数据按迁移验收范围检查
