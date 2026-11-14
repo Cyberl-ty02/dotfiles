@@ -36,3 +36,9 @@ media-gfx/krita ~amd64
 sys-libs/kpmcore ~amd64
 net-im/telegram-desktop ~amd64
 net-wireless/iwd ~amd64
+
+# Dragonwell Standard 21 LTS: native musl archive, fixed acceptance baseline.
+=dev-java/dragonwell-bin-21.0.13.0.13_p9::gentoo-zh ~amd64
+
+# Retain the official stage3 platformdirs version; avoid incidental downgrade.
+=dev-python/platformdirs-4.12.4::gentoo ~amd64

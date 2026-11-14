@@ -28,7 +28,7 @@ dev-build/ninja	原生已装	dev-build/ninja-1.13.2-r1	安装已核对；运行�
 dev-build/xmake	原生已装	dev-build/xmake-3.1.2	安装已核对；运行及旧数据按迁移验收范围检查
 dev-cpp/highway	原生已装	dev-cpp/highway-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
 dev-db/postgresql	原生已装	dev-db/postgresql-18.6	安装已核对；运行及旧数据按迁移验收范围检查
-dev-java/openjdk-bin	待安装／验证		musl Temurin 配方预演通过，二进制依赖待核验
+dev-java/openjdk-bin	原生替代已安装	dev-java/dragonwell-bin-21.0.13.0.13_p9	Standard 21 LTS；Portage/eselect 与中文编译运行、字体和证书检查通过
 dev-lang/bun-bin	原生已装	dev-lang/bun-bin-1.4.4	安装已核对；运行及旧数据按迁移验收范围检查
 dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-python/uv	原生已装	dev-python/uv-0.13.4-r1	安装已核对；运行及旧数据按迁移验收范围检查
@@ -44,7 +44,7 @@ kde-apps/gwenview	原生已装	kde-apps/gwenview-26.04.3	安装已核对；运�
 kde-apps/kwalletmanager	原生已装	kde-apps/kwalletmanager-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
 kde-apps/yakuake	原生已装	kde-apps/yakuake-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
 kde-plasma/discover	原生已装	kde-plasma/discover-6.7.5	安装已核对；运行及旧数据按迁移验收范围检查
-mail-client/thunderbird	待安装／验证		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
+mail-client/thunderbird	Flatpak已装		org.mozilla.thunderbird_esr 153.7.0esr；隔离中文界面通过，邮件账户未迁移
 media-fonts/nerdfonts	原生已装	media-fonts/nerdfonts-3.5.1	安装已核对；运行及旧数据按迁移验收范围检查
 media-fonts/noto	原生已装	media-fonts/noto-20261001	安装已核对；运行及旧数据按迁移验收范围检查
 media-fonts/noto-cjk	原生已装	media-fonts/noto-cjk-20190416	安装已核对；运行及旧数据按迁移验收范围检查
@@ -52,7 +52,7 @@ media-gfx/krita	原生已装	media-gfx/krita-6.0.4.1	安装已核对；运行及
 media-video/vlc	原生已装	media-video/vlc-4.0.0_pre20260625	安装已核对；运行及旧数据按迁移验收范围检查
 net-firewall/firewalld	原生已装	net-firewall/firewalld-2.5.2	安装已核对；运行及旧数据按迁移验收范围检查
 net-im/telegram-desktop-bin	原生替代已装	net-im/telegram-desktop-7.4.0	以原生 musl 源码包替代 glibc 预编译包；GUI/账户仍待验收
-net-im/tencent-qq	待安装／验证		Flatpak com.qq.QQ 候选，尚未安装
+net-im/tencent-qq	Flatpak已装		com.qq.QQ 3.2.35-54395；社区封装，隔离离线中文窗口通过，登录及音视频未验收
 net-im/wechat	Flatpak已装		com.tencent.WeChat
 net-im/wemeet	兼容待验证		腾讯会议路线待实际验证
 net-misc/chrony	原生已装	net-misc/chrony-4.8-r1	安装已核对；运行及旧数据按迁移验收范围检查

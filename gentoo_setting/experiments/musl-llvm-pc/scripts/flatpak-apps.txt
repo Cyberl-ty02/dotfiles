@@ -2,3 +2,5 @@
 com.tencent.WeChat
 com.vscodium.codium
 org.localsend.localsend_app
+org.mozilla.thunderbird_esr
+com.qq.QQ

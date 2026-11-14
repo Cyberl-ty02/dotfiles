@@ -5,6 +5,10 @@
 `manifests/nvidia.txt` 仍服务于原 glibc 系统；不要整棵复制到 musl stage3。
 Windows 配置不在本次变更范围内。
 
+接续任务先阅读仓库根的 [`AGENTS.md`](../../../AGENTS.md)，再核对本页、world 清单、
+仓库基线及相关补丁组。当前结论与尚未完成项以这些现有文件为准；本机运行中的
+任务、私有日志和实验根身份记录在本机检查点，不能由公开清单推断进程仍然存活。
+
 桌面批次通过不代表旧 `world` 已全部迁移。逐项核对清单见
 [`world-migration.tsv`](world-migration.tsv)，按批次检查点记录旧系统 91 个直接选择的去向；
 “待原生预演”表示尚未补齐，不能理解为不支持 musl。PostgreSQL 18.6、ClamAV 1.5.3、
@@ -17,9 +21,10 @@ ClamTk 6.18-r2 已安装，软件选择已通过 Portage 登记。迁移验收�
 包括 PostgreSQL LLVM/JIT、NetworkManager iwd、Btrfs udev 和 XLibre Xvfb，
 四项功能开关已核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
 修复，并通过全新根沙箱编译安装，见[补丁组](patchsets/lowdown-3.1.1/)。Firefox／Thunderbird
-加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后预演不再选择 GCC；大型应用分批构建。
-KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ、LocalSend、FlClash
-的 glibc 预编译界面另行验证，不把通过关键词检查当作 ABI 兼容已经通过。
+加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后原生预演不再选择 GCC；
+Thunderbird 现已选择官方 ESR Flatpak，Firefox 的原生 ESR 构建仍待独立批次。
+KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ 和 LocalSend 已通过
+Flatpak 界面检查；FlClash 的 glibc 界面、Helper/TUN 和 OpenRC 集成仍待验证。
 
 下载默认沿用调用环境的代理；当前批次使用已恢复的本地代理。国内直连只在
 网络确实可达且已核验速度时临时启用；
@@ -33,15 +38,21 @@ Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 
 完整博客构建仍待在原生 musl 中验证。
 
 截至 2026-11-14，旧系统 91 项 world 选择中，71 项已有同名原生安装，Telegram
-以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，微信、VSCodium 与 LocalSend 使用 Flatpak；
+以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，JDK 改为 Dragonwell Standard
+21 LTS；微信、VSCodium、LocalSend、Thunderbird ESR 与 QQ 使用 Flatpak；
 mold 按方案排除。
-剩余为五项普通应用（JDK、Firefox、Thunderbird、QQ、FlClash）、
+剩余为两项普通应用（Firefox、FlClash）、
 五项内核／引导选择，以及 WPS、腾讯会议、NVIDIA、CUDA 四项专项集成。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-新根当前 1,159 个依赖包、79 个 world 选择，Neomacs 已安装并选为默认编辑器。
+新根当前 1,165 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
+新增软件后的 `@world --update --deep --newuse` 只读预演通过，未选择 GCC/glibc；
+仍列出 34 项对齐操作（21 个新依赖、13 项 USE 重建），尚未执行。
+它们包括基础 stage3 包与桌面 USE 的差异；这不属于 world 直接选择的缺失项。
+已通过精确关键词保留官方 stage3 的 platformdirs 4.12.4，避免非必要降版；
+下批先复核空间，再串行补齐，不能把依赖可解等同于已完成整体更新。
 
 ## 实验基线与已验证范围
 
@@ -101,6 +112,24 @@ eselect 的 editor 模块支持按程序名或绝对路径设置自定义编辑�
 若 shell 或 Git 另行覆盖 `EDITOR`、`VISUAL`、`core.editor`，还需在迁移后的隔离
 用户配置中核对；仅设置 eselect 不代表 GUI、中文输入或原 Doom 配置已经兼容。
 
+## Dragonwell 与其他二进制软件的包管理
+
+Dragonwell **Standard 21 LTS** 21.0.13.0.13+9 已通过正常 Portage 安装和
+`eselect java-vm` 登记；不使用 Extended，不安装 GCC 或 glibc。实际安装产物以
+普通用户通过 javac、中文读写、人民币格式、上海时区、CJK 字体及系统证书库检查。
+[补丁组](patchsets/dragonwell-21.0.13/)包含现有 Gentoo-Zh 中新增配方与 Gentoo
+Java 21 虚拟依赖调整，两份补丁分别应用到各自仓库，不新增 overlay。
+
+其他尚无配方的软件也优先用固定版本和 Manifest 的二进制 ebuild 管理，程序及
+专用兼容库放在版本化 `/opt`，由 Portage 跟踪文件、依赖、升级及卸载。AppImage
+可以按相同方式解包管理；不需要为解包安装强制引入 FUSE。兼容库由程序私有
+RPATH 或启动脚本引用，不全局修改库路径。Flatpak 的应用和运行时继续由 Flatpak
+管理，本仓库只维护主包清单与脚本，避免两个包管理器共同管理同一组文件。
+
+FlClash 上游[暂不计划提供 Flathub 包](https://github.com/chen08209/FlClash/issues/1190)，
+理由涉及 Helper、TUN 与系统代理所需的系统权限。不能把同名社区包或仅提供本地
+代理的封装算作完整等价替代。当前仍保留它的兼容与 OpenRC 验证任务。
+
 ## Flatpak 主包与一键安装
 
 主包清单在 [`scripts/flatpak-apps.txt`](scripts/flatpak-apps.txt)。当前默认：
@@ -108,6 +137,12 @@ eselect 的 editor 模块支持按程序名或绝对路径设置自定义编辑�
 - `com.tencent.WeChat`
 - `com.vscodium.codium`
 - `org.localsend.localsend_app`
+- `org.mozilla.thunderbird_esr`
+- `com.qq.QQ`
+
+Thunderbird 使用官方 ESR 渠道；QQ 是社区封装，程序来自腾讯固定地址并核对
+extra-data 哈希。二者的隔离中文界面启动通过；QQ 测试为离线错误界面，不等于
+登录或服务连接成功。旧邮件／账户数据、插件、音视频均未迁移或验收。
 
 腾讯会议 `com.tencent.wemeet` 尚待验证。`com.wps.Office` 是国际版，不能当作
 现有中文 WPS 12 的等价替代，因此二者暂不进入默认清单。
@@ -318,8 +353,8 @@ Btrfs 候选布局是在原文件系统中新增 `@musl`，保留原 `@`、`@hom
 改名后不会留下另一份 `@musl`，无需删除额外分区，也不改分区 UUID。新机全新安装
 可直接使用 `@`、`@home`；迁移期间的临时名字不必长期保留。
 
-本轮不默认安装 GNU Emacs。Neomacs 仍是待验证候选；现有系统和 Windows 的
-Emacs 配置保留。若最终保留独立 glibc 根，应明确它需要单独创建、更新、配置用户
+本轮不安装 GNU Emacs，实验根已使用 Neomacs；旧 Doom 配置仍待验收，现有系统和
+Windows 的 Emacs 配置保留。若最终保留独立 glibc 根，应明确它需要单独创建、更新、配置用户
 与会话接口，不是安装一个 chroot 软件包便自动完成。
 
 ## 资料
