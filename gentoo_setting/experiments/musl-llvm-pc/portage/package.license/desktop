@@ -3,3 +3,9 @@ sys-libs/musl-cxx-runtime gcc-runtime-library-exception-3.1
 
 # Source group: package.license/world-migration
 sys-kernel/linux-firmware linux-fw-redistributable no-source-code
+
+# CUDA Clang device-only headers/libdevice; no host runtime.
+=dev-util/cuda-clang-device-headers-13.4.1 NVIDIA-CUDA
+
+# Exact GSP firmware data for the accepted open NVIDIA modules.
+=sys-firmware/nvidia-gsp-firmware-620.70.06::gentoo-zh NVIDIA-2025

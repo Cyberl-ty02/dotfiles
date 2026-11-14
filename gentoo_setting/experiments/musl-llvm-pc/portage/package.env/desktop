@@ -6,3 +6,9 @@
 
 # Source group: package.env/world-x11
 =kde-apps/gwenview-26.04.3:6 gwenview-x11
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+=x11-drivers/nvidia-drivers-620.70.06::gentoo nvidia-modules-only-local
+
+# Exact local kernel signing scope; private key is never exported.
+=sys-kernel/xanmod-kernel-7.2.14 kernel-signing-local

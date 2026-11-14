@@ -13,7 +13,7 @@ group=/root/dotfiles/gentoo_setting/experiments/musl-llvm-pc/patchsets/cuda-13.4
 patch --dry-run --fuzz=0 -p1 -d "$sdk" < "$group/source/0001-musl-host-math.patch"
 ```
 
-下述最小数据包尚未通过 Portage 安装验收，不能假定复制进用户补丁目录即可
+下述最小数据包已通过正常 Portage 安装与安装后 PTX 验收，不能假定复制进用户补丁目录即可
 提供完整 CUDA SDK。升级 CUDA 时重新核对头文件和最小 kernel；官方入口变化或支持本目标后
 重新评估是否移除，不将这份补丁自动套到其他主版本。
 
@@ -23,14 +23,14 @@ patch --dry-run --fuzz=0 -p1 -d "$sdk" < "$group/source/0001-musl-host-math.patc
 `dev-util/cuda-clang-device-headers-13.4.1`，适用基线见
 [`repository-baseline.tsv`](../../portage/repository-baseline.tsv)，不新建 overlay。
 **状态：精确应用／撤回、配方语法、选择性解包和独立 PTX 编译通过；正常 Portage
-预演、安装和安装后验证已排队，尚未完成。**
+预演、安装和安装后普通用户变量 sinf PTX 验证通过。**
 
 包只安装 CCCL、CRT、cudart 的头文件、libdevice，以及 Clang 22 必须包含的三份
 cuRAND 兼容头。五个 NVIDIA 官方归档共约 135MiB，按已有官方 redistrib SHA256
 核对后生成 Manifest；不安装其中的 NVCC、ptxas、动态／静态 cudart 或 cuRAND
 共享库。各组件许可证分别保留。数学补丁先验证固定 CRT 原头文件哈希再应用。
 
-普通 UID 1000、只读 musl 根、隔离网络且无 GPU 的测试中，变量输入 `sinf` kernel
+独立普通 UID 1000、只读 musl 根、隔离网络且无 GPU 的测试中，变量输入 `sinf` kernel
 成功生成 sm_89 PTX，编译命令确实链接 libdevice，PTX 含范围规约和 FMA 多项式。
 Clang 22 对 CUDA 13.4 新于其部分支持版本 12.9 的警告保留；小型编译不能代表
 完整 CUDA 13.4 支持。初版缺 cuRAND 头的失败已保留，补齐三文件闭包后通过。

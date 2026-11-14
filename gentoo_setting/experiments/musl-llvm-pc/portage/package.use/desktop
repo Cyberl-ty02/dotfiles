@@ -75,3 +75,6 @@ sys-fs/btrfs-progs udev
 x11-base/xlibre-server xvfb
 x11-base/xorg-server::xlibre xvfb
 =kde-apps/yakuake-26.04.3:6 -wayland
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+=x11-drivers/nvidia-drivers-620.70.06::gentoo modules-only modules modules-sign -dist-kernel -X -abi_x86_32 -persistenced -powerd -static-libs -tools -wayland

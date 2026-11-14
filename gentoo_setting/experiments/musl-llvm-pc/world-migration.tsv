@@ -17,7 +17,7 @@ app-i18n/fcitx:5	原生已装	app-i18n/fcitx-5.1.21	安装已核对；运行及�
 app-misc/fastfetch	原生已装	app-misc/fastfetch-2.69.0	安装已核对；运行及旧数据按迁移验收范围检查
 app-misc/resolve-march-native	原生已装	app-misc/resolve-march-native-6.1.0	安装已核对；运行及旧数据按迁移验收范围检查
 app-misc/yazi	原生已装	app-misc/yazi-26.9.1	安装已核对；运行及旧数据按迁移验收范围检查
-app-office/wps-office	兼容待验证		保留中文 WPS 体验；国际版不作为等价替代
+app-office/wps-office	隔离中文 GUI 已验证		中文12在标准Flatpak私有配置显示许可窗口；未接受协议、登录或验证文档保存，尚未生产安装
 app-portage/eix	原生已装	app-portage/eix-0.36.9	安装已核对；运行及旧数据按迁移验收范围检查
 app-portage/gentoolkit	原生已装	app-portage/gentoolkit-0.8.2	安装已核对；运行及旧数据按迁移验收范围检查
 app-shells/thefuck	原生已装	app-shells/thefuck-3.32-r2	安装已核对；运行及旧数据按迁移验收范围检查
@@ -33,7 +33,7 @@ dev-lang/bun-bin	原生已装	dev-lang/bun-bin-1.4.4	安装已核对；运行及
 dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-python/uv	原生已装	dev-python/uv-0.13.4-r1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/clinfo	原生已装	dev-util/clinfo-3.1.26.09.26	安装已核对；运行及旧数据按迁移验收范围检查
-dev-util/nvidia-cuda-toolkit	拆分集成待验证		原生 CUDA 分组件已验证，完整 SDK 未安装
+dev-util/nvidia-cuda-toolkit	数据层已安装／运行链待补齐	dev-util/cuda-clang-device-headers-13.4.1	正常 Portage 安装与变量 sinf sm_89 PTX 通过；无宿主运行库／完整 NVCC／GPU 执行验收
 dev-util/pixi	原生已装	dev-util/pixi-0.84.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/vulkan-tools	原生已装	dev-util/vulkan-tools-1.4.357.0	安装已核对；运行及旧数据按迁移验收范围检查
@@ -79,14 +79,14 @@ sys-devel/mold	按方案排除		LLVM 新根保留 LLD
 sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
 sys-fs/genfstab	原生已装	sys-fs/genfstab-31	安装已核对；运行及旧数据按迁移验收范围检查
 sys-kernel/linux-firmware	待安装／验证		原生预演通过，尚未安装
-sys-kernel/xanmod-kernel	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
+sys-kernel/xanmod-kernel	原生已安装	sys-kernel/xanmod-kernel-7.2.14	Clang、CJK16/32、签名与 initramfs 存储检查通过；尚未真机启动
 sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/btop	原生已装	sys-process/btop-1.4.7	安装已核对；运行及旧数据按迁移验收范围检查
 sys-process/cronie	原生已装	sys-process/cronie-1.7.2-r1	安装已核对；运行及旧数据按迁移验收范围检查
-virtual/dist-kernel	待安装／验证		本批独立依赖预演通过；保留原入口，新根内核／签名／启动未完成
+virtual/dist-kernel	原生已安装	virtual/dist-kernel-7.2.14-r100	已安装并登记 world，使用新 musl XanMod；真实启动／回退未验收
 www-client/firefox	原生已安装	www-client/firefox-153.7.0	UID250正常构建；world预演零项、普通用户离线中文渲染通过；GPU／输入法／DRM未验收
 x11-apps/xdpyinfo	原生已装	x11-apps/xdpyinfo-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	安装已核对；运行及旧数据按迁移验收范围检查
 x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	安装已核对；运行及旧数据按迁移验收范围检查
-x11-drivers/nvidia-drivers	拆分集成待验证		原生模块/工具与专有图形兼容拆分尚未完成
+x11-drivers/nvidia-drivers	模块与固件已安装	x11-drivers/nvidia-drivers-620.70.06	仅 modules-only；五模块匹配新内核且公钥验签通过，GSP 数据包已装；用户态、真实加载、PRIME 待验收
 x11-misc/xclip	原生已装	x11-misc/xclip-0.13	安装已核对；运行及旧数据按迁移验收范围检查

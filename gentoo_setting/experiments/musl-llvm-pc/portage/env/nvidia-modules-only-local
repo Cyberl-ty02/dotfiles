@@ -1,0 +1,4 @@
+KERNEL_DIR="/lib/modules/7.2.14-musl-x64v3/build"
+MODULES_SIGN_KEY="/etc/kernel/secureboot/MOK.pem"
+MODULES_SIGN_CERT="/etc/kernel/secureboot/MOK.pem"
+MAKEOPTS="-j4 -l8"

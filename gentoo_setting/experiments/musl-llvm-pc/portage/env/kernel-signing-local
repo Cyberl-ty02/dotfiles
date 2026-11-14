@@ -1,0 +1,8 @@
+# Same scoped root-only signing-key policy as the working PC configuration.
+# Only the selected kernel uses this exception; other packages keep userpriv.
+FEATURES="${FEATURES} -userpriv -usersandbox"
+MAKEOPTS="-j4 -l8"
+MODULES_SIGN_KEY="/etc/kernel/secureboot/MOK.pem"
+MODULES_SIGN_CERT="/etc/kernel/secureboot/MOK.pem"
+SECUREBOOT_SIGN_KEY="/etc/kernel/secureboot/MOK.pem"
+SECUREBOOT_SIGN_CERT="/etc/kernel/secureboot/MOK.pem"

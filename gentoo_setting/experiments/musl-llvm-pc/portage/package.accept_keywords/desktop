@@ -42,3 +42,12 @@ net-wireless/iwd ~amd64
 
 # Retain the official stage3 platformdirs version; avoid incidental downgrade.
 =dev-python/platformdirs-4.12.4::gentoo ~amd64
+
+# CUDA Clang device-only headers/libdevice; no host runtime.
+=dev-util/cuda-clang-device-headers-13.4.1 ~amd64
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+=x11-drivers/nvidia-drivers-620.70.06::gentoo ~amd64
+
+# Exact GSP firmware data for the accepted open NVIDIA modules.
+=sys-firmware/nvidia-gsp-firmware-620.70.06::gentoo-zh ~amd64
