@@ -21,7 +21,8 @@ LLVM libgcc 22.1.8 从源码构建，两个本地配方安装、JavaScript、中
 此前版本的库名警告已修复，不以屏蔽 QA 代替修复。
 
 该验证使用最小测试仓库及已校验的下载缓存。公开补丁已在独立上游副本通过应用／
-撤回检查；主桌面实验根的 Gentoo-Zh 集成安装仍排队，完整博客依赖安装和构建尚未验证。
+撤回检查；主桌面实验根的 Gentoo-Zh 集成安装、CLI 与 SONAME 检查也已通过。
+完整博客依赖安装和构建尚未在原生 musl 中验证。
 不把这一结果扩展到 arm64、其他版本或全部 Node.js 工具链。
 
 ## 使用与维护
@@ -35,11 +36,15 @@ LLVM libgcc 22.1.8 从源码构建，两个本地配方安装、JavaScript、中
 `gcc-runtime-library-exception-3.1` 许可后，先预演再安装：
 
 ```bash
-emerge -pv sys-libs/musl-cxx-runtime dev-lang/bun-bin
-emerge -av sys-libs/musl-cxx-runtime dev-lang/bun-bin
+emerge -pv sys-libs/musl-cxx-runtime::gentoo-zh =dev-lang/bun-bin-1.4.4::gentoo-zh
+emerge -av sys-libs/musl-cxx-runtime::gentoo-zh =dev-lang/bun-bin-1.4.4::gentoo-zh
 bun --version
 bun -e 'console.log(new Intl.NumberFormat("zh-CN", {style:"currency", currency:"CNY"}).format(12.5))'
 ```
+
+本轮冻结在已验证的 1.4.4；同名 GURU 配方未经这些补丁修复，不能混用。
+继续更新前，应在目标 `package.mask` 中记录 `dev-lang/bun-bin::guru` 和
+`>dev-lang/bun-bin-1.4.4::gentoo-zh`，待新版本重新验收后再调整。
 
 需要正常 DNS、CA、时间与网络；GitHub、Alpine 源可能需要本地代理。正常安装流程
 不需要实验使用的 bwrap 包装器，也不需要启动桌面。

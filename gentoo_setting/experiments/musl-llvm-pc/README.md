@@ -13,9 +13,9 @@ ClamTk 6.18-r2 已安装，该批次结束时新根已通过 Portage 登记 32 �
 正、负样本扫描通过，正式病毒库更新仍待验收。ClamTk 的版本限定中文补丁已重建，
 私有显示中标题和各组控件的中文绘制通过。
 
-其余软件已逐项预演；软件补齐批次连同旧功能恢复，共 48 个直接选择项的合并预演通过，
-当前正在构建。其中包括 PostgreSQL LLVM/JIT、NetworkManager iwd、Btrfs udev 和
-XLibre Xvfb，最终安装结果仍须逐项核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
+其余软件已逐项预演；软件补齐批次连同旧功能恢复，共 48 个直接选择项已安装通过，
+包括 PostgreSQL LLVM/JIT、NetworkManager iwd、Btrfs udev 和 XLibre Xvfb，
+四项功能开关已核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
 修复，并通过全新根沙箱编译安装，见[补丁组](patchsets/lowdown-3.1.1/)。Firefox／Thunderbird
 加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后预演不再选择 GCC；大型应用分批构建。
 KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ、LocalSend、FlClash
@@ -28,8 +28,20 @@ Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl
 复用已验签的 Alpine 约 2.7MiB `libstdc++` 后，独立官方 stage3 中已通过正常
 Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 无未解析依赖。
 未安装 GCC 编译器或 glibc，也不全局修改库路径。配方已整理为
-[补丁组](patchsets/bun-1.4.4/)；主桌面实验根的集成安装排在软件批次之后，
-完整博客构建仍待验证。
+[补丁组](patchsets/bun-1.4.4/)；主桌面实验根的集成安装和 CLI 检查也已通过，
+完整博客构建仍待在原生 musl 中验证。
+
+截至 2026-11-14，旧系统 91 项 world 选择中，71 项已有同名原生安装，Telegram
+以原生源码包替代，微信与 VSCodium 使用 Flatpak；GNU Emacs、mold 按方案排除。
+剩余为六项普通应用（JDK、Firefox、Thunderbird、QQ、LocalSend、FlClash）、
+五项内核／引导选择，以及 WPS、腾讯会议、NVIDIA、CUDA 四项专项集成。
+这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
+
+后续软件与配置批次串行操作同一新根：先预演剩余应用，修复已知 Neomacs 错误，
+再整理 Portage 配置。整理前保留配置快照，比较已安装包的有效设置；不一致则停止
+或回退。未知报错保留日志等待处理，不自动切换引导、迁移数据库或清理原系统。
+统一授权进程仅在本次软件／配置范围内保留修复窗口；进程退出或进入新的系统操作
+阶段后，仍可能需要系统重新进行 Polkit 验证。
 
 ## 实验基线与已验证范围
 
@@ -68,8 +80,10 @@ gcompat 下崩溃，不能直接把旧扩展目录复制给原生 musl 编辑器
 
 Neomacs 尚未完成 musl 编译和运行验证，不把已有 Gentoo live 配方视为安装通过；
 新根继续不默认安装 GNU Emacs。固定上游 `aacf29294ab30aed5736e1eabcb3b83122593fce`
-后，真正 musl 根的依赖预演通过，共四个新包，不选择 GCC 或 glibc；已排在软件
-补齐批次之后，空间不足时保护退出。Neomacs 安装并验证可用后，在目标根内以 root 执行：
+后，真正 musl 根的依赖预演通过，共四个新包，不选择 GCC 或 glibc；三个依赖已安装，
+主体编译遇到七处错误，涉及 glibc 专有 backtrace 接口及 musl 的 termios/ioctl 类型。
+目前尚未安装成功，也未更改默认编辑器。后续修复按源码补丁组维护，保留空间保护。
+Neomacs 安装并验证可用后，在目标根内以 root 执行：
 
 ```bash
 eselect editor set neomacs
@@ -199,10 +213,11 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 Rime 时触发 musl initial-exec TLS 错误，不使用全局 `LD_PRELOAD` 绕过问题。
 
 软件补齐批次还为 Yakuake 26.04.3 关闭可选 Wayland 后端，避免拉入与 SonicDE
-ECM 不兼容的 KWayland；新依赖计划通过，实际安装仍在队列中。Gwenview 26.04.3
+ECM 不兼容的 KWayland；已正常编译安装。Gwenview 26.04.3
 通过版本限定的 `package.env` 使用上游 `GWENVIEW_NO_WAYLAND_GESTURES=ON`，
 仅关闭 Wayland 专用手势协议。只读挂载真实 musl 根的独立 CMake 检查中，默认配置
-因缺少 WaylandProtocols 失败，X11 配置成功；正常 Portage 构建和运行尚待完成。
+因缺少 WaylandProtocols 失败，X11 配置成功；随后正常 Portage 编译安装、隔离 CLI
+版本检查通过，完整 GUI 操作仍待验收。环境文件使用 Portage 可解析的字面量设置。
 这些应用配置保留全局 Qt/Wayland 客户端库，不修改 SonicDE ECM 或 Qt 提供的模块。
 
 [`patchsets/`](patchsets/) 按软件、适用版本及修改层级保存补丁，不维护完整本地

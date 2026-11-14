@@ -1,0 +1,85 @@
+--- a/crates/neovm-system/src/emacs_core/system/os_signal/mod.rs
++++ b/crates/neovm-system/src/emacs_core/system/os_signal/mod.rs
+@@ -876,7 +876,7 @@
+ /// Capture `backtrace(3)` into the static buffer GNU keeps for fatal
+ /// signals (src/sysdep.c:1754-1764). The tables are warmed at install time
+ /// because the first `backtrace` call may allocate (src/emacs.c:1627).
+-#[cfg(unix)]
++#[cfg(all(unix, not(target_env = "musl")))]
+ unsafe fn capture_fault_backtrace() {
+     let mut buffer = [std::ptr::null_mut::<libc::c_void>(); FAULT_BACKTRACE_LIMIT];
+     // SAFETY: `buffer` is a live stack array of the length passed.
+@@ -892,7 +892,7 @@
+ /// GNU `emacs_backtrace`'s output half (src/sysdep.c:2336-2369): the marker,
+ /// then `backtrace_symbols_fd` frames, both async-signal-safe (`glibc`
+ /// documents that the `_fd` form does not allocate).
+-#[cfg(unix)]
++#[cfg(all(unix, not(target_env = "musl")))]
+ unsafe fn write_fault_backtrace() {
+     let count = FAULT_NPOINTERS
+         .load(Ordering::Acquire)
+@@ -910,6 +910,18 @@
+     unsafe {
+         libc::backtrace_symbols_fd(pointers.as_ptr(), count as libc::c_int, libc::STDERR_FILENO);
+     }
++}
++
++// musl does not provide execinfo's backtrace APIs. Keep the fatal-signal
++// path allocation-free; do not substitute std::backtrace inside a handler.
++#[cfg(all(unix, target_env = "musl"))]
++unsafe fn capture_fault_backtrace() {
++    FAULT_NPOINTERS.store(0, Ordering::Release);
++}
++
++#[cfg(all(unix, target_env = "musl"))]
++unsafe fn write_fault_backtrace() {
++    write_all_raw(libc::STDERR_FILENO, b"Native fault backtrace unavailable on musl\n");
+ }
+ 
+ /// The SA_SIGINFO callback a `sigaction` names.
+@@ -1019,9 +1031,12 @@
+         // GNU initializes the backtrace tables before any handler can run
+         // (`emacs_backtrace (-1)`, src/emacs.c:1627) because the first
+         // `backtrace` call may allocate.
+-        let mut warm = [std::ptr::null_mut::<libc::c_void>(); 1];
+-        // SAFETY: a one-element stack buffer.
+-        unsafe { libc::backtrace(warm.as_mut_ptr(), 1) };
++        #[cfg(not(target_env = "musl"))]
++        {
++            let mut warm = [std::ptr::null_mut::<libc::c_void>(); 1];
++            // SAFETY: a one-element stack buffer.
++            unsafe { libc::backtrace(warm.as_mut_ptr(), 1) };
++        }
+ 
+         for (sig, previous_action, previous_flags) in [
+             (libc::SIGSEGV, &PREVIOUS_SEGV_ACTION, &PREVIOUS_SEGV_FLAGS),
+--- a/crates/neovm-system/src/emacs_core/system/process/sys/tty.rs
++++ b/crates/neovm-system/src/emacs_core/system/process/sys/tty.rs
+@@ -55,7 +55,7 @@
+     settings.c_iflag &= !libc::ISTRIP;
+     #[cfg(any(target_os = "linux", target_os = "android"))]
+     {
+-        settings.c_oflag &= !libc::TAB3;
++        settings.c_oflag &= !(libc::TAB3 as libc::tcflag_t);
+     }
+     settings.c_cflag = (settings.c_cflag & !libc::CSIZE) | libc::CS8;
+     set_cc(&mut settings, libc::VERASE, 0);
+--- a/crates/neovm-system/src/emacs_core/system/process/sys/linux.rs
++++ b/crates/neovm-system/src/emacs_core/system/process/sys/linux.rs
+@@ -197,14 +197,14 @@
+         };
+     }
+ 
+-    let flags = if unsafe { libc::ioctl(fd, libc::SIOCGIFFLAGS, &mut flags_request) } == 0 {
++    let flags = if unsafe { libc::ioctl(fd, libc::SIOCGIFFLAGS as _, &mut flags_request) } == 0 {
+         Some(linux_ifflags_to_value(unsafe {
+             flags_request.ifr_ifru.ifru_flags
+         }))
+     } else {
+         None
+     };
+-    let hwaddr = if unsafe { libc::ioctl(fd, libc::SIOCGIFHWADDR, &mut hwaddr_request) } == 0 {
++    let hwaddr = if unsafe { libc::ioctl(fd, libc::SIOCGIFHWADDR as _, &mut hwaddr_request) } == 0 {
+         Some(linux_sockaddr_hwaddr(unsafe {
+             hwaddr_request.ifr_ifru.ifru_hwaddr
+         }))

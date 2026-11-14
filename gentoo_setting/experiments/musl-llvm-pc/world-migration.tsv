@@ -1,92 +1,92 @@
 旧world项目	当前状态	新根原生版本	说明
-app-admin/chezmoi	待原生安装		原生预演通过，待合并预演与构建
-app-admin/doas	待原生安装		原生预演通过，待合并预演与构建
-app-admin/eclean-kernel	待原生安装		原生预演通过，待合并预演与构建
-app-admin/sysklogd	待原生安装		原生预演通过，待合并预演与构建
-app-antivirus/clamav	原生已装	app-antivirus/clamav-1.5.3	—
-app-antivirus/clamtk	原生已装	app-antivirus/clamtk-6.18-r2	—
+app-admin/chezmoi	原生已装	app-admin/chezmoi-2.74.0	安装已核对；运行及旧数据按迁移验收范围检查
+app-admin/doas	原生已装	app-admin/doas-6.8.2	安装已核对；运行及旧数据按迁移验收范围检查
+app-admin/eclean-kernel	原生已装	app-admin/eclean-kernel-2.99.10	安装已核对；运行及旧数据按迁移验收范围检查
+app-admin/sysklogd	原生已装	app-admin/sysklogd-2.7.2	安装已核对；运行及旧数据按迁移验收范围检查
+app-antivirus/clamav	原生已装	app-antivirus/clamav-1.5.3	安装已核对；运行及旧数据按迁移验收范围检查
+app-antivirus/clamtk	原生已装	app-antivirus/clamtk-6.18-r2	安装已核对；运行及旧数据按迁移验收范围检查
 app-editors/emacs	按方案排除		按用户要求不安装 GNU Emacs；Neomacs 待验证
-app-editors/nano	原生已装	app-editors/nano-9.2	—
+app-editors/nano	原生已装	app-editors/nano-9.2	安装已核对；运行及旧数据按迁移验收范围检查
 app-editors/vscodium	Flatpak已装		com.vscodium.codium
-app-eselect/eselect-repository	待原生安装		原生预演通过，待合并预演与构建
-app-i18n/fcitx-configtool:5	原生已装	app-i18n/fcitx-configtool-5.1.14	—
-app-i18n/fcitx-gtk:5	原生已装	app-i18n/fcitx-gtk-5.1.7	—
-app-i18n/fcitx-qt:5	原生已装	app-i18n/fcitx-qt-5.1.14	—
-app-i18n/fcitx-rime:5	原生已装	app-i18n/fcitx-rime-5.1.14	—
-app-i18n/fcitx:5	原生已装	app-i18n/fcitx-5.1.21	—
-app-misc/fastfetch	待原生安装		原生预演通过，待合并预演与构建
-app-misc/resolve-march-native	待原生安装		原生预演通过，待合并预演与构建
-app-misc/yazi	待原生安装		原生预演通过，待合并预演与构建
-app-office/wps-office	兼容待验收		保留中文 WPS 体验；国际版不作为等价替代
-app-portage/eix	待原生安装		原生预演通过，待合并预演与构建
-app-portage/gentoolkit	待原生安装		原生预演通过，待合并预演与构建
-app-shells/thefuck	待原生安装		原生预演通过，待合并预演与构建
-app-shells/zsh	待原生安装		原生预演通过，待合并预演与构建
-app-text/tree	待原生安装		原生预演通过，待合并预演与构建
-app-text/typst	待原生安装		原生预演通过，待合并预演与构建
-dev-build/ninja	原生已装	dev-build/ninja-1.13.2-r1	—
-dev-build/xmake	待原生安装		原生预演通过，待合并预演与构建
-dev-cpp/highway	原生已装	dev-cpp/highway-1.4.0	—
-dev-db/postgresql	原生已装	dev-db/postgresql-18.6	—
-dev-java/openjdk-bin	待运行时核验		musl Temurin 配方预演通过，二进制依赖待核验
-dev-lang/bun-bin	待打包安装		官方 musl baseline 归档与已验签私有 C++ 运行库通过 JS/中文 Intl，尚未完成 Portage 打包
-dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	—
-dev-python/uv	待原生安装		原生预演通过，待合并预演与构建
-dev-util/clinfo	待原生安装		原生预演通过，待合并预演与构建
-dev-util/nvidia-cuda-toolkit	拆分待完成		原生 CUDA 分组件已验证，完整 SDK 未安装
-dev-util/pixi	待原生安装		原生预演通过，待合并预演与构建
-dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	—
-dev-util/vulkan-tools	待原生安装		原生预演通过，待合并预演与构建
-dev-vcs/git	原生已装	dev-vcs/git-2.56.0-r1	—
-kde-apps/ark	待原生安装		原生预演通过，待合并预演与构建
-kde-apps/filelight	待原生安装		原生预演通过，待合并预演与构建
-kde-apps/gwenview	待原生安装		原生预演通过，待合并预演与构建
-kde-apps/kwalletmanager	待原生安装		原生预演通过，待合并预演与构建
-kde-apps/yakuake	待原生安装		原生预演通过，待合并预演与构建
-kde-plasma/discover	待原生安装		原生预演通过，待合并预演与构建
-mail-client/thunderbird	待原生安装		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
-media-fonts/nerdfonts	待原生安装		原生预演通过，待合并预演与构建
-media-fonts/noto	原生已装	media-fonts/noto-20261001	—
-media-fonts/noto-cjk	原生已装	media-fonts/noto-cjk-20190416	—
-media-gfx/krita	待原生安装		原生预演通过，待合并预演与构建
-media-video/vlc	待原生安装		原生预演通过，待合并预演与构建
-net-firewall/firewalld	待原生安装		原生预演通过，待合并预演与构建
-net-im/telegram-desktop-bin	待原生替换		net-im/telegram-desktop 源码配方预演通过
-net-im/tencent-qq	兼容待验收		Flatpak com.qq.QQ 候选，尚未安装
+app-eselect/eselect-repository	原生已装	app-eselect/eselect-repository-15	安装已核对；运行及旧数据按迁移验收范围检查
+app-i18n/fcitx-configtool:5	原生已装	app-i18n/fcitx-configtool-5.1.14	安装已核对；运行及旧数据按迁移验收范围检查
+app-i18n/fcitx-gtk:5	原生已装	app-i18n/fcitx-gtk-5.1.7	安装已核对；运行及旧数据按迁移验收范围检查
+app-i18n/fcitx-qt:5	原生已装	app-i18n/fcitx-qt-5.1.14	安装已核对；运行及旧数据按迁移验收范围检查
+app-i18n/fcitx-rime:5	原生已装	app-i18n/fcitx-rime-5.1.14	安装已核对；运行及旧数据按迁移验收范围检查
+app-i18n/fcitx:5	原生已装	app-i18n/fcitx-5.1.21	安装已核对；运行及旧数据按迁移验收范围检查
+app-misc/fastfetch	原生已装	app-misc/fastfetch-2.69.0	安装已核对；运行及旧数据按迁移验收范围检查
+app-misc/resolve-march-native	原生已装	app-misc/resolve-march-native-6.1.0	安装已核对；运行及旧数据按迁移验收范围检查
+app-misc/yazi	原生已装	app-misc/yazi-26.9.1	安装已核对；运行及旧数据按迁移验收范围检查
+app-office/wps-office	兼容待验证		保留中文 WPS 体验；国际版不作为等价替代
+app-portage/eix	原生已装	app-portage/eix-0.36.9	安装已核对；运行及旧数据按迁移验收范围检查
+app-portage/gentoolkit	原生已装	app-portage/gentoolkit-0.8.2	安装已核对；运行及旧数据按迁移验收范围检查
+app-shells/thefuck	原生已装	app-shells/thefuck-3.32-r2	安装已核对；运行及旧数据按迁移验收范围检查
+app-shells/zsh	原生已装	app-shells/zsh-5.9-r7	安装已核对；运行及旧数据按迁移验收范围检查
+app-text/tree	原生已装	app-text/tree-2.2.1	安装已核对；运行及旧数据按迁移验收范围检查
+app-text/typst	原生已装	app-text/typst-0.15.1	安装已核对；运行及旧数据按迁移验收范围检查
+dev-build/ninja	原生已装	dev-build/ninja-1.13.2-r1	安装已核对；运行及旧数据按迁移验收范围检查
+dev-build/xmake	原生已装	dev-build/xmake-3.1.2	安装已核对；运行及旧数据按迁移验收范围检查
+dev-cpp/highway	原生已装	dev-cpp/highway-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
+dev-db/postgresql	原生已装	dev-db/postgresql-18.6	安装已核对；运行及旧数据按迁移验收范围检查
+dev-java/openjdk-bin	待安装／验证		musl Temurin 配方预演通过，二进制依赖待核验
+dev-lang/bun-bin	原生已装	dev-lang/bun-bin-1.4.4	安装已核对；运行及旧数据按迁移验收范围检查
+dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	安装已核对；运行及旧数据按迁移验收范围检查
+dev-python/uv	原生已装	dev-python/uv-0.13.4-r1	安装已核对；运行及旧数据按迁移验收范围检查
+dev-util/clinfo	原生已装	dev-util/clinfo-3.1.26.09.26	安装已核对；运行及旧数据按迁移验收范围检查
+dev-util/nvidia-cuda-toolkit	拆分集成待验证		原生 CUDA 分组件已验证，完整 SDK 未安装
+dev-util/pixi	原生已装	dev-util/pixi-0.84.1	安装已核对；运行及旧数据按迁移验收范围检查
+dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	安装已核对；运行及旧数据按迁移验收范围检查
+dev-util/vulkan-tools	原生已装	dev-util/vulkan-tools-1.4.357.0	安装已核对；运行及旧数据按迁移验收范围检查
+dev-vcs/git	原生已装	dev-vcs/git-2.56.0-r1	安装已核对；运行及旧数据按迁移验收范围检查
+kde-apps/ark	原生已装	kde-apps/ark-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
+kde-apps/filelight	原生已装	kde-apps/filelight-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
+kde-apps/gwenview	原生已装	kde-apps/gwenview-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
+kde-apps/kwalletmanager	原生已装	kde-apps/kwalletmanager-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
+kde-apps/yakuake	原生已装	kde-apps/yakuake-26.04.3	安装已核对；运行及旧数据按迁移验收范围检查
+kde-plasma/discover	原生已装	kde-plasma/discover-6.7.5	安装已核对；运行及旧数据按迁移验收范围检查
+mail-client/thunderbird	待安装／验证		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
+media-fonts/nerdfonts	原生已装	media-fonts/nerdfonts-3.5.1	安装已核对；运行及旧数据按迁移验收范围检查
+media-fonts/noto	原生已装	media-fonts/noto-20261001	安装已核对；运行及旧数据按迁移验收范围检查
+media-fonts/noto-cjk	原生已装	media-fonts/noto-cjk-20190416	安装已核对；运行及旧数据按迁移验收范围检查
+media-gfx/krita	原生已装	media-gfx/krita-6.0.4.1	安装已核对；运行及旧数据按迁移验收范围检查
+media-video/vlc	原生已装	media-video/vlc-4.0.0_pre20260625	安装已核对；运行及旧数据按迁移验收范围检查
+net-firewall/firewalld	原生已装	net-firewall/firewalld-2.5.2	安装已核对；运行及旧数据按迁移验收范围检查
+net-im/telegram-desktop-bin	原生替代已装	net-im/telegram-desktop-7.4.0	以原生 musl 源码包替代 glibc 预编译包；GUI/账户仍待验收
+net-im/tencent-qq	待安装／验证		Flatpak com.qq.QQ 候选，尚未安装
 net-im/wechat	Flatpak已装		com.tencent.WeChat
-net-im/wemeet	兼容待验收		腾讯会议路线待实际验证
-net-misc/chrony	待原生安装		原生预演通过，待合并预演与构建
-net-misc/localsend-bin	兼容待验收		原配方依赖 glibc；Flatpak org.localsend.localsend_app 候选未安装
-net-misc/networkmanager	原生已装	net-misc/networkmanager-1.58.1-r1	—
-net-p2p/ktorrent	待原生安装		原生预演通过，待合并预演与构建
-net-print/cups-meta	待原生安装		原生预演通过，待合并预演与构建
-net-print/gutenprint	待原生安装		原生预演通过，待合并预演与构建
-net-proxy/flclash-bin	兼容待验收		Flutter/glibc 预编译界面待兼容验证，暂不直接安装
-sonicde-base/sonic-audio-applet-pulse	原生已装	sonicde-base/sonic-audio-applet-pulse-6.8.0	—
-sonicde-base/sonic-desktop-interface	原生已装	sonicde-base/sonic-desktop-interface-6.8.0.3	—
-sonicde-base/sonic-ecco	原生已装	sonicde-base/sonic-ecco-26.08.2	—
-sonicde-base/sonic-partition-manager	待原生安装		原生预演通过，待合并预演与构建
-sonicde-base/sonic-print-management	原生已装	sonicde-base/sonic-print-management-6.8.0	—
-sonicde-base/sonicde-meta	原生已装	sonicde-base/sonicde-meta-6.8.0	—
-sys-apps/fd	待原生安装		原生预演通过，待合并预演与构建
-sys-apps/flatpak	原生已装	sys-apps/flatpak-1.18.4	—
-sys-apps/ripgrep	待原生安装		原生预演通过，待合并预演与构建
-sys-boot/efibootmgr	待原生安装		原生预演通过，待合并预演与构建
-sys-boot/mokutil	待原生安装		原生预演通过，待合并预演与构建
-sys-boot/refind	待启动批次		保留现有启动入口；新根签名与引导尚未完成
-sys-boot/shim	待启动批次		保留现有启动入口；新根签名与引导尚未完成
+net-im/wemeet	兼容待验证		腾讯会议路线待实际验证
+net-misc/chrony	原生已装	net-misc/chrony-4.8-r1	安装已核对；运行及旧数据按迁移验收范围检查
+net-misc/localsend-bin	待安装／验证		原配方依赖 glibc；Flatpak org.localsend.localsend_app 候选未安装
+net-misc/networkmanager	原生已装	net-misc/networkmanager-1.58.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
+net-p2p/ktorrent	原生已装	net-p2p/ktorrent-26.04.3-r1	安装已核对；运行及旧数据按迁移验收范围检查
+net-print/cups-meta	原生已装	net-print/cups-meta-2	安装已核对；运行及旧数据按迁移验收范围检查
+net-print/gutenprint	原生已装	net-print/gutenprint-5.3.5	安装已核对；运行及旧数据按迁移验收范围检查
+net-proxy/flclash-bin	待安装／验证		Flutter/glibc 预编译界面待兼容验证，暂不直接安装
+sonicde-base/sonic-audio-applet-pulse	原生已装	sonicde-base/sonic-audio-applet-pulse-6.8.0	安装已核对；运行及旧数据按迁移验收范围检查
+sonicde-base/sonic-desktop-interface	原生已装	sonicde-base/sonic-desktop-interface-6.8.0.3	安装已核对；运行及旧数据按迁移验收范围检查
+sonicde-base/sonic-ecco	原生已装	sonicde-base/sonic-ecco-26.08.2	安装已核对；运行及旧数据按迁移验收范围检查
+sonicde-base/sonic-partition-manager	原生已装	sonicde-base/sonic-partition-manager-26.08.2	安装已核对；运行及旧数据按迁移验收范围检查
+sonicde-base/sonic-print-management	原生已装	sonicde-base/sonic-print-management-6.8.0	安装已核对；运行及旧数据按迁移验收范围检查
+sonicde-base/sonicde-meta	原生已装	sonicde-base/sonicde-meta-6.8.0	安装已核对；运行及旧数据按迁移验收范围检查
+sys-apps/fd	原生已装	sys-apps/fd-10.5.0	安装已核对；运行及旧数据按迁移验收范围检查
+sys-apps/flatpak	原生已装	sys-apps/flatpak-1.18.4	安装已核对；运行及旧数据按迁移验收范围检查
+sys-apps/ripgrep	原生已装	sys-apps/ripgrep-15.2.0	安装已核对；运行及旧数据按迁移验收范围检查
+sys-boot/efibootmgr	原生已装	sys-boot/efibootmgr-18-r2	安装已核对；运行及旧数据按迁移验收范围检查
+sys-boot/mokutil	原生已装	sys-boot/mokutil-0.7.2	安装已核对；运行及旧数据按迁移验收范围检查
+sys-boot/refind	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
+sys-boot/shim	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
 sys-devel/mold	按方案排除		LLVM 新根保留 LLD
-sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	—
-sys-fs/genfstab	待原生安装		原生预演通过，待合并预演与构建
-sys-kernel/linux-firmware	待固件批次		原生预演通过，尚未安装
-sys-kernel/xanmod-kernel	待启动批次		保留现有启动入口；新根签名与引导尚未完成
-sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	—
-sys-process/btop	待原生安装		原生预演通过，待合并预演与构建
-sys-process/cronie	待原生安装		原生预演通过，待合并预演与构建
-virtual/dist-kernel	待启动批次		保留现有启动入口；新根签名与引导尚未完成
-www-client/firefox	待原生安装		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
-x11-apps/xdpyinfo	待原生安装		原生预演通过，待合并预演与构建
-x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	—
-x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	—
-x11-drivers/nvidia-drivers	拆分待完成		原生模块/工具与专有图形兼容拆分尚未完成
-x11-misc/xclip	原生已装	x11-misc/xclip-0.13	—
+sys-fs/btrfs-progs	原生已装	sys-fs/btrfs-progs-7.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
+sys-fs/genfstab	原生已装	sys-fs/genfstab-31	安装已核对；运行及旧数据按迁移验收范围检查
+sys-kernel/linux-firmware	待安装／验证		原生预演通过，尚未安装
+sys-kernel/xanmod-kernel	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
+sys-power/power-profiles-daemon	原生已装	sys-power/power-profiles-daemon-0.30	安装已核对；运行及旧数据按迁移验收范围检查
+sys-process/btop	原生已装	sys-process/btop-1.4.7	安装已核对；运行及旧数据按迁移验收范围检查
+sys-process/cronie	原生已装	sys-process/cronie-1.7.2-r1	安装已核对；运行及旧数据按迁移验收范围检查
+virtual/dist-kernel	待安装／验证		保留现有启动入口；新根签名与引导尚未完成
+www-client/firefox	待安装／验证		官方 libatomic-stub 合并预演通过，避免 GCC；待独立批次
+x11-apps/xdpyinfo	原生已装	x11-apps/xdpyinfo-1.4.0	安装已核对；运行及旧数据按迁移验收范围检查
+x11-base/xlibre-server	原生已装	x11-base/xlibre-server-25.1.11-r1	安装已核对；运行及旧数据按迁移验收范围检查
+x11-base/xorg-server::xlibre	原生已装	x11-base/xorg-server-25.1.11	安装已核对；运行及旧数据按迁移验收范围检查
+x11-drivers/nvidia-drivers	拆分集成待验证		原生模块/工具与专有图形兼容拆分尚未完成
+x11-misc/xclip	原生已装	x11-misc/xclip-0.13	安装已核对；运行及旧数据按迁移验收范围检查
