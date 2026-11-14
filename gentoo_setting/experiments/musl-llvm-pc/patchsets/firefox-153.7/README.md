@@ -1,7 +1,8 @@
 # Firefox 153.7 ESR：官方配方回补草案
 
 **状态：来源、补丁应用／撤回、语法及候选根新版依赖预演通过，无 GCC／glibc；
-剩余源码已预取并通过 Portage Manifest 校验，本体构建安装尚未进行。** 不把本组视为已经安装或验收，不切换到 rapid 渠道。
+源码已预取并通过 Portage Manifest 校验，Node 和中文语言包已安装；本体首轮编译
+在 bindgen 动态加载处失败，最小修复对照通过，完整重建仍在进行。** 不把本组视为已经安装或验收，不切换到 rapid 渠道。
 
 ## 基线与来源
 
@@ -45,6 +46,16 @@ NSS 最低版本 3.125→3.125.1，以及 D-Bus 依赖的书写整理。当前�
 `llvm-r1`，同时加载两代 helper 会在 depend 阶段触发只读变量及导出函数冲突。
 这项适配不改全局 eclass，也不降低编译器版本：实际选择 Clang/LLVM 22。
 
+`repository/0003-musl-rust-build-scripts-dlopen.patch` 限定修改此版本的 musl
+构建路径：上游 rust-bin 默认生成静态 musl 构建脚本，无法 `dlopen(libclang)`。
+仅设置 target RUSTFLAGS 不覆盖 Cargo `--target` 下的宿主构建脚本，因此由配方
+在临时目录建立 rustc wrapper，对宿主和目标编译均追加
+`-C target-feature=-crt-static`，不修改全局 Rust 或 libc 配置。
+已有 `RUSTC_WRAPPER` 时明确停止，需先核对组合方式；本轮没有启用 ccache。
+普通 Portage UID 250 下，默认静态探针复现错误，动态探针成功加载 libclang；
+离线 Cargo 显式 `--target=x86_64-unknown-linux-musl` 的真实宿主 build.rs 也通过。
+这些小型对照不能替代 Firefox 完整安装及运行验收。
+
 ## 验证与下一步
 
 已在独立临时副本中，以固定基线文件验证：
@@ -55,7 +66,7 @@ NSS 最低版本 3.125→3.125.1，以及 D-Bus 依赖的书写整理。当前�
 
 候选根已按顺序应用两个补丁，未改关键词或全局 USE；完整预演选择 LLVM 22、
 中文语言包且不引入 GCC／glibc。Zip、cbindgen、图标虚拟包、simdutf、simdjson 五项
-较小前置已正常安装；Node、语言包及 Firefox 本体尚未安装；对应源码及补丁、中文 XPI 预取校验通过，
+较小前置、Node 26.12.1 和中文语言包已正常安装；Firefox 本体尚未安装；对应源码及补丁、中文 XPI 预取校验通过，
 未从空缓存构建。
 新机在目标根确认基线、
 运行中的任务及可用空间后，先检查差异再应用；以下不是自动部署脚本：
@@ -67,6 +78,9 @@ patch --dry-run --fuzz=0 -d /var/db/repos/gentoo -p1 < "$patchfile"
 patch --fuzz=0 -d /var/db/repos/gentoo -p1 < "$patchfile"
 compat="${patchfile%/*}/0002-use-baseline-llvm-eclass.patch"
 patch --fuzz=0 -d /var/db/repos/gentoo -p1 < "$compat"
+muslrust="${patchfile%/*}/0003-musl-rust-build-scripts-dlopen.patch"
+patch --dry-run --fuzz=0 -d /var/db/repos/gentoo -p1 < "$muslrust"
+patch --fuzz=0 -d /var/db/repos/gentoo -p1 < "$muslrust"
 emerge --pretend --verbose --autounmask=n '=www-client/firefox-153.7.0:esr::gentoo'
 ```
 
@@ -94,5 +108,6 @@ emerge --pretend --verbose --autounmask=n '=www-client/firefox-153.7.0:esr::gent
 
 Gentoo 接受基线更新到已经提供等价 153.7 ESR 或后续安全版本时，先比较本地
 修改与上游配方、Manifest，确认翻译和 musl 构建／运行通过，再移除被覆盖的
-补丁。第二份适配补丁在仓库的 Rust／LLVM helper 已统一到新版时单独复核移除。
+补丁。第三份补丁在宿主构建脚本已能动态加载 libclang 且完整编译通过后独立移除；
+不能仅凭 target RUSTFLAGS 的变化判断已解决。第二份适配补丁在仓库的 Rust／LLVM helper 已统一到新版时单独复核移除。
 不要在新版本上静默重放此固定补丁，也不要为保留实验版本永久冻结安全更新。

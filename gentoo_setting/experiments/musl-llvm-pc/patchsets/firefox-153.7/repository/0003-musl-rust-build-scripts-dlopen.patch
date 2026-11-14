@@ -1,0 +1,26 @@
+--- a/www-client/firefox/firefox-153.7.0.ebuild
++++ b/www-client/firefox/firefox-153.7.0.ebuild
+@@ -618,6 +618,15 @@
+ }
+ 
+ src_configure() {
++	# Upstream rust-bin's musl build scripts are static by default and cannot
++	# dlopen libclang. Cargo --target otherwise leaves host scripts unaffected
++	# by target RUSTFLAGS; apply dynamic musl linking to both through rustc.
++	if use elibc_musl ; then
++		[[ -z ${RUSTC_WRAPPER} ]] || die "Compose the existing RUSTC_WRAPPER first"
++		cp "${FILESDIR}/firefox-musl-rustc-wrapper" "${T}/musl-rustc-wrapper" || die
++		chmod 0755 "${T}/musl-rustc-wrapper" || die
++		export RUSTC_WRAPPER="${T}/musl-rustc-wrapper"
++	fi
+ 	# Show flags set at the beginning
+ 	einfo "Current BINDGEN_CFLAGS:\t${BINDGEN_CFLAGS:-no value set}"
+ 	einfo "Current CFLAGS:\t\t${CFLAGS:-no value set}"
+--- /dev/null
++++ b/www-client/firefox/files/firefox-musl-rustc-wrapper
+@@ -0,0 +1,5 @@
++#!/bin/sh
++# Copyright 2026 Gentoo Authors
++# Distributed under the terms of the GNU General Public License v2
++# Cargo supplies the selected rustc as argv[1]. Preserve every existing flag.
++exec "$@" -C target-feature=-crt-static

@@ -22,7 +22,7 @@ ClamTk 6.18-r2 已安装，软件选择已通过 Portage 登记。迁移验收�
 四项功能开关已核对。lowdown 3.1.1 的 musl 配置宏冲突已回补上游
 修复，并通过全新根沙箱编译安装，见[补丁组](patchsets/lowdown-3.1.1/)。Firefox／Thunderbird
 加入 Gentoo 官方 `llvm-runtimes/libatomic-stub` 后原生预演不再选择 GCC；
-Thunderbird 现已选择官方 ESR Flatpak，Firefox 的原生 ESR 构建仍待独立批次。
+Thunderbird 现已选择官方 ESR Flatpak，Firefox 的原生 ESR 构建正在独立批次进行。
 KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ 和 LocalSend 已通过
 Flatpak 界面检查；FlClash 的 glibc 界面、Helper/TUN 和 OpenRC 集成仍待验证。
 
@@ -35,7 +35,9 @@ Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl
 Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 无未解析依赖。
 未安装 GCC 编译器或 glibc，也不全局修改库路径。配方已整理为
 [补丁组](patchsets/bun-1.4.4/)；主桌面实验根的集成安装和 CLI 检查也已通过，
-完整博客构建仍待在原生 musl 中验证。
+原生 musl Bun 完整博客构建已在普通用户、隔离网络和独立源码副本中通过，
+包含类型、测试、内容、runtime、Hexo 和生成物检查；复用现有只读 node_modules，
+不是新机空缓存依赖安装证明。原博客源码与依赖哈希保持不变。
 
 截至 2026-11-14，旧系统 91 项 world 选择中，71 项已有同名原生安装，Telegram
 以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，JDK 改为 Dragonwell Standard
@@ -46,15 +48,17 @@ mold 按方案排除。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
 软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
-新根当前 1,191 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
+上次配置复核时新根有 1,191 个依赖包、81 个 world 选择，Neomacs 已安装并选为默认编辑器。
 未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
 34 项对齐操作已完成（21 个新依赖、13 项 USE 重建），包括 LLVM SPIR-V translator、
 libclc、Mesa CLC 和 cargo-c；随后又安装 Firefox 的五项较小前置。最终
 `@world --update --deep --newuse` 预演没有待合并项，未引入 GCC/glibc。
 官方 stage3 的 platformdirs 4.12.4 通过精确关键词保留，避免非必要降版。
 Firefox 已回补到 [153.7 ESR 配方](patchsets/firefox-153.7/)，新版预演通过；
-Node、语言包及本体源码预取校验通过；本体需在 20GiB 底线之外另留
-配方要求的 9700M 工作空间，当前没有启动大构建。
+Node 和中文语言包已安装。本体首轮编译定位到静态 musl Rust 构建脚本无法动态
+加载 libclang，Firefox 专用 wrapper 的 UID 250／离线 Cargo 对照通过后正在重建。
+构建工作区已移至独立 Linux 文件系统，根分区保留 20GiB 底线；本体仍需配方
+要求的 9700M 工作余量，不能把预演或小型探针算作浏览器安装验收。
 
 
 ## 实验基线与已验证范围
