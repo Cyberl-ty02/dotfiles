@@ -13,7 +13,7 @@
 | [ipset 导出表](ipset-7.24/) | 7.24-r1 源码 | 本地补丁；全新根沙箱编译安装及帮助命令通过 | 上游导出表不再要求不存在的符号 |
 | [nftables 头文件顺序](nftables-1.1.7/) | 1.1.7 源码，启用 xtables | 本地补丁；全新根沙箱编译安装通过 | 上游解决 libc/UAPI Ethernet 定义的包含顺序 |
 | [Bun 私有 musl 运行库](bun-1.4.4/) | 1.4.4 amd64；Gentoo-Zh 固定基线 | 独立 stage3 正常沙箱安装及中文／Intl 通过，SONAME QA 无警告；主根集成与 CLI 也已通过 | 上游提供完整原生 musl 配方与运行库依赖 |
-| [Neomacs musl 兼容](neomacs-aacf292/) | 上游 aacf292；Gentoo live 配方 | 首轮七处错误修复，Rust 构建与最小 CLI 通过；Lisp 引导仍因栈分配失败，未安装 | 上游修复 musl 回溯接口及 termios/ioctl 类型兼容 |
+| [Neomacs musl 兼容](neomacs-aacf292/) | 上游 aacf292；Gentoo live 配方 | 编译兼容、栈段测量及配方修复；完整引导、安装、SQLite、GUI 和 Rime 输入通过 | 上游覆盖对应源码与安装修复后，重新验收 |
 | [CUDA 宿主数学调用](cuda-13.4/) | 本轮 CUDA 13.4 CRT 头文件 | 原生最小 kernel 通过，完整 SDK 未验收 | 头文件不再依赖这些 glibc 私有数学入口，或官方支持本目标 |
 | [gcompat 加载器路径](gcompat-1.1.0/) | GURU gcompat 1.1.0 ebuild | 配方草案；对应手工路径已验证，完整 ebuild 未验收 | 配方提供正确的 amd64 加载器路径且完成安装验证 |
 

@@ -1,0 +1,22 @@
+--- a/app-editors/neomacs/neomacs-9999.ebuild
++++ b/app-editors/neomacs/neomacs-9999.ebuild
+@@ -46,7 +46,7 @@
+ RDEPEND="${DEPEND}"
+ BDEPEND="virtual/pkgconfig"
+ 
+-DOCS=( BUGS CONTRIBUTE README.md )
++DOCS=( README.md COPYING )
+ 
+ src_unpack() {
+ 	git-r3_src_unpack
+@@ -109,8 +109,8 @@
+ 	insinto /usr/share/${PN}
+ 	doins -r etc lisp
+ 
+-	newicon -s 128 assets/logo-128.png ${PN}.png
+-	newicon -s scalable assets/window-icon.svg ${PN}.svg
++	newicon -s 128 etc/images/icons/hicolor/128x128/apps/emacs.png ${PN}.png
++	newicon -s scalable etc/images/icons/hicolor/scalable/apps/emacs.svg ${PN}.svg
+ 	make_desktop_entry \
+ 		--eapi9 \
+ 		-n "Neomacs" \

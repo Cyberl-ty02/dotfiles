@@ -5,7 +5,7 @@ app-admin/eclean-kernel	原生已装	app-admin/eclean-kernel-2.99.10	安装已�
 app-admin/sysklogd	原生已装	app-admin/sysklogd-2.7.2	安装已核对；运行及旧数据按迁移验收范围检查
 app-antivirus/clamav	原生已装	app-antivirus/clamav-1.5.3	安装已核对；运行及旧数据按迁移验收范围检查
 app-antivirus/clamtk	原生已装	app-antivirus/clamtk-6.18-r2	安装已核对；运行及旧数据按迁移验收范围检查
-app-editors/emacs	按方案排除		按用户要求不安装 GNU Emacs；Neomacs 待验证
+app-editors/emacs	原生替代已安装	app-editors/neomacs-9999	Neomacs 替代；SQLite、隔离 GUI/Rime 通过，旧 Doom 配置待验收
 app-editors/nano	原生已装	app-editors/nano-9.2	安装已核对；运行及旧数据按迁移验收范围检查
 app-editors/vscodium	Flatpak已装		com.vscodium.codium
 app-eselect/eselect-repository	原生已装	app-eselect/eselect-repository-15	安装已核对；运行及旧数据按迁移验收范围检查
@@ -56,7 +56,7 @@ net-im/tencent-qq	待安装／验证		Flatpak com.qq.QQ 候选，尚未安装
 net-im/wechat	Flatpak已装		com.tencent.WeChat
 net-im/wemeet	兼容待验证		腾讯会议路线待实际验证
 net-misc/chrony	原生已装	net-misc/chrony-4.8-r1	安装已核对；运行及旧数据按迁移验收范围检查
-net-misc/localsend-bin	待安装／验证		原配方依赖 glibc；Flatpak org.localsend.localsend_app 候选未安装
+net-misc/localsend-bin	Flatpak 已安装		org.localsend.localsend_app 1.18.2；隔离中文 GUI 通过，真实局域网传输待验收
 net-misc/networkmanager	原生已装	net-misc/networkmanager-1.58.1-r1	安装已核对；运行及旧数据按迁移验收范围检查
 net-p2p/ktorrent	原生已装	net-p2p/ktorrent-26.04.3-r1	安装已核对；运行及旧数据按迁移验收范围检查
 net-print/cups-meta	原生已装	net-print/cups-meta-2	安装已核对；运行及旧数据按迁移验收范围检查

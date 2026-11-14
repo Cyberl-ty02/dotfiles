@@ -21,7 +21,8 @@ ClamTk 6.18-r2 已安装，软件选择已通过 Portage 登记。迁移验收�
 KTorrent 关闭可选内嵌 WebEngine，避免额外的网页引擎构建。QQ、LocalSend、FlClash
 的 glibc 预编译界面另行验证，不把通过关键词检查当作 ABI 兼容已经通过。
 
-本轮下载对国内镜像临时使用 `no_proxy` 直连，其余地址保留本地代理；
+下载默认沿用调用环境的代理；当前批次使用已恢复的本地代理。国内直连只在
+网络确实可达且已核验速度时临时启用；
 默认镜像顺序仍是国内优先。路由调整不关闭 Manifest 或二进制包签名校验。
 
 Bun 官方 musl baseline 归档已按发布资产 SHA256 校验；它另需 musl 版 C++ 运行库。
@@ -32,17 +33,15 @@ Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 
 完整博客构建仍待在原生 musl 中验证。
 
 截至 2026-11-14，旧系统 91 项 world 选择中，71 项已有同名原生安装，Telegram
-以原生源码包替代，微信与 VSCodium 使用 Flatpak；GNU Emacs、mold 按方案排除。
-剩余为六项普通应用（JDK、Firefox、Thunderbird、QQ、LocalSend、FlClash）、
+以原生源码包替代，GNU Emacs 以原生 Neomacs 替代，微信、VSCodium 与 LocalSend 使用 Flatpak；
+mold 按方案排除。
+剩余为五项普通应用（JDK、Firefox、Thunderbird、QQ、FlClash）、
 五项内核／引导选择，以及 WPS、腾讯会议、NVIDIA、CUDA 四项专项集成。
 这些是直接选择的核对数量，不是总依赖包数量，也不表示全部 GUI 和旧数据验收通过。
 
-后续软件与配置批次串行操作同一新根：先预演剩余应用，修复已知 Neomacs 错误，
-再整理 Portage 配置。整理前保留配置快照，比较已安装包的有效设置；不一致则停止
-或回退。未知报错保留日志等待处理，不自动切换引导、迁移数据库或清理原系统。
-本次统一授权进程已在配置检查点正常结束；进程退出或进入新的系统操作阶段后，
-仍可能需要系统重新进行 Polkit 验证。Neomacs 的引导错误保留为待解决项，
-不是为继续整理配置而将它标成通过。
+软件与配置批次串行操作同一新根。Portage 配置已归并并核对有效设置；
+新根当前 1,159 个依赖包、79 个 world 选择，Neomacs 已安装并选为默认编辑器。
+未知报错保留日志处理，不自动切换引导、迁移数据库或清理原系统。
 
 ## 实验基线与已验证范围
 
@@ -79,15 +78,16 @@ gcompat 下崩溃，不能直接把旧扩展目录复制给原生 musl 编辑器
 
 ## Neomacs 与默认编辑器
 
-Neomacs 尚未完成 musl 编译和运行验证，不把已有 Gentoo live 配方视为安装通过；
-新根继续不默认安装 GNU Emacs。固定上游 `aacf29294ab30aed5736e1eabcb3b83122593fce`
-后，真正 musl 根的依赖预演通过，共四个新包，不选择 GCC 或 glibc；三个依赖已安装，
-主体首轮七处错误涉及 glibc 专有 backtrace 接口及 musl 的 termios/ioctl 类型，
-已由固定提交的[源码补丁组](patchsets/neomacs-aacf292/)修复，Rust release 构建通过。
-未安装的构建产物能显示 0.0.20 版本并输出中文，但后续 Lisp 字节编译在栈增长时
-报 `mprotect/mmap: ENOMEM`；普通 UID 250 单文件复现也失败，尚未完成安装。
-这不是已经证实的 musl 独有问题；默认编辑器未更改，保留构建产物待进一步诊断。
-Neomacs 安装并验证可用后，在目标根内以 root 执行：
+Neomacs 0.0.20 已在真正 musl 根安装，固定上游
+`aacf29294ab30aed5736e1eabcb3b83122593fce`，未引入 GCC 或 glibc。
+[补丁组](patchsets/neomacs-aacf292/)分别维护 musl 编译兼容、栈段测量修复、
+SQLite 特性和安装资源路径。栈增长对照证实原实现跨栈段保留旧测量值，导致申请
+不断增大；修复后完成完整 Lisp 引导及安装。本次复用已有编译缓存，不等于全新
+源码、空缓存重建已经通过。
+
+SQLite 中文读写、私有 X11 GUI 及 Fcitx5/Rime 实际键入保存“你好”均通过。
+实验根已选为默认编辑器，尚未验收真机 GPU 或旧 Doom 配置。新机安装并验收后，
+在目标根以 root 执行：
 
 ```bash
 eselect editor set neomacs
@@ -107,6 +107,7 @@ eselect 的 editor 模块支持按程序名或绝对路径设置自定义编辑�
 
 - `com.tencent.WeChat`
 - `com.vscodium.codium`
+- `org.localsend.localsend_app`
 
 腾讯会议 `com.tencent.wemeet` 尚待验证。`com.wps.Office` 是国际版，不能当作
 现有中文 WPS 12 的等价替代，因此二者暂不进入默认清单。
@@ -131,7 +132,8 @@ bash scripts/install-flatpak-apps.sh --user
 再次运行默认命令可恢复国内缓存。官方 GPG 校验保持启用，代理沿用调用环境。
 已经选择系统级安装的机器，不必再用 `--user` 重复安装相同应用。
 
-全新根也已运行系统级安装脚本并检查两个主包，VSCodium 通过实际 Fcitx/Rime
+全新根已运行系统级安装脚本检查微信和 VSCodium，随后系统级安装 LocalSend 1.18.2；
+LocalSend 私有 X11 中文界面通过，真实局域网发现／文件传输尚待验收。VSCodium 通过实际 Fcitx/Rime
 中文输入。此次先复用了已校验的实验缓存，尚不代表从空缓存下载的全流程测试；
 主包部署、输入测试也不代替真实会话中的 Portal、音视频和全部扩展验收。
 
