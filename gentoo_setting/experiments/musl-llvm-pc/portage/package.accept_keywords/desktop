@@ -1,0 +1,38 @@
+# Source group: package.accept_keywords/bun-musl
+sys-libs/musl-cxx-runtime ~amd64
+dev-lang/bun-bin ~amd64
+
+# Source group: package.accept_keywords/kernel-migration
+=sys-kernel/xanmod-kernel-7.2.14 ~amd64
+=virtual/dist-kernel-7.2.14-r100::gentoo-zh ~amd64
+sys-kernel/gentoo-kernel-modprep ~amd64
+
+# Source group: package.accept_keywords/lab-overlays
+*/*::sonicde ~amd64
+*/*::xlibre ~amd64
+# Official LLVM 22 libgcc ABI shim keeps the musl root free of GCC.
+=llvm-runtimes/libgcc-22.1.8 ~amd64
+
+# Source group: package.accept_keywords/neomacs
+=app-editors/neomacs-9999 **
+
+# Source group: package.accept_keywords/phase2-compat
+=sys-libs/gcompat-1.1.0 ~amd64
+=sys-libs/libucontext-1.5.1 ~amd64
+
+# Source group: package.accept_keywords/phase2-kernel
+=sys-kernel/xanmod-kernel-7.2.14::gentoo-zh ~amd64
+
+# Source group: package.accept_keywords/world-migration
+app-admin/chezmoi ~amd64
+app-misc/yazi ~amd64
+app-shells/thefuck ~amd64
+app-text/typst ~amd64
+dev-build/xmake ~amd64
+dev-util/clinfo ~amd64
+dev-util/pixi ~amd64
+media-fonts/nerdfonts ~amd64
+media-gfx/krita ~amd64
+sys-libs/kpmcore ~amd64
+net-im/telegram-desktop ~amd64
+net-wireless/iwd ~amd64

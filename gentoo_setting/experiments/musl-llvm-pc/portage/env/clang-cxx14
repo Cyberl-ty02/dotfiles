@@ -1,2 +1,2 @@
-# Darts 0.32h uses std::random_shuffle, removed in C++17.
+# Darts 0.32h CLI uses std::random_shuffle, removed in C++17.
 CXXFLAGS="${CXXFLAGS} -std=c++14"

@@ -1,0 +1,26 @@
+Subject: [PATCH] neomacs: preserve upstream default SQLite capability
+
+Gentoo-Zh recipe uses --no-default-features; expose the upstream default
+SQLite feature while retaining its already-declared system dependency.
+Pinned source tested separately: aacf29294ab30aed5736e1eabcb3b83122593fce.
+Compilation and runtime validation remain pending.
+
+--- a/app-editors/neomacs/neomacs-9999.ebuild
++++ b/app-editors/neomacs/neomacs-9999.ebuild
+@@ -19,7 +19,7 @@
+ 	Unicode-3.0 Unicode-DFS-2016 ZLIB
+ "
+ SLOT="0"
+-IUSE="+jit +terminal +video"
++IUSE="+jit +sqlite +terminal +video"
+ 
+ RESTRICT="test"
+ 
+@@ -62,6 +62,7 @@
+ 
+ src_configure() {
+ 	local myfeatures=(
++		$(usev sqlite)
+ 		$(usev jit)
+ 		$(usev terminal neo-term)
+ 		$(usev video)

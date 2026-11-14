@@ -1,0 +1,77 @@
+# Source group: package.use/kernel-migration
+=sys-kernel/xanmod-kernel-7.2.14 clang cjk cjk32 -debug modules-sign secureboot
+sys-kernel/installkernel dracut -refind -efistub -grub -systemd -systemd-boot -ugrd -uki -ukify
+
+# Source group: package.use/lab
+sonicde-base/sonicde-meta -firewall -systemd
+app-text/xmlto text
+net-dns/avahi mdnsresponder-compat
+x11-base/xlibre-server -xvfb
+x11-base/xorg-server -xvfb
+sys-libs/zlib minizip
+
+# Source group: package.use/phase2-compat
+sys-libs/gcompat libucontext obstack
+
+# Source group: package.use/phase3-runtime
+# Use PipeWire as the sole PulseAudio-compatible sound server.
+media-video/pipewire sound-server
+
+# Source group: package.use/phase4-desktop
+sys-apps/xdg-desktop-portal flatpak
+media-video/pipewire flatpak
+dev-lang/rust-bin rust-analyzer rust-src -doc
+
+# XLibre/SonicDE target: Fcitx daemon uses its X11 backend.
+=app-i18n/fcitx-5.1.21:5 -wayland
+
+# Rime is dlopened by Fcitx; tcmalloc initial-exec TLS fails on stock musl.
+dev-libs/leveldb -tcmalloc
+
+# Gentoo musl profile masks powerdevil[filecaps]; match the SonicDE implementation.
+sonicde-base/sonic-power-management -filecaps
+kde-plasma/powerdevil -filecaps
+
+# Source group: package.use/sonicde
+# SonicDE / Qt / Plasma-derived desktop on OpenRC + elogind.
+# sonicde-meta[firewall] and plasma-firewall require systemd; use firewalld[gui]
+# directly on OpenRC instead.
+dev-qt/qt5compat icu qml
+dev-qt/qtbase concurrent cups dbus gui icu libinput libproxy network opengl sql sqlite wayland widgets X xml
+dev-qt/qtdeclarative opengl widgets
+dev-qt/qttools opengl qdbus qml widgets
+kde-frameworks/kconfig qml
+kde-frameworks/kimageformats avif
+kde-frameworks/kio acl
+kde-frameworks/kwindowsystem X
+kde-frameworks/prison qml
+kde-frameworks/sonnet qml
+kde-plasma/discover firmware flatpak
+kde-plasma/kwin lock -systemd
+kde-plasma/kwin-x11 lock
+kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
+sonicde-base/sonicde-meta bluetooth crash-handler crypt display-manager elogind kwallet networkmanager smart thunderbolt wallpapers -browser-integration -firewall pulseaudio -systemd -webengine
+sonicde-base/sonic-win lock -systemd
+sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
+sonicde-frameworks/sonic-frameworks-image-formats avif
+x11-themes/gentoo-artwork pixmaps -grub
+
+sonicde-frameworks/sonic-frameworks-settings qml
+sonicde-frameworks/sonic-frameworks-io acl
+sonicde-frameworks/sonic-frameworks-barcode qml
+sonicde-frameworks/sonic-frameworks-spell-check qml
+
+# Source group: package.use/world-migration
+dev-libs/appstream qt6
+media-libs/libvpx postproc
+net-firewall/nftables json python xtables
+app-text/ghostscript-gpl cups
+net-p2p/ktorrent -webengine
+media-fonts/nerdfonts intelonemono nerdfontssymbolsonly
+media-video/ffmpeg opus vpx x264
+dev-db/postgresql llvm
+net-misc/networkmanager iwd
+sys-fs/btrfs-progs udev
+x11-base/xlibre-server xvfb
+x11-base/xorg-server::xlibre xvfb
+=kde-apps/yakuake-26.04.3:6 -wayland

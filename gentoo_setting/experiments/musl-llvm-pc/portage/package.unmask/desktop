@@ -1,0 +1,7 @@
+# Source group: package.unmask/kernel-migration
+# Match the explicitly selected XanMod provider only.
+=virtual/dist-kernel-7.2.14-r100::gentoo-zh
+
+# Source group: package.unmask/phase2-compat
+# Experimental only: GURU retains an old libucontext-related mask.
+=sys-libs/gcompat-1.1.0::guru

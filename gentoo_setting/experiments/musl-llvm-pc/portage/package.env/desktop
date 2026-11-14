@@ -1,0 +1,8 @@
+# Source group: package.env/native-desktop
+=dev-libs/darts-0.32h_pre20181117064816 clang-cxx14
+
+# Source group: package.env/neomacs
+=app-editors/neomacs-9999 neomacs-pinned
+
+# Source group: package.env/world-x11
+=kde-apps/gwenview-26.04.3:6 gwenview-x11

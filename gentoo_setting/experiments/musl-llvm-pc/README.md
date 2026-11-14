@@ -8,7 +8,7 @@ Windows 配置不在本次变更范围内。
 桌面批次通过不代表旧 `world` 已全部迁移。逐项核对清单见
 [`world-migration.tsv`](world-migration.tsv)，按批次检查点记录旧系统 91 个直接选择的去向；
 “待原生预演”表示尚未补齐，不能理解为不支持 musl。PostgreSQL 18.6、ClamAV 1.5.3、
-ClamTk 6.18-r2 已安装，该批次结束时新根已通过 Portage 登记 32 项软件选择。迁移验收期间不运行
+ClamTk 6.18-r2 已安装，软件选择已通过 Portage 登记。迁移验收期间不运行
 `depclean`。PostgreSQL 工具执行通过，未初始化或迁移数据库；ClamAV 自定义无害签名的
 正、负样本扫描通过，正式病毒库更新仍待验收。ClamTk 的版本限定中文补丁已重建，
 私有显示中标题和各组控件的中文绘制通过。
@@ -40,8 +40,9 @@ Portage 沙箱安装、JavaScript、中文与人民币格式化，且 SONAME QA 
 后续软件与配置批次串行操作同一新根：先预演剩余应用，修复已知 Neomacs 错误，
 再整理 Portage 配置。整理前保留配置快照，比较已安装包的有效设置；不一致则停止
 或回退。未知报错保留日志等待处理，不自动切换引导、迁移数据库或清理原系统。
-统一授权进程仅在本次软件／配置范围内保留修复窗口；进程退出或进入新的系统操作
-阶段后，仍可能需要系统重新进行 Polkit 验证。
+本次统一授权进程已在配置检查点正常结束；进程退出或进入新的系统操作阶段后，
+仍可能需要系统重新进行 Polkit 验证。Neomacs 的引导错误保留为待解决项，
+不是为继续整理配置而将它标成通过。
 
 ## 实验基线与已验证范围
 
@@ -81,8 +82,11 @@ gcompat 下崩溃，不能直接把旧扩展目录复制给原生 musl 编辑器
 Neomacs 尚未完成 musl 编译和运行验证，不把已有 Gentoo live 配方视为安装通过；
 新根继续不默认安装 GNU Emacs。固定上游 `aacf29294ab30aed5736e1eabcb3b83122593fce`
 后，真正 musl 根的依赖预演通过，共四个新包，不选择 GCC 或 glibc；三个依赖已安装，
-主体编译遇到七处错误，涉及 glibc 专有 backtrace 接口及 musl 的 termios/ioctl 类型。
-目前尚未安装成功，也未更改默认编辑器。后续修复按源码补丁组维护，保留空间保护。
+主体首轮七处错误涉及 glibc 专有 backtrace 接口及 musl 的 termios/ioctl 类型，
+已由固定提交的[源码补丁组](patchsets/neomacs-aacf292/)修复，Rust release 构建通过。
+未安装的构建产物能显示 0.0.20 版本并输出中文，但后续 Lisp 字节编译在栈增长时
+报 `mprotect/mmap: ENOMEM`；普通 UID 250 单文件复现也失败，尚未完成安装。
+这不是已经证实的 musl 独有问题；默认编辑器未更改，保留构建产物待进一步诊断。
 Neomacs 安装并验证可用后，在目标根内以 root 执行：
 
 ```bash
@@ -205,10 +209,21 @@ Flatpak 内的 glibc locale 单独维护；正常安装脚本以 `extra-language
 
 ## LLVM 构建与补丁边界
 
-[`portage/`](portage/) 中的 Darts 配置只给旧版本选择 Clang C++14，以兼容其
+新根的六类配置已按原顺序归并为各自的 `desktop` 文件，保留来源注释。
+整理前后比较 1,158 个已安装包的有效设置，差异为零；替换前快照保留在本地实验区，
+未包含私有 GPG 目录。仓库的 [`portage/`](portage/) 同步这份已复核的配置、环境片段、
+国内优先镜像及固定仓库提交清单；源码补丁仍只在 `patchsets/` 维护，避免重复副本。
+
+这不是整目录覆盖 `/etc/portage` 的安装器。新机按 `profile.txt` 选择 profile，
+核对 `repository-baseline.tsv`，再合并各配置组并按补丁组说明部署源码／配方修复。
+`make.conf` 是本轮 stage3 的基线，核对目标 Python、LLVM、硬件与 USE 后再用；
+内核／签名选项仅完成预演，尚未构建启动验收，不包含签名私钥或实际启动配置。
+仓库暂设 `auto-sync = no` 以冻结实验基线，后续更新须复核补丁，不能长期跳过更新。
+
+Darts 配置只给旧版本选择 Clang C++14，以兼容其
 `std::random_shuffle`，不回退 GCC。先合并到目标 Portage 配置，避免覆盖自定义文件。
 
-`package.use/native-desktop` 还记录两项已验证调整：Fcitx 5.1.21 在本轮 X11
+`package.use/desktop` 还记录两项已验证调整：Fcitx 5.1.21 在本轮 X11
 目标下关闭自身 Wayland 后端；LevelDB 关闭 tcmalloc。后者避免 Fcitx 动态加载
 Rime 时触发 musl initial-exec TLS 错误，不使用全局 `LD_PRELOAD` 绕过问题。
 

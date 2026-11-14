@@ -1,3 +1,2 @@
 # Use the upstream switch for Wayland-only gesture protocols on SonicDE/X11.
-# Portage parses this file; keep the value literal.
 MYCMAKEARGS="-DGWENVIEW_NO_WAYLAND_GESTURES=ON"

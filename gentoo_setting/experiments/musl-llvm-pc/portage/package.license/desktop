@@ -1,0 +1,5 @@
+# Source group: package.license/bun-musl
+sys-libs/musl-cxx-runtime gcc-runtime-library-exception-3.1
+
+# Source group: package.license/world-migration
+sys-kernel/linux-firmware linux-fw-redistributable no-source-code
