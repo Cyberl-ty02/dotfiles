@@ -34,9 +34,23 @@ release、Unicode 数据、127 个预载及 1,516 个 Lisp 文件的完整引导
 普通用户 SQLite 内存库中文增删查、私有 X11 GUI 中文绘制通过；实际 Fcitx5/Rime
 输入 `nihao<space>` 并保存得到“你好”。实验根已通过 `eselect editor set neomacs`
 选为默认编辑器；原 glibc 系统编辑器未更改。2026-11-19 新 musl 宿主已再次核验
-全局 `EDITOR=neomacs`、原生 UTF-8 批处理及真实 X11 窗口。简洁初始化配置见
-`../../scripts/neomacs-init.el`，用户实际读取目录为 `~/.config/emacs/init.el`；
-旧 Doom 配置及插件未自动加载，完整 GUI 工作流仍待验收。
+全局 `EDITOR=neomacs`、原生 UTF-8 批处理及真实 X11 窗口。当前编辑器配置统一为
+完整 [Doom Emacs](https://github.com/doomemacs/core)，唯一私有配置源为
+`../../../../dot_config/doom/`，Windows 与 Gentoo 共用模块及自有偏好。
+部署入口为 `../../../scripts/deploy-doom.sh`，不再维护另一份 PC 最小 init。
+
+2026-11-22 验收：Doom core `eab52d2fe5e58303696e129717553ec5bf031bb0`，
+其记录的 modules 子仓库 `f054be8fcdd2a0446eb8259d76dd4f6f76acc0b7`。
+这些是测试基线，不是日常版本锁。普通用户完整 sync、正式目录 GUI 与 TTY 的
+Doom 开始页／主题、SPC 文件与缓冲区命令、Evil 编辑、Corfu／Vertico／Magit／Org
+加载通过；root 的独立配置、框架、插件和 TTY 同样通过，不执行 kl 可写的代码。
+doctor 识别33个模块与106个包；已补齐 Discount、静态 ShellCheck，仅留可选
+Symbola 提示。没有关闭检查、安装 GCC 或运行原生编译来消除提示。
+
+使用干净包状态，旧 Doom 的构建缓存不复用。少量旧配置保存在本机私有状态目录；
+未复制身份、笔记或历史进仓库。此前 Spacemacs 也通过基本验证，但已按用户最终
+选择退役其发行版与可再生缓存。Neomacs 上游仍为 WIP，本次不能代表全部 Doom
+语言模块、原生插件、emacsclient、所有输入法或未来更新的完整兼容。
 
 ## 应用与移除
 

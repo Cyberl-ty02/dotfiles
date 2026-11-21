@@ -3,6 +3,7 @@ cpufetch
 dragonwell21-jdk
 godot-mono
 localsend
+maven
 pacaptr
 scoop-search
 vcpkg

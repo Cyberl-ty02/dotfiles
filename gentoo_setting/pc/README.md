@@ -78,8 +78,38 @@ Sonic Terminal 26.08.3 已回补上游最小化修复，新窗口的最小化／
 新系统 PostgreSQL 18.6 的只读元数据核验仅见默认三个数据库，postgres 库用户关系、
 自定义函数与大对象计数为零；不能据此代替其他数据库逐库审计或原库恢复验收。
 
-真实课程项目、音视频／会议、休眠唤醒、PR 扩展的额外 OAuth 权限、TUN、完整
-CUDA 数学库及旧 Doom 插件仍按需要单独验收。不会自动登录账号、发消息或授予权限。
+用户已确认 Codium 开发、Java Hello World、音视频日常使用、WPS／微信、PostgreSQL
+和 FlClash TUN 暂无异常。本轮还完成 Maven 项目生成／JUnit、完整 Doom／Neomacs GUI 与
+插件加载检查；会议共享、休眠唤醒和完整 CUDA 数学库等按需要单独验收。
+不会自动登录账号、发消息或授予 OAuth 权限。
+
+power-profiles-daemon 已通过官方 OpenRC 脚本启动并加入 default，当前 balanced，
+performance／power-saver 可用，SonicDE PowerDevil 的会话服务正常。新机先确认没有
+TLP／tuned 等冲突服务，再运行 `rc-service power-profiles-daemon start` 和
+`rc-update add power-profiles-daemon default`；不强制切换电源档位。
+
+`services/NetworkManager/30-connectivity.conf` 使用实际可达、不会被常见 Fake-IP
+规则替换的标准探测域，保留正文和门户检查。部署前创建 `/etc/NetworkManager/conf.d`，
+复制后执行 `nmcli general reload conf`，再用 `nmcli networking connectivity check`
+核验。本机已由 limited 恢复 full，不关闭检测、不重启 Wi-Fi，也未放宽防火墙。
+
+Neomacs 使用完整 Doom Emacs 框架，与 Windows 共用 `../../dot_config/doom/` 的
+模块和自有配置，配置入口只保留这一处。以目标用户运行
+`sh gentoo_setting/scripts/deploy-doom.sh`；root 使用独立、root 所有的框架和插件，
+不执行普通用户可写的配置。安装脚本先补齐上游记录的模块子仓库，再同步插件，
+不单独追踪模块仓库的新分支。日常更改模块后运行 `doom sync`。
+
+本机完整 `doom sync`、普通用户 GUI／TTY 开始页、SPC／Evil、Corfu／Vertico／
+Magit／Org 加载及 root 独立 TTY 验收通过。两边使用相同模块配置，各自生成缓存；
+不迁入旧 Doom 字节码或原生缓存，不引入 GCC。Discount 提供 Markdown 预览编译，
+ShellCheck 使用官方静态包，两者已实际运行；doctor 仅保留可选 Symbola 字体提示，
+现有 Noto／Nerd／中文字体回退保持。详细源码基线和边界见 Neomacs 补丁组 README。
+Spacemacs 已不启用，可重新下载的发行版与缓存已清理；少量旧配置与回退资料仅在
+本机私有状态目录保留，不进入仓库。安装通过不代表全部可选语言模块或旧插件兼容。
+
+本轮旧系统三份加密归档已重新完整校验，与原记录一致，保留作恢复资料；它们不是
+损坏临时文件。旧构建镜像已不存在，只清理已确认的测试缓存。实际恢复／回退演练
+仍是单独验收项，不因哈希一致而声称已完成。
 当前根／HOME 已为 `@`／`@home`；旧根及旧 HOME 已加密归档退役，旧 Linux 启动入口
 已移除。恢复需要加密归档与私有凭据，尚未完成实际归档恢复和回退启动验收。
 

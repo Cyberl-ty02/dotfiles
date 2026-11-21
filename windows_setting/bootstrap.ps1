@@ -86,16 +86,8 @@ if ($InstallWindowsApps) {
 }
 
 if ($InstallEditorExtensions) {
-    $codium = Get-Command codium.cmd -ErrorAction Stop
-    $extensions = @(
-        Get-ManifestItems -Path (Join-Path $repositoryRoot "vscodium\extensions-common.txt")
-        Get-ManifestItems -Path (Join-Path $repositoryRoot "vscodium\extensions-windows.txt")
-    ) | Select-Object -Unique
-    foreach ($extension in $extensions) {
-        Invoke-NativeCommand -FilePath $codium.Source -ArgumentList @(
-            "--install-extension", $extension, "--force"
-        )
-    }
+    # Extension-only synchronization also has its own preview-first entry point.
+    & (Join-Path $repositoryRoot "vscodium\sync-extensions.ps1") -Apply:(-not $DryRun)
 }
 
 if (-not $GitName) { $GitName = Get-GitValue -Key "user.name" }

@@ -14,7 +14,8 @@
         "editor.formatOnSave": true
     },
     "[java]": {
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "oracle.oracle-java"
     },
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features",
@@ -97,7 +98,10 @@
     "editor.fontFamily": "'IntoneMono NFM', Consolas, 'HarmonyOS Sans', monospace",
     "editor.inlineSuggest.enabled": true,
     "editor.minimap.maxColumn": 80,
-    "editor.rulers": [88, 120],
+    "editor.rulers": [
+        88,
+        120
+    ],
     "editor.suggest.localityBonus": true,
     "editor.unicodeHighlight.ambiguousCharacters": true,
     "editor.unicodeHighlight.invisibleCharacters": true,
@@ -154,7 +158,9 @@
     "terminal.integrated.fontFamily": "'IntoneMono NFM', Consolas, 'HarmonyOS Sans', monospace",
     "terminal.integrated.profiles.windows": {
         "Windows PowerShell (VSCodium)": {
-            "args": ["-NoLogo"],
+            "args": [
+                "-NoLogo"
+            ],
             "path": "powershell.exe"
         }
     },
@@ -194,5 +200,8 @@
         "**/.gitea/workflows/*.yaml",
         "**/.forgejo/workflows/*.yml",
         "**/.forgejo/workflows/*.yaml"
-    ]
+    ],
+    "rust-analyzer.testExplorer": true,
+    "maven.executable.preferMavenWrapper": true,
+    "maven.terminal.useJavaHome": false
 }

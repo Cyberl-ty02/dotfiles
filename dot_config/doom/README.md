@@ -38,3 +38,18 @@ or `DOOMDIR`.
 
 Terminal editing buffers inherit the terminal emulator's background. GUI
 frames and the dashboard keep the selected Doom theme's normal background.
+
+Gentoo PC uses the native musl Neomacs with the same module selection as Windows;
+`deploy-doom.sh` selects it for the CLI when available. Current upstream core
+stores the full module suite in `sources/doom+`; both platform installers
+initialize that tracked submodule before sync. They respect the revision recorded
+by core, rather than independently updating its module branch. Rebuild generated
+state after changing the runtime or moving the framework; do not copy bytecode,
+package builds or environment snapshots between accounts or operating systems.
+
+The PC's normal user GUI/TTY dashboard and core editing, and root's independent
+TTY setup, have passed basic acceptance. Markdown preview uses Discount and
+shell lint uses the official static ShellCheck package; neither needs GCC/GHC.
+The optional Symbola check remains, with existing Unicode fallback fonts in use.
+Detailed Neomacs compatibility limits and tested source baselines live in the PC
+patchset README. This is not acceptance of every optional Doom language module.

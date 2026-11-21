@@ -62,6 +62,11 @@ def main():
                            icon='terminal', overrideName=True)
     settings['terminal.integrated.profiles.linux'] = profiles
     settings['terminal.integrated.defaultProfile.linux'] = 'zsh'
+    maven = home / '.var/app/com.vscodium.codium/data/host-tools/mvn'
+    changes[maven] = Path(__file__).with_name('maven-host.sh').read_text()
+    settings['maven.executable.path'] = str(maven)
+    settings['maven.executable.preferMavenWrapper'] = True
+    settings['maven.terminal.useJavaHome'] = False
     changes[p] = json.dumps(settings, ensure_ascii=False, indent=2) + '\n'
     changes[config / 'fontconfig/conf.d/60-cjk-readable.conf'] = Path(__file__).with_name('cjk-readable.conf').read_text()
     # Discard no user settings, histories, cookies or keyring entries.
@@ -80,7 +85,7 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         tmp = target.with_name(target.name + '.migration-new')
         tmp.write_text(content)
-        tmp.chmod(0o600)
+        tmp.chmod(0o755 if target == maven else 0o600)
         os.replace(tmp, target)
 
 

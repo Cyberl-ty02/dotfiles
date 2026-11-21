@@ -69,6 +69,15 @@ else
   fi
 fi
 
+# Current Doom core keeps the complete module suite in a tracked submodule.
+# Respect its recorded revision; do not use --remote or silently run core only.
+if [ -f "$doom_emacs/.gitmodules" ]; then
+  git -C "$doom_emacs" submodule update --init --depth 1
+fi
+if [ -z "${EMACS:-}" ] && command -v neomacs >/dev/null 2>&1; then
+  EMACS=$(command -v neomacs)
+  export EMACS
+fi
 "$doom_emacs/bin/doom" sync --env
 
 for file in config.el custom.el init.el packages.el README.md; do

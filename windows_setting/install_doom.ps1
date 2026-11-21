@@ -164,6 +164,14 @@ if (Test-Path -LiteralPath $legacyDoomConfig) {
     }
 }
 
+# Doom's complete module suite is a tracked submodule in current core.
+# Follow the recorded commit, not an independently updated module branch.
+if (Test-Path -LiteralPath (Join-Path $emacsDirectory ".gitmodules") -PathType Leaf) {
+    Invoke-NativeCommand -FilePath $git -ArgumentList @(
+        "-C", $emacsDirectory, "submodule", "update", "--init", "--depth", "1"
+    )
+}
+
 $doom = Join-Path $emacsDirectory "bin\doom.ps1"
 if (-not (Test-Path -LiteralPath $doom -PathType Leaf)) {
     throw "Doom's PowerShell launcher is missing: $doom"

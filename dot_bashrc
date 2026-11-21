@@ -27,8 +27,12 @@ if [[ -z ${EDITOR:-} ]]; then
 fi
 export EDITOR
 export VISUAL="${VISUAL:-$EDITOR}"
-# Neomacs 不调用旧 Doom/Emacs 脚本。
-if [[ ${EDITOR##*/} != neomacs && -d ${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin ]]; then
+# Doom 的管理命令也使用选定的原生 Neomacs，不引入另一套 Emacs。
+if command -v neomacs >/dev/null 2>&1; then
+    export EMACS="${EMACS:-neomacs}"
+fi
+# Doom CLI 使用本账户的框架。
+if [[ -d ${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin ]]; then
     export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
 fi
 

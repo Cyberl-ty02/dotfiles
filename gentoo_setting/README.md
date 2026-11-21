@@ -42,8 +42,9 @@ Git 的姓名与邮箱继续留在未托管的 `~/.gitconfig`；仓库只部署
 2. 安装 Git、chezmoi、doas 与基础 shell 工具。
 3. 克隆本仓库，运行 `scripts/bootstrap-user.sh` 预览用户配置。
 4. 按机器选择 `pc/` 或 `wsl/`，人工比较后部署 Portage 配置。
-5. 从 `manifests/` 选择适用角色，以 `emerge --pretend --noreplace`
-   预览；清单不会自行安装软件。
+5. PC 使用 `pc/world_packages.txt` 作为当前原生选择入口，先预演并按硬件取舍；
+   WSL／共用角色再从 `manifests/` 选择。旧角色清单不能整套代替 musl PC 配置。
+   清单本身不会自行安装软件。
 6. PC 再单独配置服务、桌面、显卡和引导。Secure Boot 必须在目标机器
    本地生成密钥，步骤见 `pc/kernel/secureboot/README.md`。
 7. 运行 `scripts/verify.sh pc` 或 `scripts/verify.sh wsl`，确认差异后才应用
