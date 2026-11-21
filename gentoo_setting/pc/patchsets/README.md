@@ -1,4 +1,4 @@
-# 迁移补丁组索引
+# PC 兼容补丁索引
 
 每个目录对应一个软件或明确版本。`repository/` 修改仓库里的 ebuild 元数据；
 `source/` 修改解包后的上游源码。Portage 用户补丁不能补上缺失的 `DEPEND`，
@@ -7,6 +7,7 @@
 | 补丁组 | 适用范围 | 当前状态 | 移除条件 |
 | --- | --- | --- | --- |
 | [Sonic 图像编辑](sonic-quick-image-editor/) | 0.7.0.1；SonicDE overlay `a5e6600f3dbd67b02ca61a095e036c8a908fe0cc` | 全新 musl 根使用配方补丁和用户源码补丁编译安装通过 | 配方声明 Highway，源码改用可用的 CMake 包 |
+| [Sonic Terminal 最小化](sonic-terminal/) | 26.08.3；回补上游 75ba4c38 | 源码校验、严格应用／撤回、正常沙箱重建及真机最小化／恢复通过 | 新发布包含等价修复且最小化、恢复回归通过；版本补丁目录自动失效 |
 | [Sonic 登录管理器](sonic-login-manager/) | 6.8.0.3／6.8.2 源码验收基线；包级目录不锁版本 | 应用/撤回检查及 musl/Clang 编译安装通过 | 头文件直接包含 POSIX 类型定义 |
 | [ClamTk 翻译目录](clamtk-6.18/) | 6.18-r2 源码 | 独立应用/撤回、用户补丁重建和私有显示中文界面通过 | 程序显式绑定正确的 gettext 目录 |
 | [KWayland 与 SonicDE ECM](kwayland-sonic-ecm/) | KWayland 6.7.6、SonicDE ECM 6.31.0 验收基线 | Manifest、补丁精确预检、CMake 配置及正常 Portage 沙箱安装通过 | 系统重新提供两个 Wayland 查找模块时自动跳过回退；上游接口修复并重建通过后删除 |
@@ -19,7 +20,7 @@
 | [Dragonwell Standard 21 LTS](dragonwell-21.0.13/) | 21.0.13.0.13+9，amd64 musl；现有 Gentoo-Zh/Gentoo 仓库 | 原生安装及编译／中文检查通过；可选同版私有 glibc 构建也由该包管理，不注册第二个 VM，无原生 GCC/glibc | 上游提供等价 Standard musl 配方、Java 21 provider 与所需私有运行时后复验 |
 | [Firefox ESR 153.7](firefox-153.7/) | Gentoo 固定基线，官方配方与语言包回补 | 精确应用／撤回与新版无 GCC 依赖预演通过；musl Rust 宿主脚本加载修复后正常沙箱安装及离线中文渲染通过 | 基线含对应安全版本且 Rust／LLVM helper 已统一后复验 |
 | [FlClash 私有 glibc 前端](flclash-private-runtime/) | 0.9.3 验收基线，现有 Gentoo-Zh；FDO 26.08／Standard 21 | 正常沙箱安装、受保护 AOT/Core、私有 JNI／托盘、GUI 代理启停和 TUN TCP 隔离验证通过；真机授权及网络仍待 | 上游提供等价 musl 界面／配方及权限路线后复验 |
-| [CUDA 数学调用、数据包与托管核心 SDK](cuda-13.4/) | CUDA 13.4 CRT 及已有 Gentoo-Zh 内两个版本固定配方 | 原生 PTX、托管 NVCC/CMake/CTest/GPU 数学通过；新内核启动和完整数学库/PyTorch 未验收 | 官方支持本目标或已有等价包；按对应路线分别复验撤回 |
+| [CUDA 数学调用、数据包与托管核心 SDK](cuda-13.4/) | CUDA 13.4 CRT 及已有 Gentoo-Zh 内两个版本固定配方 | 原生 PTX、托管 NVCC/CMake/CTest/GPU 数学通过；新内核已启动，完整数学库/PyTorch 未验收 | 官方支持本目标或已有等价包；按对应路线分别复验撤回 |
 | [gcompat 加载器路径](gcompat-1.1.0/) | GURU gcompat 1.1.0 ebuild | 配方草案；对应手工路径已验证，完整 ebuild 未验收 | 配方提供正确的 amd64 加载器路径且完成安装验证 |
 
 优先读取各组 README，再决定是否应用。后两组保留原有零上下文补丁内容，不自动
@@ -29,8 +30,8 @@
 不通过降低 patch 校验、强制覆盖或忽略失败维持旧补丁。修改仓库 ebuild 后，后续
 `emerge --sync` 可能清除本地差异，需要重新检查；本目录不安装自动重放钩子。
 
-原实验根保留已验证的私有配方快照作对照，不是本仓库的交付形式；全新根已通过
-图像编辑组件的补丁组安装路径。完整桌面、登录和硬件启动仍按迁移验收项继续验证。
+这里保存可审核的基线补丁与应用条件，不保存实验根、私有配方快照或临时运行报告。
+musl 已为默认 PC 方案；真实会话、硬件与业务操作的验收边界见 PC 根 README。
 
 [NVIDIA 620.70.06 模块、GSP 与私有核心用户态](nvidia-620.70.06/)分别针对已有 Gentoo／Gentoo-Zh：
 五模块公钥验签、四固件载荷校验、私有前缀 EGL/CUDA/NVML 及可选 DDX/GLX 正常安装通过；

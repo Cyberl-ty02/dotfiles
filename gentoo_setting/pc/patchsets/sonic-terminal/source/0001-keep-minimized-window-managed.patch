@@ -1,0 +1,72 @@
+From: Sonic-DE upstream
+Subject: Keep the terminal window when it is minimized
+Upstream: https://github.com/Sonic-DE/sonic-terminal/commit/75ba4c38f00ce9d3ba7d13f5951132f6599947da
+
+diff --git a/RELEASE-NOTES.md b/RELEASE-NOTES.md
+--- a/RELEASE-NOTES.md
++++ b/RELEASE-NOTES.md
+@@ -2,6 +2,11 @@
+ 
+ SonicDE's terminal app, with tabs, split views and profiles for working on the command line.
+ 
++## Unreleased
++
++- Minimizing a terminal window works again: the window stays in the taskbar and can be restored,
++  instead of disappearing while the terminal keeps running in the background.
++
+ ## 26.08.3 (2026-11-10)
+ 
+ - The terminal now records its logs through SonicDE's unified logging system.
+
+diff --git a/src/autotests/QmlWindowTest.cpp b/src/autotests/QmlWindowTest.cpp
+--- a/src/autotests/QmlWindowTest.cpp
++++ b/src/autotests/QmlWindowTest.cpp
+@@ -96,6 +96,7 @@ private Q_SLOTS:
+     void testFocusBridge();
+     void testShortcutClientsAreDistinct();
+     void testCloseClosesTheCompatWindow();
++    void testMinimizeKeepsTheWindow();
+ 
+ private:
+     static TerminalDisplay* displayOf(MainWindow* window);
+@@ -830,6 +831,22 @@ void QmlWindowTest::testCloseClosesTheCompatWindow()
+     QTRY_VERIFY(!qml || !qml->isVisible());
+ }
+ 
++void QmlWindowTest::testMinimizeKeepsTheWindow()
++{
++    // Minimized by the window manager: iconified, not hidden (which withdraws it on X11). The
++    // compat window never is: Qt maps a native window it restores.
++    QQuickWindow* qml = _controller->qmlWindow();
++    qml->setWindowStates(Qt::WindowMinimized | Qt::WindowMaximized);
++    QTRY_VERIFY(_compatWindow->isMaximized());
++    QVERIFY(!_compatWindow->isMinimized());
++    QVERIFY(qml->isVisible());
++
++    qml->setWindowStates(Qt::WindowNoState);
++    QTRY_VERIFY(!_compatWindow->isMaximized());
++    QVERIFY(qml->isVisible());
++    QVERIFY(_compatWindow->isVisible());
++}
++
+ QTEST_MAIN(QmlWindowTest)
+ 
+ #include "QmlWindowTest.moc"
+
+diff --git a/src/quick/WindowController.cpp b/src/quick/WindowController.cpp
+--- a/src/quick/WindowController.cpp
++++ b/src/quick/WindowController.cpp
+@@ -576,9 +576,10 @@ void WindowController::followQmlWindowState()
+     if (_syncing || !_window || !_qmlWindow) {
+         return;
+     }
+-    // Maximized, full screen: saved with the compat window as before.
++    // Maximized, full screen: saved with the compat window as before. Never minimized: Qt
++    // hides a minimized widget (hiding this window) and maps it when restoring it.
+     _syncing = true;
+-    _window->setWindowState(_qmlWindow->windowStates());
++    _window->setWindowState(_qmlWindow->windowStates() & ~Qt::WindowMinimized);
+     _syncing = false;
+ }
+ 
+
