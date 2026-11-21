@@ -1,0 +1,101 @@
+Subject: [PATCH] native NVIDIA device helper and OpenRC nodes for modules-only musl
+
+Source hash: official Gentoo NVIDIA Manifest; version must match coordinated modules.
+
+--- /dev/null
++++ b/x11-misc/nvidia-modprobe/Manifest
+@@ -0,0 +1 @@
++DIST nvidia-modprobe-620.70.06.tar.bz2 42009 BLAKE2B a7272fa4e1b110693e0bdf8ddc1f6f22fcf119be038b9d892c21560f7362babfa7027e5aa72ad5abe946921bec0b77d4968a280d6957a0d78c8bbbedc6b38df3 SHA512 0391fd84b10949156bfb826caeb7de4fa7d6517409883e3de3fd05fc444948a8e6195e7b7eac74d0ee8bb359aa391687ccebac8c2074b7f3e1152463c51929f9
+--- /dev/null
++++ b/x11-misc/nvidia-modprobe/files/nvidia-device-files.conf
+@@ -0,0 +1,2 @@
++# Shared with Gentoo's video-group policy; kernel/driver versions remain gated.
++options nvidia NVreg_DeviceFileUID=0 NVreg_DeviceFileGID=@VIDEOGID@ NVreg_DeviceFileMode=432 NVreg_ModifyDeviceFiles=1
+--- /dev/null
++++ b/x11-misc/nvidia-modprobe/files/nvidia-device-files.initd
+@@ -0,0 +1,24 @@
++#!/sbin/openrc-run
++description="Create NVIDIA compute device files without a persistent daemon"
++depend() {
++ need udev
++ after modules
++ before display-manager
++}
++start() {
++ ebegin "Preparing NVIDIA device files"
++ /usr/bin/nvidia-modprobe -c 0 -c 255 || { eend 1; return 1; }
++ /usr/bin/nvidia-modprobe -u -c 0 || { eend 1; return 1; }
++ /usr/bin/nvidia-modprobe -m || { eend 1; return 1; }
++ local node
++ # Also restrict nodes during the current boot before new module options apply.
++ for node in /dev/nvidia0 /dev/nvidiactl /dev/nvidia-modeset /dev/nvidia-uvm /dev/nvidia-uvm-tools; do
++  [ -c "${node}" ] || { eend 1 "Missing ${node}"; return 1; }
++  chown root:video "${node}" && chmod 0660 "${node}" || { eend 1; return 1; }
++ done
++ eend 0
++}
++stop() {
++ # Device files and loaded modules may be in use. Never unload them here.
++ return 0
++}
+--- /dev/null
++++ b/x11-misc/nvidia-modprobe/files/nvidia-modprobe-uvm-perms.patch
+@@ -0,0 +1,9 @@
++Create /dev/nvidia-uvm* by respecting nvidia.conf's permissions.
++--- a/modprobe-utils/nvidia-modprobe-utils.c
+++++ b/modprobe-utils/nvidia-modprobe-utils.c
++@@ -744,3 +744,3 @@
++-    return mknod_helper(major, base_minor, NV_UVM_DEVICE_NAME, NULL) &&
++-           mknod_helper(major, base_minor + 1, NV_UVM_TOOLS_DEVICE_NAME, NULL);
+++    return mknod_helper(major, base_minor, NV_UVM_DEVICE_NAME, NV_PROC_REGISTRY_PATH) &&
+++           mknod_helper(major, base_minor + 1, NV_UVM_TOOLS_DEVICE_NAME, NV_PROC_REGISTRY_PATH);
++ }
+--- /dev/null
++++ b/x11-misc/nvidia-modprobe/nvidia-modprobe-620.70.06.ebuild
+@@ -0,0 +1,46 @@
++# Copyright 2026 Gentoo Authors
++# Distributed under the terms of the GNU General Public License v2
++
++EAPI=8
++inherit linux-info toolchain-funcs
++DESCRIPTION="Native NVIDIA device-node helper for the musl modules-only driver"
++HOMEPAGE="https://github.com/NVIDIA/nvidia-modprobe"
++SRC_URI="https://download.nvidia.com/XFree86/${PN}/${P}.tar.bz2"
++LICENSE="GPL-2 MIT"
++SLOT="0"
++KEYWORDS="~amd64"
++DEPEND="acct-group/video"
++RDEPEND="${DEPEND}
++ sys-apps/kmod
++ ~x11-drivers/nvidia-drivers-${PV}[modules-only]
++"
++BDEPEND="sys-devel/m4"
++PATCHES=( "${FILESDIR}/${PN}-uvm-perms.patch" )
++
++src_compile() {
++ tc-export CC
++ emake HOST_CC="$(tc-getBUILD_CC)" DO_STRIP= MANPAGE_GZIP=
++}
++
++src_install() {
++ dobin _out/Linux_x86_64/nvidia-modprobe
++ fowners :video /usr/bin/nvidia-modprobe
++ fperms 4710 /usr/bin/nvidia-modprobe
++ doman _out/Linux_x86_64/nvidia-modprobe.1
++ dodoc COPYING
++ newinitd "${FILESDIR}/nvidia-device-files.initd" nvidia-device-files
++ insinto /etc/modprobe.d
++ local video_entry video_gid
++ video_entry=$(getent group video) || die "video group missing"
++ video_gid=$(printf '%s\n' "${video_entry}" | cut -d: -f3) || die
++ [[ ${video_gid} =~ ^[0-9]+$ ]] || die "invalid video gid"
++ sed "s/@VIDEOGID@/${video_gid}/" \
++  "${FILESDIR}/nvidia-device-files.conf" > "${T}/nvidia-device-files.conf" || die
++ doins "${T}/nvidia-device-files.conf"
++}
++
++pkg_postinst() {
++ elog "OpenRC: rc-update add nvidia-device-files boot"
++ elog "Start once with rc-service nvidia-device-files start before GPU tests."
++ elog "No module unloading, display selection, firmware or bootloader changes."
++}

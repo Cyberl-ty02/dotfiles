@@ -1,6 +1,7 @@
 # The repository root is the chezmoi source on Gentoo. Windows uses the
 # dedicated windows_setting source through its bootstrap script.
 .agents/
+AGENTS.md
 .codex/
 .git/
 .gitattributes

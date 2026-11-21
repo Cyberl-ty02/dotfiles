@@ -1,0 +1,36 @@
+--- a/sys-libs/nvidia-musl-compat/nvidia-musl-compat-1.2.6_p20261115.ebuild
++++ b/sys-libs/nvidia-musl-compat/nvidia-musl-compat-1.2.6_p20261115.ebuild
+@@ -14,7 +14,7 @@
+ KEYWORDS="~amd64"
+ RDEPEND="sys-libs/libucontext sys-libs/obstack-standalone"
+ DEPEND="${RDEPEND}"
+-PATCHES=( "${FILESDIR}/090-nvidia-ldso-ifunc-support.patch" "${FILESDIR}/091-nvidia-ldso-tls-prealloc.patch" )
++PATCHES=( "${FILESDIR}/090-nvidia-ldso-ifunc-support.patch" "${FILESDIR}/091-nvidia-ldso-tls-prealloc.patch" "${FILESDIR}/092-startup-no-lto.patch" )
+ src_configure() {
+  mkdir -p "${WORKDIR}/musl-build" || die
+  cd "${WORKDIR}/musl-build" || die
+--- /dev/null
++++ b/sys-libs/nvidia-musl-compat/files/092-startup-no-lto.patch
+@@ -0,0 +1,22 @@
++Private NVIDIA musl loader: suppress LTO only for existing early-startup objects.
++
++Base: musl 9fa28ece75d8a2191de7c5bb53bed224c5947417 plus 090/091.
++Local adaptation of the existing NOSSP object classification; not an upstream merge.
++Rationale: https://www.openwall.com/lists/musl/2025/05/12/4
++Keep assembly-referenced __dls2 and pre-relocation code outside LTO; ordinary
++libc objects and the separate compatibility shims retain the requested ThinLTO.
++Remove when the pinned upstream has equivalent startup protection and the
++normal Portage build plus loader/GPU regression pass without this patch.
++
++--- a/Makefile
+++++ b/Makefile
++@@ -125,7 +125,8 @@
++ 	%/__libc_start_main.o %/__init_tls.o %/__stack_chk_fail.o \
++ 	%/__set_thread_area.o %/memset.o %/memcpy.o \
++ 	, $(LIBC_OBJS))
++-$(NOSSP_OBJS) $(NOSSP_OBJS:%.o=%.lo): CFLAGS_ALL += $(CFLAGS_NOSSP)
+++# Early startup runs before normal relocation/runtime initialization.
+++$(NOSSP_OBJS) $(NOSSP_OBJS:%.o=%.lo): CFLAGS_ALL += $(CFLAGS_NOSSP) -fno-lto
++ 
++ $(CRT_OBJS): CFLAGS_ALL += -DCRT
++ 

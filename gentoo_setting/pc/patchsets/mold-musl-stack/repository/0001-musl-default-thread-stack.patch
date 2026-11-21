@@ -1,0 +1,13 @@
+--- a/sys-devel/mold/mold-2.42.1.ebuild
++++ b/sys-devel/mold/mold-2.42.1.ebuild
+@@ -89,6 +89,10 @@
+ src_configure() {
+ 	use debug || append-cppflags "-DNDEBUG"
+ 
++	# LLVMgold may recurse deeply in ThinLTO worker threads on musl.
++	# Set only this executable's default stack; keep it non-executable.
++	use elibc_musl && append-ldflags "-Wl,-z,stack-size=8388608"
++
+ 	local mycmakeargs=(
+ 		-DBUILD_TESTING=$(usex test)
+ 		-DMOLD_LTO=OFF # Should be up to the user to decide this with CXXFLAGS.

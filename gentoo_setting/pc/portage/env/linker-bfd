@@ -1,0 +1,5 @@
+# EFI 共用 BFD 与独立编译选项，不继承用户态 bitcode 选项。
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+LD="ld.bfd"
+LDFLAGS="-fuse-ld=bfd -Wl,-O1 -Wl,--as-needed"

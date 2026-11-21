@@ -1,0 +1,10 @@
+--- a/sonicde-base/sonic-quick-image-editor/sonic-quick-image-editor-0.7.0.1.ebuild
++++ b/sonicde-base/sonic-quick-image-editor/sonic-quick-image-editor-0.7.0.1.ebuild
+@@ -20,6 +20,7 @@
+ IUSE="+opencv"
+ 
+ DEPEND="
++	>=dev-cpp/highway-1.3.0
+ 	>=dev-qt/qtbase-${QTMIN}:6[gui]
+ 	>=dev-qt/qtdeclarative-${QTMIN}:6
+ 	>=sonicde-frameworks/sonic-frameworks-settings-${KFMIN}:6

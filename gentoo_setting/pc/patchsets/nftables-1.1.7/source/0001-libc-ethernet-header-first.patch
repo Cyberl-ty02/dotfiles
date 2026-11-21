@@ -1,0 +1,17 @@
+Subject: [PATCH] xt: include libc Ethernet definitions before Linux UAPI
+
+Local musl compatibility fix; preserve xtables support and avoid editing
+system headers or redefining kernel compatibility guards globally.
+
+--- a/src/xt.c
++++ b/src/xt.c
+@@ -8,6 +8,9 @@
+  */
+ 
+ #include <nft.h>
++
++/* Let libc define ethhdr before the Linux UAPI compatibility headers. */
++#include <netinet/if_ether.h>
+ 
+ #include <time.h>
+ #include <net/if.h>

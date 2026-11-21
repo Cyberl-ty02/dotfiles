@@ -1,126 +1,81 @@
-# Gentoo PC Clang/LLVM 配置
+# Gentoo PC：musl／LLVM／OpenRC
 
-目标：amd64、OpenRC、Clang/LLVM 主工具链、XLibre + SonicDE、NVIDIA、rEFInd 与 Secure Boot。
-少数无法可靠使用 Clang/libc++ 构建的软件通过 `portage/env/gcc_generic` 回退到 GCC。
+这是本仓库默认 PC 配置，已从官方 musl LLVM stage3 安装并真机启动。
+“默认”指本仓库的维护选择，不代表 Gentoo 的实验 profile 已转为官方稳定。
+WSL 保持独立配置；旧 glibc PC 配置不再并行维护，可从 Git 历史或本地标签
+`archive/glibc-pc-before-musl-promotion` 找回。
 
-## 桌面包策略
+完整安装、兼容运行库、迁移经过与排错放在博客正文：
+[Gentoo musl／LLVM PC 迁移](https://kagaranakaki.top/posts/gentoo-musl-llvm-pc-migration/)。
+本目录只维护可复现配置、脚本、补丁和当前验收边界，不保留逐轮缓存报告。
 
-2026-11-07 已完成 SonicDE 6.8、XLibre 25.1.11 和 NVIDIA 620.70.06 的安装，
-完整依赖预演剩余 0 个更新。用户重启后已核验 X11 会话、SonicDE 合成器、
-NVIDIA 620、音频、输入法与 portal 接口。
-迁移执行记录与回退方案见
-[`sonicde-6.8-upgrade.md`](sonicde-6.8-upgrade.md)。
+## 配置入口
 
-SonicDE 替换 Plasma 的桌面核心：`plasma-desktop`、
-`kwin`、`plasma-workspace` 和 `kinfocenter` 分别由
-`sonic-desktop-interface`、`sonic-win`、`sonic-workspace` 和
-`sonic-system-info` 提供。SonicDE overlay 的同名 dummy 包用于满足仍引用
-KDE 包名的依赖。`package.mask/sonicde-providers` 为 overlay 已提供替代的
-Frameworks、Plasma 和应用组件屏蔽 `::gentoo` 实现，避免新版官方包覆盖
-兼容包；未提供替代的 KDE 应用和库继续使用 Gentoo ebuild。
-`plasma68_x11` 只屏蔽 Gentoo Plasma 6.8+，允许 SonicDE 6.8 兼容包。
+| 目录／文件 | 用途 |
+| --- | --- |
+| `portage/` | profile 说明、国内优先镜像、make.conf、包级规则、仓库基线与私有应用集合 |
+| `patchsets/README.md` | 补丁顺序、基线、预检入口；各补丁组只说明适用范围与移除条件 |
+| `scripts/` | locale、Flatpak、工具链、桌面、用户资料、编辑器及仓库补丁恢复入口 |
+| `kernel/`、`dracut.conf.d/`、`modprobe.d/` | 内核、initramfs、签名与 NVIDIA 策略 |
+| `desktop/`、`services/` | 字体及服务模板；不包含真实数据库或身份凭据 |
+| `world_packages.txt` | 当前原生直接选择清单；先预演，不能跨 ABI 直接照装 |
+| `world-migration.tsv` | 原 glibc world 的逐项迁移去向，属于历史审计证据 |
 
-XLibre 是与 SonicDE 配套使用的 X11 显示服务器，但不是 SonicDE 的硬依赖。
-本配置同时启用两个 overlay：`x11-base/xlibre-server` 替代 Gentoo 的
-X.Org Server，`x11-base/xorg-server::xlibre` 是满足旧包名依赖的 dummy，
-并非第二套显示服务器；`xlibre-server[xorg]` 会拉入
-`x11-base/xlibre-drivers`。`x11-base/xwayland` 是独立兼容服务器且仍被
-`sonic-win` 依赖，因此保留。
+## 新机安装与 chroot
 
-文件管理器、音量组件和分区管理器分别显式选择 `sonic-ecco`、
-`sonic-audio-applet-pulse` 与 `sonic-partition-manager`；overlay 提供的
-`dolphin`、`plasma-pa`、`partitionmanager` dummy 仅用于满足旧包名依赖，
-不再作为 world 目标。打印管理器也改为显式选择 `sonic-print-management`，
-`print-manager` 仅保留为兼容依赖。以下 KDE 应用没有
-等价 SonicDE 替代，继续作为显式 world 包保留：`ark`、`filelight`、
-`gwenview`、`kwalletmanager`、`yakuake` 和 `discover`。
-`sonic-terminal` 已安装，但不具备 Yakuake 的下拉终端交互，暂不强制替换。
-登录管理器选择 Sonic Login Manager。由于 XLibre 在 OpenRC 环境中依赖
-`gui-libs/display-manager-init`，本地 Portage 补丁移除了 `soniclogin` 对
-`display-manager`/`xdm` 的虚拟服务声明，避免其与同名真实服务冲突；OpenRC
-直接启用 `soniclogin` 服务。冷启动登录验证成功后，SDDM、Silver SDDM 及其
-专用 Portage 配置均已移除。
+基础 profile 为 `default/linux/amd64/23.0/musl/llvm`。先按博客完成分区、挂载、
+官方 stage3 验签、解压、网络和 chroot，再审核本目录配置，不能整棵覆盖 `/etc`。
+不把 glibc JDK／应用库加入宿主搜索路径。所有 JVM 均使用 **Dragonwell Standard 21**，
+需要 glibc 的应用使用独立私有运行库或 Flatpak；不回退到捆绑的 JDK 25。
 
-SonicDE 的 X11 会话出于兼容性仍声明 `XDG_CURRENT_DESKTOP=KDE`。用户级
-`xdg-desktop-portal/portals.conf` 明确选择 SonicDE portal 后端，同时保留
-KWallet secret portal 和 Sonic Workspace notification portal。Sonic overlay
-6.8 的 portal ebuild 已声明 `dev-libs/libei` 依赖，现已移除此前缺失依赖时添加的
-显式 world/manifest 目标，库继续由 portal 的依赖自动保留。
+在目标 musl 根内、以本目录为工作目录：
 
-## 应用
-
-以下为首次部署说明；现有机器的 6.8 迁移应使用上述专项步骤，
-保留 `/etc/portage` 中的主机专用文件。先备份并安装 Portage 配置，然后同步所有仓库：
-
-```bash
-doas cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
-doas rsync -a --delete --exclude=make.profile portage/ /etc/portage/
-if [ -d /var/db/repos/gentoo ] && \
-  ! doas git -C /var/db/repos/gentoo rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  doas mv /var/db/repos/gentoo "/var/db/repos/gentoo.rsync-backup-$(date +%Y%m%d-%H%M%S)"
-fi
-doas emerge --sync
+```sh
+# 默认只检查补丁与当前仓库兼容性；确认后显式添加 --apply。
+python3 scripts/restore-repository-patches.py
+# 先预览 locale 配置；musl 不使用 glibc locale-gen。
+bash scripts/configure-locale.sh --lang zh_CN.UTF-8 --timezone Asia/Shanghai --dry-run
+# 使用脚本的系统级安装模式，适用于 chroot；逐项失败时停止检查。
+bash scripts/install-flatpak-apps.sh --system --dry-run
 ```
 
-主树日常通过 USTC Git 镜像浅克隆并增量同步。CERNET 联合入口作为第一备用，
-但部分成员镜像只支持 Git dumb HTTP，启用时必须同时设置 `sync-depth = 0`，
-首次同步会下载完整历史。TUNA 作为额外国内备用，官方 Git 排在国内源之后。
-gentoo-zh 日常使用已验证支持浅克隆的南京大学镜像。升级时需要直连官方源，
-可对升级脚本设置 `SONICDE_OFFICIAL_SOURCES=1`；该开关只影响当前进程，
-不会改写磁盘上的国内默认地址。
-上面的迁移命令会保留非 Git 主树并让 Portage 重新克隆；
-不能仅改 `sync-type` 后继续在原 rsync 目录更新。Git 同步会使用由 Portage 包管理的本地
-Gentoo Release Key 验证提交签名，并按 Portage 默认策略刷新密钥以发现撤销状态，
-同时拒绝超过三天的仓库时间戳；官方 binhost 的签名验证不受影响。
+Flatpak 主包以 `scripts/flatpak-apps.txt` 为唯一清单；不要把 Flatpak runtime
+误当作原生 Portage 依赖，两者管理范围不同。Flatpak 下载和系统配置可以在 chroot
+准备，桌面登录、密钥环、音视频与硬件功能必须在真实会话中验收。
+Secure Boot 材料在目标机器本地生成，见 `kernel/secureboot/README.md`，不提交私钥。
 
-LinuxMirrors 可用于参考国内镜像列表，但不要在本配置上直接执行其 Gentoo
-换源脚本。该脚本会把 `GENTOO_MIRRORS` 改为单一地址，并重写主树为
-`/usr/portage` 下的 rsync 仓库，无法保留这里的 Git 签名校验、多级 distfiles
-回退及 overlay 分层。需要调整镜像时，应审核其最新列表后手工更新本目录中的
-`make.conf` 与 `repos.conf` 小文件，再通过 `verify.sh` 部署验证。
+## 工具链与维护
 
-首次从 Gentoo X.Org Server 切换到 XLibre 时，两者会发生文件冲突。完成上述
-同步后，先执行一次以下迁移：
+- Clang／libc++、全局 ThinLTO 与 mold 保持；不默认全局 `~amd64` 或编译缓存。
+  内核使用 LLD，GNU-EFI／rEFInd 保留 BFD 例外。
+- LLDB 22.1.8 已安装；原生 musl C++ 的断点、变量、表达式、继续至退出0与 Python
+  绑定最小检查通过；定向依赖预演确认只删除 GDB 后，GDB 已移除。其配方过滤 LTO，现有 LLVM 静态库含 ThinLTO，因此使用
+  `llvm-core/lldb linker-lld`；上游配方／库构建方式改变时重新验证该例外。
+- uutils-coreutils、uutils-findutils、Toybox、Dash 已并行安装并通过最小运行检查。
+  uutils 使用 `uu-`／`uutils-` 前缀，Toybox 使用自己的入口；没有覆盖系统核心命令
+  或替换 `/bin/sh`。另在无系统 PATH 回退的隔离目录，用 Dash 和 uutils 验证了排序、复制、移动、
+  stat、日期、哈希、路径解析及 find/xargs 的空字符传递；仍不等于完整 GNU 行为兼容。
+- LLVM 的归档和二进制工具已在登录环境生效；`AS="clang -c"` 不改为处理 LLVM IR
+  的 `llvm-as`。Bash、GNU make／autotools、binutils 及私有 SDK 的 GNU ABI 依赖
+  仍分别保留；无原生 GCC／glibc 不等于整机零 GNU。
+- `package.*` 按包原子升序，忽略前导版本运算符；同一选择器与注释保持顺序。
+  make.conf 保持依赖分组与国内镜像优先顺序，不按字母全局重排。
+- 规则优先按包／slot／受影响版本范围；补丁严格预检，已有相同上游修复时跳过，
+  不兼容时停止。同步后先运行补丁恢复脚本预检，不新增另一套 overlay。
 
-```bash
-doas emerge -f x11-base/xlibre-server
-doas emerge -C x11-base/xorg-server x11-base/xorg-drivers
-doas emerge -av1 x11-base/xlibre-server x11-base/xorg-server::xlibre
-doas emerge @x11-module-rebuild
-doas emerge @preserved-rebuild
-```
+## 当前验收边界
 
-最后安装 world 并检查完整依赖图：
+普通软件更新及保留库重建已通过，SonicDE 6.8.2／Qt 6.11.3 已真机启动。
+字体、Neomacs、Codex／VSCodium、独立 root Zsh 与 VSCodium 原生 Zsh 入口已验证。
+CUDA/NVML、NVCC/CMake/CTest 和 GPU 数学回读通过，设备权限保持 root:video 0660。
+新系统 PostgreSQL 18.6 的只读元数据核验仅见默认三个数据库，postgres 库用户关系、
+自定义函数与大对象计数为零；不能据此代替其他数据库逐库审计或原库恢复验收。
 
-```bash
-doas xargs emerge -av --noreplace < world_packages.txt
-doas emerge -pvuDN @world
-doas emerge -avuDN @world
-```
+真实课程项目、音视频／会议、休眠唤醒、PR 扩展的额外 OAuth 权限、TUN、完整
+CUDA 数学库及旧 Doom 插件仍按需要单独验收。不会自动登录账号、发消息或授予权限。
+当前根／HOME 已为 `@`／`@home`；旧根及旧 HOME 已加密归档退役，旧 Linux 启动入口
+已移除。恢复需要加密归档与私有凭据，尚未完成实际归档恢复和回退启动验收。
 
-本配置以 `stage3-amd64-llvm-openrc` 及其
-`default/linux/amd64/23.0/llvm` profile 为基础；Clang、LLVM binutils、
-libc++、compiler-rt、llvm-libunwind 和 lld 均沿用 profile 默认值，
-`make.conf` 不再重复声明工具链变量。GCC 仅供已记录的包级回退使用。
-基础优化与 Fortran LTO 分别由 `COMMON_FLAGS` 和
-`FORTRAN_LTO_FLAGS` 控制。全局 Clang ThinLTO 当前为稳定性而停用；需要时可
-重新启用 `CLANG_LTO_FLAGS`。已记录的兼容环境继续显式使用 `-fno-lto`。
-
-当前 Portage 配置选择 gentoo-zh 的 `sys-kernel/xanmod-kernel`，启用其
-CJKTTY 16x16 与 32x32 字体、发行版 initramfs、Secure Boot 与外部 NVIDIA
-模块签名支持。`virtual/linux-sources` 与 `virtual/dist-kernel` 均使用
-gentoo-zh provider，避免官方 `gentoo-kernel-modprep` 与 XanMod 版本不同步时
-争用 dist-kernel 槽。该内核使用 ebuild 提供的 XanMod 配置，不启用
-`savedconfig`；rEFInd 按版本化内核/initramfs 文件名自动匹配启动项。完成构建和
-重启验证前应保留上一份可启动内核作为回退。不要在当前运行内核仍是唯一回退时
-直接卸载它。
-
-应用前请阅读 [`kernel/secureboot/README.md`](kernel/secureboot/README.md)。当前
-启动链为 shim + rEFInd，不再使用 GRUB。私钥不会保存在本仓库中。
-
-对应排错笔记：
-
-- [rEFInd、Btrfs 与 LiveCD 启动修复](https://kagaranakaki.top/posts/gentoo-refind-btrfs-rescue/)
-- [字体、KDE 托盘与 PipeWire](https://kagaranakaki.top/posts/gentoo-openrc-desktop-troubleshooting/)
-- [chrony、时区与 PostgreSQL 18](https://kagaranakaki.top/posts/gentoo-chrony-timezone-postgresql/)
-- [旧 LLVM 阻塞 Firefox/CUDA 构建](https://kagaranakaki.top/posts/gentoo-llvm-firefox-cuda-build-failure/)
+本机接续先核对私有检查点指定的活进程、启动 ID、任务状态和日志；不从 README
+推断仍有授权或构建。保持单个 Portage 写入者和至少20GiB根分区余量，不自动关机。
+验收后按用户授权整理到 main；保留远端已有正文及 Windows 配置。博客部署单独决定。

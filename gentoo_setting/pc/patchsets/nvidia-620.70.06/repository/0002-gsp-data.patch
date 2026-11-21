@@ -1,0 +1,56 @@
+--- /dev/null
++++ b/sys-firmware/nvidia-gsp-firmware/nvidia-gsp-firmware-620.70.06.ebuild
+@@ -0,0 +1,49 @@
++# Copyright 2026 Gentoo Authors
++# Distributed under the terms of the GNU General Public License v2
++
++EAPI=8
++inherit unpacker
++
++DESCRIPTION="Versioned NVIDIA GSP firmware data for matching open kernel modules"
++HOMEPAGE="https://www.nvidia.com/"
++SRC_URI="https://download.nvidia.com/XFree86/Linux-x86_64/${PV}/NVIDIA-Linux-x86_64-${PV}.run"
++S="${WORKDIR}"
++LICENSE="NVIDIA-2025"
++SLOT="0/${PV%%.*}"
++KEYWORDS="~amd64"
++RESTRICT="bindist mirror strip"
++BDEPEND="app-arch/tar app-arch/xz-utils app-arch/zstd"
++QA_PREBUILT="lib/firmware/nvidia/${PV}/* usr/lib/firmware/nvidia/${PV}/*"
++
++src_prepare() {
++	# unpacker extracts the Makeself payload without running nvidia-installer.
++	default
++}
++src_configure() { :; }
++src_compile() { :; }
++
++src_install() {
++	local filename expected
++	local -a candidates
++	insinto "/lib/firmware/nvidia/${PV}"
++	while read -r expected filename; do
++		[[ -n ${filename} ]] || continue
++		mapfile -t candidates < <(find "${S}" -type f -name "${filename}")
++		[[ ${#candidates[@]} == 1 ]] || die "Expected exactly one ${filename}"
++		echo "${expected}  ${candidates[0]}" | sha256sum -c - || die
++		doins "${candidates[0]}"
++	done <<-FIRMWARE
++	26a32926507e19e8c92911ed6a9b7981c9699c7a10bb78cc76b4f4abcbff84b6  gsp_ga10x.bin
++	b8f3d94d33cc284da4e0b758f069271818694b2ce8b50769d6a14b46df5d3cbf  ucodes_ga10x.bin
++	92af243e48c22325568ce24ef2edf5fa257b9bacc10a18fd38342cddeaf83fd8  gsp_tu10x.bin
++	db482009e834e26e901bfdf1f3428d1ab54b59b645ea9b987d0f6f14f4567a4f  ucodes_tu10x.bin
++	FIRMWARE
++	# The source license is also shipped by Gentoo's NVIDIA-2025 license entry.
++	[[ ! -f LICENSE ]] || dodoc LICENSE
++}
++
++pkg_postinst() {
++	elog "Only matching GSP/ucode data installed; no driver or GPU activation."
++	elog "Matching kernel modules and user-space driver still require acceptance."
++	elog "Rebuild the target initramfs before a hardware boot test."
++}
+--- /dev/null
++++ b/sys-firmware/nvidia-gsp-firmware/Manifest
+@@ -0,0 +1 @@
++DIST NVIDIA-Linux-x86_64-620.70.06.run 549763565 BLAKE2B 99546490efa9b8021d1228dafbb63beb136787007484604a19f9b176517900fd50f44ab3ec3fcbba7b6f44e50ffe8b5f760f091775082422fb3aaf0e4fc6584f SHA512 3889406d2717c5492852c8e06343981ee2481a31e1247fb6c7600205941a28cde90421192d78bbd9e98082b87cc853768ac741dbca4e03ad01ff4f123a9a086d

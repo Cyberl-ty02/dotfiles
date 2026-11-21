@@ -1,0 +1,20 @@
+--- a/eclass/sec-keys.eclass
++++ b/eclass/sec-keys.eclass
+@@ -115,7 +115,7 @@
+ #
+ # - minifies and exports them back into a unified keyfile
+ sec-keys_src_compile() {
+-	local -x GNUPGHOME=${WORKDIR}/gnupg
++	local -x GNUPGHOME=${PORTAGE_BUILDDIR}/g
+ 	local fingerprint
+ 	if has_version -b ">=app-crypt/gnupg-2.5.17"; then
+ 		local gpg_command=(gpg --export-options export-minimal,keep-expired-subkeys)
+@@ -166,7 +166,7 @@
+ }
+ 
+ sec-keys_src_test() {
+-	local -x GNUPGHOME=${WORKDIR}/gnupg
++	local -x GNUPGHOME=${PORTAGE_BUILDDIR}/g
+ 	local key fingerprint name server
+ 	if has_version -b ">=app-crypt/gnupg-2.5.17"; then
+ 		local gpg_command=(gpg --export-options export-minimal,keep-expired-subkeys)

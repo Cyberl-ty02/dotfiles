@@ -1,5 +1,0 @@
-# binutils accepts the global LTO flags and needs no package.env override.
-# GCC uses its dedicated lto USE flag while retaining reduced parallelism.
-sys-devel/gcc lowjobs
-# The glibc ebuild explicitly filters LTO, so retain the documented exception.
-sys-libs/glibc lowjobs no_lto

@@ -1,0 +1,24 @@
+# 条目按包原子 0–9、a–z 升序排列；排序忽略前导版本运算符，同一原子保留覆盖顺序。
+
+# Neomacs 不固定 live 源码提交；传输选项保持独立。
+app-editors/neomacs neomacs-git
+
+# 仅为确需包级设置的软件登记环境；通用签名路径统一放在 make.conf。
+# Darts 旧版使用 C++17 已移除的 std::random_shuffle。
+<dev-libs/darts-0.33 clang-cxx14
+# Gwenview 在 Qt 6 slot 中关闭 Wayland 专属手势。
+kde-apps/gwenview:6 gwenview-x11
+
+# LLDB 配方过滤 LTO，仍需 LLD 读取 LLVM 的 ThinLTO 静态库。
+llvm-core/lldb linker-lld
+
+# EFI 的 BFD 与无用户态 LTO 设置共用一个环境；签名路径继承 make.conf。
+sys-boot/gnu-efi linker-bfd
+sys-boot/refind linker-bfd
+
+# 所有 XanMod 使用 LLD；仅此精确版本保留签名构建的 root 权限例外。
+sys-kernel/xanmod-kernel linker-lld
+=sys-kernel/xanmod-kernel-7.2.14 kernel-signing-local
+
+# NVIDIA 仅构建与已验收内核配套的模块，不安装普通用户态。
+=x11-drivers/nvidia-drivers-620.70.06::gentoo nvidia-modules-only-local

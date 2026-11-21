@@ -1,0 +1,15 @@
+#!/bin/sh
+# 共用 ESP 期间，新 musl 内核使用独立菜单，避免读取旧根的 refind_linux.conf。
+# Gentoo installkernel 已完成内核及 initramfs 安装后调用；不修改固件变量。
+set -eu
+case "-${1:?kernel release required}-" in
+    *-musl-*)
+        if /usr/local/sbin/configure-refind-dual-root --require-kernel "$1" --apply; then
+            exit 0
+        fi
+        # 有旧完整内核对时，仍排除新出现的不完整载荷，避免自动扫描读到旧根参数。
+        # 保持失败状态，要求检查安装日志后再升级或重启。
+        /usr/local/sbin/configure-refind-dual-root --apply || :
+        exit 1
+        ;;
+esac

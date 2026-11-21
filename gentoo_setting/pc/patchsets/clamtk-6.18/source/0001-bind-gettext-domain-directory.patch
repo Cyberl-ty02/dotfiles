@@ -1,0 +1,10 @@
+--- a/clamtk
++++ b/clamtk
+@@ -42,6 +42,7 @@
+ use Locale::gettext;
+ use POSIX 'locale_h';
+ textdomain( 'clamtk' );
++bindtextdomain( 'clamtk', '/usr/share/locale' );
+ setlocale( LC_ALL, '' );
+ 
+ # This seems horrible, but it works.

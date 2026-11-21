@@ -1,16 +1,86 @@
-# Desktop audio, media, fonts, and input methods.
-app-i18n/fcitx:5 wayland X
-app-i18n/fcitx-qt:5 qt5 qt6
+# 条目按包原子 0–9、a–z 升序排列；排序忽略前导版本运算符，同一原子保留覆盖顺序。
+
+# XLibre/SonicDE target: Fcitx daemon uses its X11 backend.
+app-i18n/fcitx:5 -wayland
 app-text/ghostscript-gpl cups
-dev-libs/libdbusmenu gtk3
-media-fonts/nerdfonts intelonemono
-media-libs/freetype harfbuzz png
-media-libs/gd fontconfig truetype
-media-libs/libcanberra alsa
-media-libs/libpulse X
+app-text/xmlto text
+dev-db/postgresql llvm
+# 同版私有 glibc JVM 只供兼容应用，不注册第二个系统 VM。
+dev-java/dragonwell-bin:21 glibc-runtime
+dev-lang/rust-bin rust-analyzer rust-src -doc
+dev-libs/appstream qt6
+
+# Rime is dlopened by Fcitx; tcmalloc initial-exec TLS fails on stock musl.
+dev-libs/leveldb -tcmalloc
+
+# SonicDE / Qt / Plasma-derived desktop on OpenRC + elogind.
+# sonicde-meta[firewall] and plasma-firewall require systemd; use firewalld[gui]
+# directly on OpenRC instead.
+dev-qt/qt5compat icu qml
+dev-qt/qtbase concurrent cups dbus gui icu libinput libproxy network opengl sql sqlite wayland widgets X xml
+dev-qt/qtdeclarative opengl widgets
+dev-qt/qttools opengl qdbus qml widgets
+kde-apps/yakuake:6 -wayland
+kde-frameworks/kconfig qml
+kde-frameworks/kimageformats avif
+kde-frameworks/kio acl
+kde-frameworks/kwindowsystem X
+kde-frameworks/prison qml
+kde-frameworks/sonnet qml
+kde-plasma/discover firmware flatpak
+kde-plasma/kwin lock -systemd
+kde-plasma/kwin-x11 lock
+kde-plasma/plasma-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
+kde-plasma/powerdevil -filecaps
+
+# Matching LLVMgold plugin for the global mold + Clang ThinLTO default.
+llvm-core/llvm binutils-plugin
+media-fonts/nerdfonts intelonemono nerdfontssymbolsonly
 media-libs/libvpx postproc
-media-plugins/alsa-plugins pulseaudio
-media-sound/pulseaudio-daemon bluetooth dbus
-media-video/ffmpeg opus vpx webp x264 x265
+media-video/ffmpeg opus vpx x264
+
+# Use PipeWire as the sole PulseAudio-compatible sound server.
 media-video/pipewire sound-server
+media-video/pipewire flatpak
 net-dns/avahi mdnsresponder-compat
+net-firewall/nftables json python xtables
+net-misc/networkmanager iwd
+net-p2p/ktorrent -webengine
+net-proxy/flclash-bin glibc-compat
+
+# Gentoo musl profile masks powerdevil[filecaps]; match the SonicDE implementation.
+sonicde-base/sonic-power-management -filecaps
+sonicde-base/sonic-win lock -systemd
+sonicde-base/sonic-workspace fontconfig ksysguard networkmanager policykit screencast -systemd
+sonicde-base/sonicde-meta -firewall -systemd
+sonicde-base/sonicde-meta bluetooth crash-handler crypt display-manager elogind kwallet networkmanager smart thunderbolt wallpapers -browser-integration -firewall pulseaudio -systemd -webengine
+sonicde-frameworks/sonic-frameworks-barcode qml
+sonicde-frameworks/sonic-frameworks-image-formats avif
+sonicde-frameworks/sonic-frameworks-io acl
+sonicde-frameworks/sonic-frameworks-settings qml
+sonicde-frameworks/sonic-frameworks-spell-check qml
+sys-apps/xdg-desktop-portal flatpak
+
+# Candidate UEFI payloads only; installer hooks keep real ESP disabled.
+sys-boot/refind btrfs secureboot -doc
+sys-boot/shim secureboot
+sys-firmware/intel-microcode split-ucode -initramfs -dist-kernel -hostonly
+sys-fs/btrfs-progs udev
+sys-kernel/installkernel dracut -refind -efistub -grub -systemd -systemd-boot -ugrd -uki -ukify
+
+# Match FW_LOADER_COMPRESS_ZSTD; dracut assembles the candidate initramfs later.
+sys-kernel/linux-firmware compress-zstd -compress-xz -initramfs -dist-kernel
+=sys-kernel/xanmod-kernel-7.2.14 clang cjk cjk32 -debug modules-sign secureboot
+sys-libs/gcompat libucontext obstack
+sys-libs/zlib minizip
+x11-base/xlibre-server -xvfb
+x11-base/xlibre-server xvfb
+x11-base/xorg-server -xvfb
+x11-base/xorg-server::xlibre xvfb
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+=x11-drivers/nvidia-drivers-620.70.06::gentoo modules-only modules modules-sign -dist-kernel -X -abi_x86_32 -persistenced -powerd -static-libs -tools -wayland
+
+# 私有 XLibre 模块及入口；不切换默认登录器或全局图形库。
+x11-drivers/nvidia-userspace-musl xlibre
+x11-themes/gentoo-artwork pixmaps -grub

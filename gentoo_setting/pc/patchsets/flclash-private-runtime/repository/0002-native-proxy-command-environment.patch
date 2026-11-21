@@ -1,0 +1,33 @@
+--- a/net-proxy/flclash-bin/flclash-bin-0.9.3.ebuild
++++ b/net-proxy/flclash-bin/flclash-bin-0.9.3.ebuild
+@@ -37,7 +37,7 @@
+ RDEPEND="
+  sys-auth/polkit
+  x11-apps/xmessage
+- glibc-compat? ( dev-java/dragonwell-bin:21[glibc-runtime] dev-lang/python sys-apps/flatpak )
++ glibc-compat? ( dev-java/dragonwell-bin:21[glibc-runtime] dev-lang/python dev-libs/glib:2 sys-apps/flatpak sys-apps/which x11-misc/xdg-utils )
+  !glibc-compat? (
+ 
+ 	app-accessibility/at-spi2-core:2
+@@ -145,7 +145,7 @@
+   exeinto /usr/libexec/flclash-native-helpers
+   newexe "${FILESDIR}/native-helper" .dispatch
+   local command
+-  for command in gio gsettings kde-open5 kde-open6 kioclient5 kioclient6 pkexec xdg-email xdg-mime xdg-open xmessage; do
++  for command in dbus-send gio gsettings kwriteconfig5 kwriteconfig6 pkexec which xdg-email xdg-mime xdg-open xmessage; do
+    dosym .dispatch "/usr/libexec/flclash-native-helpers/${command}"
+   done
+  else
+--- a/net-proxy/flclash-bin/files/native-helper
++++ b/net-proxy/flclash-bin/files/native-helper
+@@ -6,8 +6,8 @@
+ import sys
+ 
+ name = Path(sys.argv[0]).name
+-allowed = {'gio', 'gsettings', 'kde-open5', 'kde-open6', 'kioclient5', 'kioclient6',
+-           'pkexec', 'xdg-email', 'xdg-mime', 'xdg-open', 'xmessage'}
++allowed = {'dbus-send', 'gio', 'gsettings', 'kwriteconfig5', 'kwriteconfig6',
++           'pkexec', 'which', 'xdg-email', 'xdg-mime', 'xdg-open', 'xmessage'}
+ if name not in allowed:
+     raise SystemExit('Unknown FlClash native helper')
+ env = dict(os.environ)

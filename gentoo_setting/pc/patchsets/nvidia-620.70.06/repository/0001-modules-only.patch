@@ -1,0 +1,217 @@
+diff --git a/x11-drivers/nvidia-drivers/nvidia-drivers-620.70.06.ebuild b/x11-drivers/nvidia-drivers/nvidia-drivers-620.70.06.ebuild
+--- a/x11-drivers/nvidia-drivers/nvidia-drivers-620.70.06.ebuild
++++ b/x11-drivers/nvidia-drivers/nvidia-drivers-620.70.06.ebuild
+@@ -15,23 +15,33 @@
+ DESCRIPTION="NVIDIA Accelerated Graphics Driver"
+ HOMEPAGE="https://www.nvidia.com/"
+ SRC_URI="
+-	amd64? ( ${NV_URI}Linux-x86_64/${PV}/NVIDIA-Linux-x86_64-${PV}.run )
+-	arm64? ( ${NV_URI}Linux-aarch64/${PV}/NVIDIA-Linux-aarch64-${PV}.run )
+-	$(printf "${NV_URI}%s/%s-${PV}.tar.bz2 " \
+-		nvidia-{installer,modprobe,persistenced,settings,xconfig}{,})
++	!modules-only? (
++		amd64? ( ${NV_URI}Linux-x86_64/${PV}/NVIDIA-Linux-x86_64-${PV}.run )
++		arm64? ( ${NV_URI}Linux-aarch64/${PV}/NVIDIA-Linux-aarch64-${PV}.run )
++		$(printf "${NV_URI}%s/%s-${PV}.tar.bz2 " \
++			nvidia-{installer,modprobe,persistenced,settings,xconfig}{,})
++	)
+ 	${NV_URI}NVIDIA-kernel-module-source/NVIDIA-kernel-module-source-${PV}.tar.xz
+ "
+ # nvidia-installer is unused but here for GPL-2's "distribute sources"
+ S=${WORKDIR}
+ 
+ LICENSE="
+-	NVIDIA-2025 Apache-2.0 Boost-1.0 BSD BSD-2 GPL-2 MIT ZLIB
+-	curl openssl public-domain
++	modules-only? ( MIT GPL-2 )
++	!modules-only? (
++		NVIDIA-2025 Apache-2.0 Boost-1.0 BSD BSD-2 GPL-2 MIT ZLIB
++		curl openssl public-domain
++	)
+ "
+ SLOT="0/${PV%%.*}"
+ KEYWORDS="-* ~amd64 ~arm64"
+-IUSE="+X abi_x86_32 abi_x86_64 persistenced powerd +static-libs +tools wayland"
+-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
++IUSE="modules-only +X abi_x86_32 abi_x86_64 persistenced powerd +static-libs +tools wayland"
++REQUIRED_USE="
++	!modules-only? ( ${PYTHON_REQUIRED_USE} )
++	modules-only? (
++		modules !X !abi_x86_32 !persistenced !powerd !static-libs !tools !wayland
++	)
++"
+ 
+ COMMON_DEPEND="
+ 	acct-group/video
+@@ -58,48 +68,54 @@
+ # everything works properly, depend on both at same time for now
+ # (may use one or the other depending on setup)
+ RDEPEND="
+-	${COMMON_DEPEND}
+-	${PYTHON_DEPS}
+-	|| (
+-		dev-libs/openssl-compat:3
+-		dev-libs/openssl:0/3
+-	)
+-	sys-devel/gcc:*
+-	sys-libs/glibc
+-	X? (
+-		media-libs/libglvnd[X,abi_x86_32(-)?]
+-		x11-libs/libX11[abi_x86_32(-)?]
+-		x11-libs/libXext[abi_x86_32(-)?]
+-	)
+-	powerd? ( sys-apps/dbus[abi_x86_32(-)?] )
+-	wayland? (
+-		>=gui-libs/egl-gbm-1.1.1-r2[abi_x86_32(-)?]
+-		>=gui-libs/egl-wayland-1.1.13.1[abi_x86_32(-)?]
+-		gui-libs/egl-wayland2[abi_x86_32(-)?]
+-		X? ( gui-libs/egl-x11[abi_x86_32(-)?] )
++	!modules-only? (
++		${COMMON_DEPEND}
++		${PYTHON_DEPS}
++		|| (
++			dev-libs/openssl-compat:3
++			dev-libs/openssl:0/3
++		)
++		sys-devel/gcc:*
++		sys-libs/glibc
++		X? (
++			media-libs/libglvnd[X,abi_x86_32(-)?]
++			x11-libs/libX11[abi_x86_32(-)?]
++			x11-libs/libXext[abi_x86_32(-)?]
++		)
++		powerd? ( sys-apps/dbus[abi_x86_32(-)?] )
++		wayland? (
++			>=gui-libs/egl-gbm-1.1.1-r2[abi_x86_32(-)?]
++			>=gui-libs/egl-wayland-1.1.13.1[abi_x86_32(-)?]
++			gui-libs/egl-wayland2[abi_x86_32(-)?]
++			X? ( gui-libs/egl-x11[abi_x86_32(-)?] )
++		)
+ 	)
+ "
+ DEPEND="
+-	${COMMON_DEPEND}
+-	static-libs? (
+-		x11-base/xorg-proto
+-		x11-libs/libX11
+-		x11-libs/libXext
+-	)
+-	tools? (
+-		dev-util/vulkan-headers
+-		media-libs/libglvnd
+-		sys-apps/dbus
+-		x11-base/xorg-proto
+-		x11-libs/libXrandr
+-		x11-libs/libXv
+-		x11-libs/libvdpau
++	!modules-only? (
++		${COMMON_DEPEND}
++		static-libs? (
++			x11-base/xorg-proto
++			x11-libs/libX11
++			x11-libs/libXext
++		)
++		tools? (
++			dev-util/vulkan-headers
++			media-libs/libglvnd
++			sys-apps/dbus
++			x11-base/xorg-proto
++			x11-libs/libXrandr
++			x11-libs/libXv
++			x11-libs/libvdpau
++		)
+ 	)
+ "
+ BDEPEND="
+-	${PYTHON_DEPS}
+-	sys-devel/m4
+-	virtual/pkgconfig
++	!modules-only? (
++		${PYTHON_DEPS}
++		sys-devel/m4
++		virtual/pkgconfig
++	)
+ "
+ 
+ # there is some non-prebuilt exceptions but rather not maintain a list
+@@ -111,7 +127,11 @@
+ )
+ 
+ pkg_setup() {
+-	python-single-r1_pkg_setup
++	if use modules-only; then
++		[[ -n ${KERNEL_DIR} ]] || die "modules-only requires an explicit KERNEL_DIR"
++	else
++		python-single-r1_pkg_setup
++	fi
+ 
+ 	use modules && [[ ${MERGE_TYPE} != binary ]] || return
+ 
+@@ -156,6 +176,12 @@
+ }
+ 
+ src_prepare() {
++	if use modules-only; then
++		mv NVIDIA-kernel-module-source-${PV} kernel-module-source || die
++		eapply_user
++		return
++	fi
++
+ 	# make patches usable across versions
+ 	rm nvidia-modprobe && mv nvidia-modprobe{-${PV},} || die
+ 	rm nvidia-persistenced && mv nvidia-persistenced{-${PV},} || die
+@@ -243,6 +269,8 @@
+ 		CFLAGS=${o_cflags} CXXFLAGS=${o_cxxflags} LDFLAGS=${o_ldflags}
+ 	fi
+ 
++	use modules-only && return
++
+ 	emake "${NV_ARGS[@]}" -C nvidia-modprobe
+ 	use persistenced && emake "${NV_ARGS[@]}" -C nvidia-persistenced
+ 	use X && emake "${NV_ARGS[@]}" -C nvidia-xconfig
+@@ -259,6 +287,12 @@
+ }
+ 
+ src_install() {
++	if use modules-only; then
++		local DOCS=( kernel-module-source/README.md kernel-module-source/COPYING )
++		linux-mod-r1_src_install
++		return
++	fi
++
+ 	local libdir=$(get_libdir) libdir32=$(ABI=x86 get_libdir)
+ 
+ 	NV_ARGS+=( DESTDIR="${D}" LIBDIR="${ED}"/usr/${libdir} )
+@@ -491,6 +525,8 @@
+ }
+ 
+ pkg_preinst() {
++	use modules-only && return
++
+ 	use modules || return
+ 
+ 	# set video group id based on live system (bug #491414)
+@@ -516,6 +552,12 @@
+ pkg_postinst() {
+ 	linux-mod-r1_pkg_postinst
+ 
++	if use modules-only; then
++		elog "Only open NVIDIA kernel modules were installed; no firmware or user-space driver."
++		elog "Matching ${PV} GSP firmware and user-space integration remain separate requirements."
++		return
++	fi
++
+ 	readme.gentoo_print_elog
+ 
+ 	if [[ -r /proc/driver/nvidia/version &&
+diff --git a/x11-drivers/nvidia-drivers/metadata.xml b/x11-drivers/nvidia-drivers/metadata.xml
+--- a/x11-drivers/nvidia-drivers/metadata.xml
++++ b/x11-drivers/nvidia-drivers/metadata.xml
+@@ -10,6 +10,7 @@
+ 		<name>David Seifert</name>
+ 	</maintainer>
+ 	<use>
++		<flag name="modules-only">Build and install only open kernel modules; omit firmware and all user-space components (local version-limited migration patch)</flag>
+ 		<flag name="kernel-open">
+ 			Use the open source variant of the drivers (only
+ 			works for Turing/Ampere or newer GPUs, aka GTX 1650+

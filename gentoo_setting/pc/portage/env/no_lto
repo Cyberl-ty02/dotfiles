@@ -1,9 +1,0 @@
-CLANG_LTO_FLAGS="-fno-lto"
-# Disable aggressive optimisation for sensitive packages.
-COMMON_FLAGS="-march=native -O2 -pipe"
-FORTRAN_LTO_FLAGS="-fno-lto"
-CFLAGS="${COMMON_FLAGS} ${CLANG_LTO_FLAGS}"
-CXXFLAGS="${COMMON_FLAGS} ${CLANG_LTO_FLAGS}"
-FCFLAGS="${COMMON_FLAGS} ${FORTRAN_LTO_FLAGS}"
-FFLAGS="${COMMON_FLAGS} ${FORTRAN_LTO_FLAGS}"
-LDFLAGS="-Wl,-O1 -Wl,--as-needed"

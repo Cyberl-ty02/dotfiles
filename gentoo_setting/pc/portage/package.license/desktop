@@ -1,0 +1,21 @@
+# 条目按包原子 0–9、a–z 升序排列；排序忽略前导版本运算符，同一原子保留覆盖顺序。
+
+# CUDA Clang device-only headers/libdevice; no host runtime.
+dev-util/cuda-clang-device-headers NVIDIA-CUDA
+
+# CUDA core archives + existing Flatpak SDK, not host glibc/compiler.
+dev-util/cuda-sdk-flatpak::gentoo-zh NVIDIA-CUDA
+
+# 系统与 Flatpak 共用的 HarmonyOS 中文界面字体。
+media-fonts/harmonyos-sans::gentoo-zh HarmonyOS-Sans
+
+# Intel early microcode data for this machine.
+sys-firmware/intel-microcode intel-ucode
+
+# Exact GSP firmware data for the accepted open NVIDIA modules.
+sys-firmware/nvidia-gsp-firmware::gentoo-zh NVIDIA-2025
+sys-kernel/linux-firmware linux-fw-redistributable no-source-code
+sys-libs/musl-cxx-runtime gcc-runtime-library-exception-3.1
+
+# Private NVIDIA user-space libraries, same official vendor source.
+x11-drivers/nvidia-userspace-musl::gentoo-zh NVIDIA-2025

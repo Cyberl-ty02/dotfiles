@@ -1,2 +1,1 @@
 jeanp413.open-remote-wsl
-ms-vscode.powershell

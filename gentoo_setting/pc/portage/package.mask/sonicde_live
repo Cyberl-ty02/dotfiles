@@ -1,7 +1,0 @@
-# Avoid accidental live SonicDE core dependency chains.
-=kde-plasma/kwin-9999::sonicde
-=kde-plasma/plasma-workspace-9999::sonicde
-=sonicde-base/sonic-desktop-interface-9999::sonicde
-=sonicde-base/sonicde-meta-9999::sonicde
-=sonicde-base/sonic-win-9999::sonicde
-=sonicde-base/sonic-workspace-9999::sonicde

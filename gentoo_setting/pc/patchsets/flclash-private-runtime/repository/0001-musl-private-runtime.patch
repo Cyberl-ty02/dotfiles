@@ -1,0 +1,360 @@
+--- a/net-proxy/flclash-bin/flclash-bin-0.9.3.ebuild
++++ b/net-proxy/flclash-bin/flclash-bin-0.9.3.ebuild
+@@ -10,16 +10,36 @@
+ SRC_URI="
+ 	amd64? ( https://github.com/chen08209/FlClash/releases/download/v${PV}/FlClash-${PV}-linux-amd64.deb )
+ 	arm64? ( https://github.com/chen08209/FlClash/releases/download/v${PV}/FlClash-${PV}-linux-arm64.deb )
++ glibc-compat? (
++  https://mirrors.ustc.edu.cn/debian/pool/main/liba/libayatana-appindicator/libayatana-appindicator3-1_0.5.94-1_amd64.deb
++  https://deb.debian.org/debian/pool/main/liba/libayatana-appindicator/libayatana-appindicator3-1_0.5.94-1_amd64.deb
++  https://mirrors.ustc.edu.cn/debian/pool/main/a/ayatana-ido/libayatana-ido3-0.4-0_0.10.4-1_amd64.deb
++  https://deb.debian.org/debian/pool/main/a/ayatana-ido/libayatana-ido3-0.4-0_0.10.4-1_amd64.deb
++  https://mirrors.ustc.edu.cn/debian/pool/main/liba/libayatana-indicator/libayatana-indicator3-7_0.9.4-1+b1_amd64.deb
++  https://deb.debian.org/debian/pool/main/liba/libayatana-indicator/libayatana-indicator3-7_0.9.4-1+b1_amd64.deb
++  https://mirrors.ustc.edu.cn/debian/pool/main/libd/libdbusmenu/libdbusmenu-glib4_18.10.20180917~bzr492+repack1-4_amd64.deb
++  https://deb.debian.org/debian/pool/main/libd/libdbusmenu/libdbusmenu-glib4_18.10.20180917~bzr492+repack1-4_amd64.deb
++  https://mirrors.ustc.edu.cn/debian/pool/main/libd/libdbusmenu/libdbusmenu-gtk3-4_18.10.20180917~bzr492+repack1-4_amd64.deb
++  https://deb.debian.org/debian/pool/main/libd/libdbusmenu/libdbusmenu-gtk3-4_18.10.20180917~bzr492+repack1-4_amd64.deb
++ )
+ "
+ S="${WORKDIR}"
+ 
+-LICENSE="GPL-3"
++LICENSE="GPL-3 glibc-compat? ( LGPL-2.1 LGPL-3 BSD BSD-2 public-domain )"
+ SLOT="0"
+ KEYWORDS="-* ~amd64 ~arm64"
+ 
+-BDEPEND="dev-util/patchelf"
++IUSE="glibc-compat"
++REQUIRED_USE="elibc_musl? ( glibc-compat ) glibc-compat? ( amd64 elibc_musl )"
++RESTRICT="glibc-compat? ( preserve-libs strip )"
++BDEPEND="dev-util/patchelf glibc-compat? ( dev-lang/python )"
+ 
+ RDEPEND="
++ sys-auth/polkit
++ x11-apps/xmessage
++ glibc-compat? ( dev-java/dragonwell-bin:21[glibc-runtime] dev-lang/python sys-apps/flatpak )
++ !glibc-compat? (
++
+ 	app-accessibility/at-spi2-core:2
+ 	dev-libs/ayatana-ido
+ 	dev-libs/glib:2
+@@ -39,7 +59,14 @@
+ 	virtual/jdk
+ 	amd64? ( media-libs/fontconfig )
+ 	arm64? ( virtual/zlib )
++
++ )
+ "
++if [[ ${ELIBC} == musl ]]; then
++ # These are private foreign-ABI files, never native musl SONAME providers.
++ PROVIDES_EXCLUDE="opt/FlClash/*"
++ REQUIRES_EXCLUDE="${PROVIDES_EXCLUDE}"
++fi
+ 
+ QA_PRESTRIPPED="
+ 	/opt/FlClash/FlClashCore
+@@ -52,14 +79,43 @@
+ 	opt/FlClash/FlClash
+ 	opt/FlClash/FlClashHelperService
+ 	opt/FlClash/lib/*
++ opt/FlClash/compat/tray/*
+ "
+ 
++pkg_pretend() {
++ if use glibc-compat; then
++  [[ ${ARCH} == amd64 && ${ELIBC} == musl && -z ${EPREFIX} ]] || die "Only native amd64 musl validated"
++  [[ -f ${EROOT}/var/lib/flatpak/runtime/org.freedesktop.Platform/x86_64/26.08/active/files/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 ]] || die "Install system Flatpak Platform 26.08 first"
++ fi
++}
++
+ src_prepare() {
+-	default
+-
+-	# upstream builds libdartjni.so against a Debian JVM path
+-	patchelf --set-rpath "${EPREFIX}/etc/java-config-2/current-system-vm/lib/server" \
+-		opt/FlClash/lib/libdartjni.so || die
++ default
++ if use glibc-compat; then
++  mkdir -p opt/FlClash/compat/{tray,licenses} || die
++  cp -a usr/lib/x86_64-linux-gnu/*.so.* opt/FlClash/compat/tray/ || die
++  local copyright package
++  for copyright in usr/share/doc/*/copyright; do
++   package=${copyright%/copyright}; package=${package##*/}
++   cp "${copyright}" "opt/FlClash/compat/licenses/${package}.copyright" || die
++  done
++  local runtime=/var/lib/flatpak/runtime/org.freedesktop.Platform/x86_64/26.08/active/files
++  local gl=/var/lib/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/26.08/active/files
++  local libs="/opt/FlClash/lib:/opt/FlClash/compat/tray:/opt/dragonwell-glibc-21/lib/server:${runtime}/lib/x86_64-linux-gnu:${runtime}/lib:${gl}/lib"
++  python3 "${FILESDIR}/relocate-flclash-elf.py" --root opt/FlClash \
++   --loader "${runtime}/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2" --rpath "${libs}" --apply || die
++  python3 - <<'INNER' || die
++from pathlib import Path
++import hashlib,json
++root=Path('opt/FlClash')
++files={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in ['FlClashCore','lib/libapp.so']}
++(root/'compat/immutable-sha256.json').write_text(json.dumps(files,sort_keys=True)+'\n')
++INNER
++ else
++  # upstream builds libdartjni.so against a Debian JVM path
++  patchelf --set-rpath "${EPREFIX}/etc/java-config-2/current-system-vm/lib/server" \
++   opt/FlClash/lib/libdartjni.so || die
++ fi
+ }
+ 
+ src_install() {
+@@ -82,12 +138,30 @@
+ 	# the helper verifies FlClashCore against the sha256 in manifest.json
+ 	dostrip -x /opt/FlClash/FlClashCore
+ 
+-	dosym ../../opt/FlClash/FlClash /usr/bin/FlClash
++ if use glibc-compat; then
++  insinto /opt/FlClash/compat
++  doins -r opt/FlClash/compat/.
++  newbin "${FILESDIR}/FlClash-musl" FlClash
++  exeinto /usr/libexec/flclash-native-helpers
++  newexe "${FILESDIR}/native-helper" .dispatch
++  local command
++  for command in gio gsettings kde-open5 kde-open6 kioclient5 kioclient6 pkexec xdg-email xdg-mime xdg-open xmessage; do
++   dosym .dispatch "/usr/libexec/flclash-native-helpers/${command}"
++  done
++ else
++  dosym ../../opt/FlClash/FlClash /usr/bin/FlClash
++ fi
+ }
+ 
+ pkg_postinst() {
+ 	xdg_pkg_postinst
+ 
+-	elog "FlClashHelperService installs a root systemd unit on first use."
++	if use glibc-compat; then
++  elog "Private Flatpak glibc + Dragonwell Standard 21; validate with FlClash --check-runtime."
++  elog "No setuid, OpenRC service or TUN privilege was enabled automatically."
++  elog "Stop this app before updating its Flatpak runtime; repeat checks after upgrades."
++  return
++ fi
++ elog "FlClashHelperService installs a root systemd unit on first use."
+ 	elog "Run 'systemctl disable --now flclash-helper.service' before unmerging."
+ }
+--- a/net-proxy/flclash-bin/Manifest
++++ b/net-proxy/flclash-bin/Manifest
+@@ -1,2 +1,7 @@
+ DIST FlClash-0.9.3-linux-amd64.deb 40482184 BLAKE2B 358c3607d58d9913670dee7bd51ac4abeff62c29cb70d9b5e35f10ffdb8b60025e13b725406f5109951fd982979c2bcae3c8fe52f4f1307e18cc332a0ec50061 SHA512 5a2dfec2008952e5d9cf08d862d48a9269852b0412393395273eb7e9cd71b8a836a352c8d99012e351d89eb2dd83e202ec85ff7f7610a7f5bbaaf07e3fc75bc6
+ DIST FlClash-0.9.3-linux-arm64.deb 36860748 BLAKE2B 74676a49165323d940101a69b19f5fc7977bf12bdfb8ea0fb5a8409127935d6c35cca639083992e077be8b90a72cbb90ad4d922338c79187d438cddcbc12c42c SHA512 103fe4ffca55eeab21e50947a3d8d73345c302a86eb7d144836dd416680562f2ff157bea8cdaba983e87b38c8e1a5f28b0f482804785cf89ce74dc69d54123cd
++DIST libayatana-appindicator3-1_0.5.94-1_amd64.deb 25216 BLAKE2B 22e9c7ae6de3804e0e9000781ba556726aeb2c1cb8e3e200f7659357e7a625b668b53b52acd06041c1ed54f28a590804febee71b8deb3623052481e50985289f SHA512 b50c76e046ea225ac5de0057f2630888f6787e0a206d9426b4edd7a7117b4ad7b27c1454d2c8c642ed49f3a38610f721f9db0a16873fc3eaad5f1be94c46a79c
++DIST libayatana-ido3-0.4-0_0.10.4-1_amd64.deb 56028 BLAKE2B d6c658b902b8041ff865ab2cee57e1df6fbc22abc44a814e8963d514dbbf3b3f82020216c186e5fce7582867add599022bfef566deb03d1e4de2ba115bf07092 SHA512 113710eea706672c46b530ec656085e8fb91df49ccc3baeff4e6af2f8b5b8f660d039164879507d847ceefb2e149a19a5f1675e5a57f2fa305b9e21c1d65b1ea
++DIST libayatana-indicator3-7_0.9.4-1+b1_amd64.deb 32360 BLAKE2B 6a8f6a04920b404668d26872e4b4febbce59536841b94b764a656edc272f6abbe508c3ab648eedcdb7568561ba96b466a471febfaa0c2f6448d59ca12d685d3b SHA512 eb3714a654118dc3c824624d96faf02700d132d8eefe5403269e0487d51dd01893358705ec988f356f597946a97f6916a0d43193e27e2c77bfffa3fa010d9800
++DIST libdbusmenu-glib4_18.10.20180917~bzr492+repack1-4_amd64.deb 40616 BLAKE2B 2c1a60a980c501760190cf822139c4651792abfbfcb2093f7a809eeab029a1bb53f0a210e18801c3be72d1c503f2cb32743997ad2d6e02e174a81639cac63a8c SHA512 14bf4d57823cd4245502aab1f45515644dd28c3b10198cc9860532b07eb5d05fd9b982c015eaed9f504f463514ecc7e96777c09f0cc73ab8c6163f368cebb8a9
++DIST libdbusmenu-gtk3-4_18.10.20180917~bzr492+repack1-4_amd64.deb 27184 BLAKE2B 80f472cc5ae218dec70e29d1925e8e2af7fd8d87842b413a11b4a3a46d253cce625495ae9cf15343c20da47979e706320092d4d13708c26d91e094f079b48f3b SHA512 e761d162fbbd0ac86b1e3b995af72f34dc3acae0deac6c9abd3f4f4cf27f4d7ada4082d597c6f1854bb80cf3844f8345af5fe2ff5399b635cb1c6c684a166c36
+--- /dev/null
++++ b/net-proxy/flclash-bin/files/FlClash-musl
+@@ -0,0 +1,81 @@
++#!/usr/bin/python3
++"""Private glibc frontend; native Core and host desktop helpers remain separate."""
++from pathlib import Path
++import hashlib
++import json
++import os
++import subprocess
++import sys
++
++APP = Path('/opt/FlClash')
++BASE = Path('/var/lib/flatpak/runtime')
++FDO = BASE / 'org.freedesktop.Platform/x86_64/26.08/active/files'
++GL = BASE / 'org.freedesktop.Platform.GL.default/x86_64/26.08/active/files'
++JDK = Path('/opt/dragonwell-glibc-21')
++FIELDS = ('PATH', 'JAVA_HOME', 'LD_LIBRARY_PATH', 'LD_PRELOAD', 'GTK_IM_MODULE',
++          'XMODIFIERS', 'GSETTINGS_SCHEMA_DIR', 'GIO_MODULE_DIR', 'GIO_EXTRA_MODULES',
++          'LIBGL_ALWAYS_SOFTWARE', 'LIBGL_DRIVERS_PATH', 'XDG_DATA_DIRS',
++          'LOCPATH', '__EGL_VENDOR_LIBRARY_FILENAMES')
++
++
++def prepare():
++    loader = FDO / 'lib/x86_64-linux-gnu/ld-linux-x86-64.so.2'
++    if not loader.is_file() or not (GL / 'lib/dri').is_dir():
++        raise RuntimeError('先安装系统级 Freedesktop Platform 26.08 及匹配的 GL.default 扩展')
++    release = (JDK / 'release').read_text()
++    if ('LIBC="gnu"' not in release or 'Alibaba Dragonwell Standard Edition' not in release
++            or 'JAVA_VERSION="21.' not in release):
++        raise RuntimeError('需要 dragonwell-bin:21[glibc-runtime] 的私有 Standard 21')
++    native_release = Path('/etc/java-config-2/current-system-vm/release').read_text()
++    for field in ('JAVA_VERSION', 'IMPLEMENTOR_VERSION'):
++        private = next(x for x in release.splitlines() if x.startswith(field + '='))
++        if private not in native_release.splitlines():
++            raise RuntimeError('宿主与私有 Dragonwell Standard 21 版本不一致，请先复核升级')
++    for relative, expected in json.loads((APP / 'compat/immutable-sha256.json').read_text()).items():
++        with (APP / relative).open('rb') as stream:
++            if hashlib.file_digest(stream, 'sha256').hexdigest() != expected:
++                raise RuntimeError('受保护的 AOT/Core 已改变：' + relative)
++    env = dict(os.environ)
++    env['FLCLASH_NATIVE_ENV'] = json.dumps({key: env.get(key) for key in FIELDS})
++    env.pop('LD_LIBRARY_PATH', None)
++    env.pop('LD_PRELOAD', None)
++    env.update(JAVA_HOME=str(JDK), GTK_IM_MODULE='xim',
++               GSETTINGS_SCHEMA_DIR=str(FDO / 'share/glib-2.0/schemas'),
++               GIO_MODULE_DIR=str(FDO / 'lib/x86_64-linux-gnu/gio/modules'),
++               GIO_EXTRA_MODULES='', LIBGL_DRIVERS_PATH=str(GL / 'lib/dri'),
++               XDG_DATA_DIRS=f'{FDO}/share:/usr/local/share:/usr/share',
++               LOCPATH=str(BASE / 'org.freedesktop.Platform.Locale/x86_64/26.08/active/files/zh/lib'),
++               __EGL_VENDOR_LIBRARY_FILENAMES=str(GL / 'share/glvnd/egl_vendor.d/50_mesa.json'))
++    env.setdefault('XMODIFIERS', '@im=fcitx')
++    # Software rendering is local to this small frontend; never change host GL.
++    env.setdefault('LIBGL_ALWAYS_SOFTWARE', '1')
++    env['PATH'] = '/usr/libexec/flclash-native-helpers:' + os.environ.get('PATH', '/usr/bin:/bin')
++    libraries = ':'.join(map(str, [APP / 'lib', APP / 'compat/tray', JDK / 'lib/server',
++                                   FDO / 'lib/x86_64-linux-gnu', FDO / 'lib', GL / 'lib']))
++    return loader, libraries, env
++
++
++def main():
++    loader, libraries, env = prepare()
++    if sys.argv[1:] == ['--check-runtime']:
++        files = [APP / 'FlClash', APP / 'FlClashHelperService']
++        files += [p for p in sorted((APP / 'lib').glob('*.so')) if p.name != 'libapp.so']
++        files += [p for p in sorted((APP / 'compat/tray').iterdir()) if not p.is_symlink()]
++        for path in files:
++            result = subprocess.run([str(loader), '--library-path', libraries, '--list', str(path)],
++                                    env=env, capture_output=True, text=True)
++            if result.returncode or 'not found' in result.stdout:
++                raise RuntimeError(f'{path.name}: {result.stdout}\n{result.stderr}')
++        print(json.dumps(dict(runtime='26.08', java='Dragonwell Standard 21',
++                              elf_dependencies_checked=len(files), native_vm_changed=False)))
++        return
++    if os.geteuid() == 0:
++        raise RuntimeError('请以普通桌面用户启动 FlClash')
++    os.execve(str(APP / 'FlClash'), [str(APP / 'FlClash'), *sys.argv[1:]], env)
++
++
++if __name__ == '__main__':
++    try:
++        main()
++    except (OSError, RuntimeError, ValueError, StopIteration) as error:
++        raise SystemExit('FlClash 私有运行时检查失败：' + str(error))
+--- /dev/null
++++ b/net-proxy/flclash-bin/files/native-helper
+@@ -0,0 +1,21 @@
++#!/usr/bin/python3
++"""Restore the caller's native environment before launching a desktop helper."""
++import json
++import os
++from pathlib import Path
++import sys
++
++name = Path(sys.argv[0]).name
++allowed = {'gio', 'gsettings', 'kde-open5', 'kde-open6', 'kioclient5', 'kioclient6',
++           'pkexec', 'xdg-email', 'xdg-mime', 'xdg-open', 'xmessage'}
++if name not in allowed:
++    raise SystemExit('Unknown FlClash native helper')
++env = dict(os.environ)
++original = json.loads(env.pop('FLCLASH_NATIVE_ENV', '{}'))
++for key, value in original.items():
++    if value is None:
++        env.pop(key, None)
++    else:
++        env[key] = value
++env['PATH'] = env.get('PATH', '/usr/bin:/bin').replace('/usr/libexec/flclash-native-helpers:', '')
++os.execvpe(name, [name, *sys.argv[1:]], env)
+--- /dev/null
++++ b/net-proxy/flclash-bin/files/relocate-flclash-elf.py
+@@ -0,0 +1,101 @@
++#!/usr/bin/env python3
++"""预检 FlClash 私有 ELF 重定位；仅 --apply 写入已解包的工作副本。"""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import struct
++import subprocess
++
++
++def digest(path):
++    with path.open('rb') as stream:
++        return hashlib.file_digest(stream, 'sha256').hexdigest()
++
++
++def headers(path):
++    with path.open('rb') as stream:
++        header = stream.read(64)
++        if header[:4] != b'\x7fELF':
++            return None
++        if len(header) != 64 or header[4:6] != b'\x02\x01':
++            raise ValueError(f'未经验证的 ELF 格式：{path.name}')
++        if struct.unpack_from('<H', header, 18)[0] != 62:
++            raise ValueError(f'仅验证 amd64：{path.name}')
++        offset = struct.unpack_from('<Q', header, 32)[0]
++        width, count = struct.unpack_from('<HH', header, 54)
++        if count == 65535 or (count and width != 56):
++            raise ValueError(f'需要人工核对程序头：{path.name}')
++        kinds = set()
++        for index in range(count):
++            stream.seek(offset + index * width)
++            entry = stream.read(width)
++            if len(entry) != width:
++                raise ValueError(f'程序头被截断：{path.name}')
++            kinds.add(struct.unpack_from('<I', entry)[0])
++        return kinds
++
++
++def patchelf(*args):
++    return subprocess.check_output(['patchelf', *map(str, args)], text=True).strip()
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--root', required=True, type=Path)
++    parser.add_argument('--loader', required=True)
++    parser.add_argument('--rpath', required=True)
++    parser.add_argument('--apply', action='store_true')
++    args = parser.parse_args()
++    root = args.root.resolve(strict=True)
++    if not root.is_dir() or not (root / 'FlClash').is_file():
++        parser.error('--root 必须是含 FlClash 的解包工作目录')
++    if not args.loader.startswith('/') or ':' in args.loader:
++        parser.error('--loader 必须是目标系统内的绝对路径')
++    paths = args.rpath.split(':')
++    if any(not p.startswith(('/', '$ORIGIN')) or '\n' in p for p in paths):
++        parser.error('--rpath 各项必须为绝对路径或 $ORIGIN 相对路径')
++
++    core = root / 'FlClashCore'
++    aot = root / 'lib/libapp.so'
++    for path in [core, aot, root / 'manifest.json']:
++        if path.is_symlink() or not path.is_file():
++            parser.error(f'必须是普通文件：{path.name}')
++    manifest = json.loads((root / 'manifest.json').read_text())
++    immutable = {core: digest(core), aot: digest(aot)}
++    if immutable[core] != manifest['coreSha256']:
++        raise ValueError('Core 与上游 manifest 摘要不符，停止')
++
++    # 先预检整个副本。AOT ELF 不是普通 DSO；Core 签名依赖原始字节。
++    plan = []
++    for path in sorted(root.rglob('*')):
++        if path.is_symlink() or not path.is_file():
++            continue
++        kinds = headers(path)
++        if kinds is None:
++            continue
++        needed = patchelf('--print-needed', path).splitlines() if 2 in kinds else []
++        if path in immutable and (needed or 3 in kinds):
++            raise ValueError(f'受保护文件的 ELF 结构已改变，需人工复核：{path.name}')
++        # 没有动态依赖和解释器的 ELF 保持原样，包括 Flutter AOT。
++        rewrite = path not in immutable and bool(needed or 3 in kinds)
++        plan.append((path, rewrite, 3 in kinds, digest(path)))
++
++    report = []
++    for path, rewrite, interpreter, before in plan:
++        if args.apply and rewrite:
++            # 主程序需要可传递给间接依赖的 DT_RPATH，不能只生成 DT_RUNPATH。
++            dynamic = subprocess.check_output(['readelf', '-d', str(path)], text=True)
++            if patchelf('--print-rpath', path) != args.rpath or '(RPATH)' not in dynamic:
++                patchelf('--force-rpath', '--set-rpath', args.rpath, path)
++            if interpreter and patchelf('--print-interpreter', path) != args.loader:
++                patchelf('--set-interpreter', args.loader, path)
++        report.append(dict(path=str(path.relative_to(root)), rewrite=rewrite,
++                           before=before, after=digest(path)))
++    if any(digest(path) != original for path, original in immutable.items()):
++        raise ValueError('受保护文件发生变化，丢弃工作副本并停止')
++    print(json.dumps(dict(applied=args.apply, files=report), indent=2))
++
++
++if __name__ == '__main__':
++    main()

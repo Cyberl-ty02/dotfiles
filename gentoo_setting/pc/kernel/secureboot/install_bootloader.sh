@@ -5,7 +5,12 @@ ESP="/boot"
 EFI_DIR="${ESP}/EFI/refind"
 SHIM="/usr/share/shim/BOOTX64.EFI"
 MOK_MANAGER="/usr/share/shim/mmx64.efi"
-REFIND="/usr/lib64/refind/refind/refind_x64.efi"
+# musl uses /usr/lib; older glibc installations may use /usr/lib64.
+REFIND=""
+for candidate in /usr/lib/refind/refind/refind_x64.efi /usr/lib64/refind/refind/refind_x64.efi; do
+  if [[ -r "$candidate" ]]; then REFIND=$candidate; break; fi
+done
+[[ -n "$REFIND" ]] || { echo "rEFInd payload not found; install sys-boot/refind." >&2; exit 1; }
 KEY="/etc/kernel/secureboot/MOK.pem"
 SIGNED_REFIND="${EFI_DIR}/grubx64.efi"
 

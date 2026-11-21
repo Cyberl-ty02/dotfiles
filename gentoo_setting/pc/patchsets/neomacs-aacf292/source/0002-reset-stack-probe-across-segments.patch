@@ -1,0 +1,38 @@
+--- a/crates/neovm-eval/src/emacs_core/runtime/eval/native_stack.rs
++++ b/crates/neovm-eval/src/emacs_core/runtime/eval/native_stack.rs
+@@ -150,11 +150,32 @@
+             if remaining >= reserve {
+                 f(owner)
+             } else {
+-                grow_tracking_jit_limit(owner, limit, grow_segment, f)
++                grow_tracking_native_stack_probe(owner, limit, probe, grow_segment, f)
+             }
+         }
+-        _ => grow_tracking_jit_limit(owner, limit, segment, f),
+-    }
++        _ => grow_tracking_native_stack_probe(owner, limit, probe, segment, f),
++    }
++}
++
++// Measurements belong to one stack segment. A sample taken on a larger
++// segment must not become apparent consumption after returning to its caller.
++#[cold]
++#[inline(never)]
++fn grow_tracking_native_stack_probe<T: ?Sized, R>(
++    owner: &mut T,
++    limit: fn(&mut T) -> &mut usize,
++    probe: fn(&mut T) -> &mut NativeStackProbe,
++    segment: usize,
++    f: impl FnOnce(&mut T) -> R,
++) -> R {
++    probe(owner).last_remaining = 0;
++    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++        grow_tracking_jit_limit(owner, limit, segment, f)
++    }));
++    // Reset on normal returns and unwinds. Keep the measured consumption,
++    // which remains useful when estimating another interval on either stack.
++    probe(owner).last_remaining = stacker::remaining_stack().unwrap_or(0);
++    result.unwrap_or_else(|payload| std::panic::resume_unwind(payload))
+ }
+ 
+ /// The growing branch of [`maybe_grow_tracking_jit_limit`]: run `f` on a

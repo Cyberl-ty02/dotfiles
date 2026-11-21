@@ -1,0 +1,4 @@
+# 仅用于 package.env 中锁定的内核版本，沿用已验证的签名构建权限例外。
+# 链接器与 LTO 边界共用 linker-lld；签名路径继承 make.conf，其他包保持 userpriv。
+FEATURES="${FEATURES} -userpriv -usersandbox"
+MAKEOPTS="-j4 -l8"

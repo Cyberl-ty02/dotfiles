@@ -1,0 +1,92 @@
+--- /dev/null
++++ b/dev-java/dragonwell-bin/Manifest
+@@ -0,0 +1 @@
++DIST Alibaba_Dragonwell_Standard_21.0.13.0.13.9_x64_alpine-linux.tar.gz 207996508 BLAKE2B 4e0a8a7de8ac16da0ed9175381a5874d189cb6ab6b0da8d3f1d5a58c0370ab88c7eb26d398d2e1b0b02fd7cd154a340a304833e2136333e00a98688c0154279e SHA512 934f15c01dac9ce38a04b2f685c5607861f0b0f7c65836989879d748912dfa0e2577cfad4c5040270c9b85491f48202701c4a2e32e40b05fe5c167c7e5e27268
+--- /dev/null
++++ b/dev-java/dragonwell-bin/dragonwell-bin-21.0.13.0.13_p9.ebuild
+@@ -0,0 +1,63 @@
++# Local migration recipe; Alibaba Dragonwell Standard, native amd64 musl.
++EAPI=8
++inherit java-vm-2
++DESCRIPTION="Alibaba Dragonwell Standard Edition JDK (native musl binary)"
++HOMEPAGE="https://dragonwell-jdk.io/"
++MY_RELEASE="21.0.13.0.13"
++MY_BUILD="9"
++MY_ARCHIVE="Alibaba_Dragonwell_Standard_${MY_RELEASE}.${MY_BUILD}_x64_alpine-linux.tar.gz"
++SRC_URI="https://github.com/dragonwell-project/dragonwell21/releases/download/dragonwell-standard-${MY_RELEASE}%2B${MY_BUILD}_jdk-21.0.13-ga/${MY_ARCHIVE}"
++S="${WORKDIR}/dragonwell-${MY_RELEASE}+${MY_BUILD}-GA"
++LICENSE="GPL-2-with-classpath-exception"
++SLOT="21"
++KEYWORDS="~amd64"
++IUSE="headless-awt"
++RESTRICT="preserve-libs splitdebug strip"
++RDEPEND="
++ sys-apps/baselayout-java
++ sys-libs/musl
++ media-libs/fontconfig
++ media-libs/alsa-lib
++ !headless-awt? (
++  x11-libs/libX11
++  x11-libs/libXext
++  x11-libs/libXi
++  x11-libs/libXrender
++  x11-libs/libXtst
++ )
++"
++BDEPEND="dev-util/patchelf"
++QA_PREBUILT="*"
++pkg_pretend() {
++ [[ ${ARCH} == amd64 && ${ELIBC} == musl && -z ${EPREFIX} ]] || die "Only native amd64 musl validated"
++}
++src_prepare() {
++ default
++ grep -qx 'LIBC="musl"' release || die "Expected native musl release"
++ grep -q 'Alibaba Dragonwell Standard Edition' release || die "Expected Standard Edition"
++ local f needed n=0
++ while IFS= read -r -d '' f; do
++  [[ $(head -c 4 "${f}") == $'\177ELF' ]] || continue
++  needed=$(patchelf --print-needed "${f}") || die "Cannot inspect ${f}"
++  if [[ $'\n'${needed}$'\n' == *$'\nlibc.musl-x86_64.so.1\n'* ]]; then
++   patchelf --replace-needed libc.musl-x86_64.so.1 libc.so "${f}" || die
++   (( n += 1 ))
++  fi
++ done < <(find . -type f -print0)
++ [[ ${n} -gt 0 ]] || die "Expected Alpine musl SONAME references"
++ if use headless-awt; then
++  rm -f lib/libawt_xawt.so lib/libsplashscreen.so || die
++ fi
++}
++src_install() {
++ local dest="/opt/${P}"
++ # Use Gentoo's managed Java trust store; retain upstream legal files and runtime.
++ rm lib/security/cacerts || die
++ dosym -r /etc/ssl/certs/java/cacerts "${dest}/lib/security/cacerts"
++ dodir "${dest}"
++ cp -pPR . "${ED}${dest}/" || die
++ java-vm_install-env "${FILESDIR}/dragonwell-bin.env.sh"
++ java-vm_set-pax-markings "${ED}${dest}"
++ java-vm_revdep-mask
++ java-vm_sandbox-predict /dev/random /proc/self/coredump_filter
++}
+--- /dev/null
++++ b/dev-java/dragonwell-bin/files/dragonwell-bin.env.sh
+@@ -0,0 +1,13 @@
++VERSION="Alibaba Dragonwell Standard JDK ${PV}"
++JAVA_HOME="${EPREFIX}/opt/${P}"
++JDK_HOME="${EPREFIX}/opt/${P}"
++JAVAC="\${JAVA_HOME}/bin/javac"
++PATH="\${JAVA_HOME}/bin"
++ROOTPATH="\${JAVA_HOME}/bin"
++LDPATH="\${JAVA_HOME}/lib/:\${JAVA_HOME}/lib/server/"
++MANPATH=""
++PROVIDES_TYPE="JDK JRE"
++PROVIDES_VERSION="${SLOT}"
++BOOTCLASSPATH=""
++GENERATION="2"
++ENV_VARS="JAVA_HOME JDK_HOME JAVAC PATH ROOTPATH LDPATH MANPATH"
+--- /dev/null
++++ b/dev-java/dragonwell-bin/metadata.xml
+@@ -0,0 +1,3 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
++<pkgmetadata><longdescription>Fixed native amd64 musl Alibaba Dragonwell Standard Edition for this migration.</longdescription></pkgmetadata>
