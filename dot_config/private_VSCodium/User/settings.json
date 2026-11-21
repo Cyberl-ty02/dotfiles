@@ -1,10 +1,8 @@
 {
     "[c]": {
-        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
         "editor.formatOnSave": true
     },
     "[cpp]": {
-        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
         "editor.formatOnSave": true
     },
     "[css]": {
@@ -16,7 +14,6 @@
         "editor.formatOnSave": true
     },
     "[java]": {
-        "editor.defaultFormatter": "redhat.java",
         "editor.formatOnSave": true
     },
     "[javascript]": {
@@ -98,7 +95,7 @@
     "code-runner.saveFileBeforeRun": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.accessibilitySupport": "auto",
-    "editor.fontFamily": "'IntoneMono NFM', Consolas, 'HarmonyOS Sans', monospace",
+    "editor.fontFamily": "'IntoneMono Nerd Font Mono', 'HarmonyOS Sans SC', 'Noto Sans CJK SC', monospace",
     "editor.fontLigatures": false,
     "editor.inlineSuggest.enabled": true,
     "editor.minimap.maxColumn": 80,
@@ -111,7 +108,7 @@
     "editor.unicodeHighlight.invisibleCharacters": true,
     "editor.unicodeHighlight.nonBasicASCII": false,
     "extensions.autoCheckUpdates": true,
-    "extensions.autoUpdate": true,
+    "extensions.autoUpdate": false,
     "files.autoGuessEncoding": true,
     "files.eol": "\n",
     "files.insertFinalNewline": true,
@@ -158,7 +155,7 @@
     "task.allowAutomaticTasks": "off",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.confirmOnExit": "hasChildProcesses",
-    "terminal.integrated.fontFamily": "'IntoneMono NFM', Consolas, 'HarmonyOS Sans', monospace",
+    "terminal.integrated.fontFamily": "'IntoneMono Nerd Font Mono', 'HarmonyOS Sans SC', 'Noto Sans CJK SC', monospace",
     "terminal.integrated.scrollback": 10000,
     "terminal.integrated.shellIntegration.enabled": true,
     "terminal.integrated.suggest.enabled": true,

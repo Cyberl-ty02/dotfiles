@@ -1,0 +1,10 @@
+# 条目按包原子 0–9、a–z 升序排列；排序忽略前导版本运算符，同一原子保留覆盖顺序。
+
+# Experimental only: GURU retains an old libucontext-related mask.
+=sys-libs/gcompat-1.1.0::guru
+
+# Match the explicitly selected XanMod provider only.
+=virtual/dist-kernel-7.2.14-r100::gentoo-zh
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+=x11-drivers/nvidia-drivers-620.70.06::gentoo

@@ -1,0 +1,26 @@
+--- a/include/crt/math_functions.hpp
++++ b/include/crt/math_functions.hpp
+@@ -3003 +3003 @@
+-  if (__isnan(a)) {
++  if (__builtin_isnan(a)) {
+@@ -3006 +3006 @@
+-  if (a == 0.0 || __isinf(a)) {
++  if (a == 0.0 || __builtin_isinf(a)) {
+@@ -3028 +3028 @@
+-  if (__isnan(a)) {
++  if (__builtin_isnan(a)) {
+@@ -3031 +3031 @@
+-  if (a == 0.0 || __isinf(a)) {
++  if (a == 0.0 || __builtin_isinf(a)) {
+@@ -3058 +3058 @@
+-  if (__isnan(a)) {
++  if (__builtin_isnan(a)) {
+@@ -3061 +3061 @@
+-  if (__isinf(a)) {
++  if (__builtin_isinf(a)) {
+@@ -3204 +3204 @@
+-  if (__isnan(a)) {
++  if (__builtin_isnan(a)) {
+@@ -3310 +3310 @@
+-  if (__isnan(a)) {
++  if (__builtin_isnan(a)) {

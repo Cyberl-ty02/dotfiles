@@ -1,0 +1,81 @@
+Subject: [PATCH] add signed Alpine musl C++ runtime in a private directory
+
+Local migration package, validated on amd64 musl/LLVM.
+
+--- /dev/null
++++ b/sys-libs/musl-cxx-runtime/Manifest
+@@ -0,0 +1,3 @@
++DIST libstdc++-15.2.0-r5.apk 961295 BLAKE2B 9b46bf40759a53942375d0efc9d39dff095c1b8200ca417fadb991b8b2e6ea0d4c55b276dfdb0d47985f5054dbe04b5fba1a3e25fda37a1fb5976c42d1e26667 SHA512 63cce087b99fa246546a27df91a0c2aa1699d886ec6490849ef6608e3dac4aded8e8b763ac1009e8445a2d1e39fd9eee38546d9257427d2932d4fa90573076c8
++DIST apk-tools-static-3.0.9-r0.apk 2225910 BLAKE2B af9628475b3ea271c32277fe9e9fe96085555fa155cfef12fb73161772091a04ac72dc4a62cafa5777309810d327844473022264f4fb697e3fba6c900453ebd3 SHA512 c97f27bef2940bb6c23323bf9fe0f3c60932a3c676f1cea23d5f5664ee8be27f349bb0c905f5f3e1fe0b04cfd79d6e422829c49b12cacbce21b02d9b2d1fa083
++DIST alpine-keys-2.6-r0.apk 12200 BLAKE2B 1c24c5bc8ba2e191d8be75ddc1c086d7653314ae83f594f42b7514142cf001e582cbcbcc909779a493e3e47ee43ea94924ed01ea03f846757deff8a0d853594b SHA512 3b8eb03711995bbbc8fde964c694f783fbefaca5575ee26b4223389c6137e6fea33f0f2f9a84cc8a043257e95376eb4d0e47a28633e0ff73eb0cd524df21263a
+--- /dev/null
++++ b/sys-libs/musl-cxx-runtime/files/extract-verify.py
+@@ -0,0 +1,20 @@
++from pathlib import Path
++import gzip,io,tarfile,subprocess,sys
++dist,work=map(Path,sys.argv[1:3]);version=sys.argv[3]
++def files(name):
++ data=gzip.decompress((dist/name).read_bytes())
++ with tarfile.open(fileobj=io.BytesIO(data),mode='r:',ignore_zeros=True) as archive:
++  for member in archive:
++   if member.isfile():yield member.name,archive.extractfile(member).read()
++tool=work/'apk.static'
++for name,data in files('apk-tools-static-3.0.9-r0.apk'):
++ if Path(name).name=='apk.static':tool.write_bytes(data);tool.chmod(0o755)
++keys=work/'public-keys';keys.mkdir(exist_ok=True)
++for name,data in files('alpine-keys-2.6-r0.apk'):
++ if name.endswith('.pub'):(keys/Path(name).name).write_bytes(data)
++assert tool.is_file() and list(keys.glob('*.pub'))
++subprocess.run([str(tool),'--keys-dir',str(keys),'verify',str(dist/('libstdc++-'+version+'.apk'))],check=True)
++for name,data in files('libstdc++-'+version+'.apk'):
++ if name.startswith('usr/lib/libstdc++.so.6.'):
++  assert data.startswith(b'\x7fELF');(work/'libstdc++.so.6').write_bytes(data);break
++else:raise SystemExit('Expected runtime library absent')
+--- /dev/null
++++ b/sys-libs/musl-cxx-runtime/metadata.xml
+@@ -0,0 +1,3 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
++<pkgmetadata><longdescription>Local migration package importing a signed Alpine musl runtime into a private library directory.</longdescription></pkgmetadata>
+--- /dev/null
++++ b/sys-libs/musl-cxx-runtime/musl-cxx-runtime-15.2.0-r5.ebuild
+@@ -0,0 +1,39 @@
++# Local migration package; private musl C++ runtime, without a GCC compiler.
++EAPI=8
++PYTHON_COMPAT=( python3_{12..14} )
++inherit python-any-r1
++DESCRIPTION="Private musl C++ runtime for vendor binaries without a GCC compiler"
++HOMEPAGE="https://pkgs.alpinelinux.org/package/v3.24/main/x86_64/libstdc++"
++SRC_URI="
++ https://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/libstdc++-${PVR}.apk
++ https://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/apk-tools-static-3.0.9-r0.apk
++ https://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/alpine-keys-2.6-r0.apk
++"
++S="${WORKDIR}"
++LICENSE="GPL-3+ gcc-runtime-library-exception-3.1"
++SLOT="0"
++KEYWORDS="~amd64"
++RESTRICT="strip test"
++BDEPEND="${PYTHON_DEPS} dev-util/patchelf"
++RDEPEND="sys-libs/musl llvm-runtimes/libgcc"
++QA_PREBUILT="opt/musl-cxx-runtime/lib/libstdc++.so.6"
++pkg_pretend() {
++ [[ ${ARCH} == amd64 && ${ELIBC} == musl && -z ${EPREFIX} ]] || die "Only native amd64 musl is validated"
++}
++pkg_setup() { python-any-r1_pkg_setup; }
++src_unpack() {
++ "${PYTHON}" "${FILESDIR}/extract-verify.py" "${DISTDIR}" "${WORKDIR}" "${PVR}" || die
++}
++src_prepare() {
++ default
++ # Alpine and Gentoo use different libc/libgcc SONAMEs on musl.
++ local gcc_soname
++ gcc_soname=$(patchelf --print-soname "${ESYSROOT}/usr/lib/libgcc_s.so.1") || die
++ [[ ${gcc_soname} == libgcc_s.so.* && ${gcc_soname} != */* ]] || die "Unexpected LLVM ABI SONAME"
++ patchelf --replace-needed libc.musl-x86_64.so.1 libc.so "${WORKDIR}/libstdc++.so.6" || die
++ patchelf --replace-needed libgcc_s.so.1 "${gcc_soname}" "${WORKDIR}/libstdc++.so.6" || die
++}
++src_install() {
++ insinto /opt/musl-cxx-runtime/lib
++ doins "${WORKDIR}/libstdc++.so.6"
++}

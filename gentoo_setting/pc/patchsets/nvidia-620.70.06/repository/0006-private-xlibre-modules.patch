@@ -1,0 +1,56 @@
+--- a/x11-drivers/nvidia-userspace-musl/nvidia-userspace-musl-620.70.06.ebuild
++++ b/x11-drivers/nvidia-userspace-musl/nvidia-userspace-musl-620.70.06.ebuild
+@@ -9,8 +9,9 @@
+ LICENSE="NVIDIA-2025 BSD-2"
+ SLOT="0/${PV%%.*}"
+ KEYWORDS="~amd64"
++IUSE="xlibre"
+ RESTRICT="bindist mirror strip"
+-RDEPEND="=sys-libs/nvidia-musl-compat-1.2.6_p20261115 media-libs/libglvnd x11-libs/libX11 x11-libs/libXext >=dev-lang/python-3.11 =x11-drivers/nvidia-drivers-${PV}[modules-only]"
++RDEPEND="sys-libs/nvidia-musl-compat:0 media-libs/libglvnd x11-libs/libX11 x11-libs/libXext >=dev-lang/python-3.11 =x11-drivers/nvidia-drivers-${PV}[modules-only] xlibre? ( x11-base/xlibre-server )"
+ BDEPEND=">=dev-util/patchelf-0.18 app-arch/tar app-arch/xz-utils app-arch/zstd"
+ src_configure() { :; }
+ src_compile() { :; }
+@@ -27,12 +28,28 @@
+   soname=$(patchelf --print-soname "${src}") || die
+   [[ -z ${soname} || ${soname} == "${src##*/}" ]] || dosym "${src##*/}" "/usr/libexec/nvidia-musl/driver/${soname}"
+  done
++ if use xlibre; then
++  for name in nvidia_drv.so libglxserver_nvidia.so.${PV}; do
++   mapfile -t candidates < <(find "${S}" -type f -name "${name}" -not -path '*/32/*')
++   [[ ${#candidates[@]} == 1 ]] || die "Expected one amd64 ${name}"
++   src=${candidates[0]}
++  patchelf --remove-needed ld-linux-x86-64.so.2 --remove-needed libdl.so.2 --remove-needed libm.so.6 --remove-needed libpthread.so.0 --remove-needed librt.so.1 --replace-needed libc.so.6 libc.so --add-needed libnvcompat.so.0 --rename-dynamic-symbols "${FILESDIR}/libnvcompat.map" "${src}" || die
++   if [[ ${name} == nvidia_drv.so ]]; then
++    exeinto /usr/libexec/nvidia-musl/xorg/drivers
++   else
++    exeinto /usr/libexec/nvidia-musl/xorg/extensions
++   fi
++   doexe "${src}"
++  done
++  dosym "libglxserver_nvidia.so.${PV}" /usr/libexec/nvidia-musl/xorg/extensions/libglxserver_nvidia.so
++  dobin "${FILESDIR}/nvidia-musl-xorg"
++ fi
+  insinto /usr/libexec/nvidia-musl
+  newins "${FILESDIR}/egl-vendor.json" egl-vendor.json
+  dobin "${FILESDIR}/nvidia-musl-run"
+  dodoc "${FILESDIR}/CHIMERA-COPYING"
+ }
+ pkg_postinst() {
+- elog "Dedicated private driver prefix only, not a complete XLibre/session integration."
++ elog "Private driver prefix; optional XLibre modules/entry are not a validated display session."
+  elog "No global EGL/Vulkan registration, service start, module load or stock musl change."
+ }
+--- /dev/null
++++ b/x11-drivers/nvidia-userspace-musl/files/nvidia-musl-xorg
+@@ -0,0 +1,10 @@
++#!/bin/sh
++# 仅选择已安装的私有 NVIDIA 模块；不更改登录器、VT 或系统 Xorg 配置。
++set -eu
++xorg=/usr/bin/Xorg
++module_path=$("${xorg}" -showDefaultModulePath 2>&1)
++case "${module_path}" in
++    /*) ;;
++    *) echo 'Cannot determine the XLibre module path.' >&2; exit 1 ;;
++esac
++exec /usr/bin/nvidia-musl-run "${xorg}" -modulepath "/usr/libexec/nvidia-musl/xorg,${module_path}" "$@"

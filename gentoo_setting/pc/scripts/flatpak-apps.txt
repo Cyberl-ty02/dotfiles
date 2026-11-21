@@ -1,0 +1,8 @@
+# Application IDs only; runtimes/drivers are resolved by Flatpak.
+cn.wps.wps_365
+com.qq.QQ
+com.tencent.WeChat
+com.tencent.wemeet
+com.vscodium.codium
+org.localsend.localsend_app
+org.mozilla.thunderbird_esr

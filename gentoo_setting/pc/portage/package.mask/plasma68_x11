@@ -1,4 +1,0 @@
-# SonicDE replacements already mask their Gentoo counterparts in sonicde-providers.
-# Keep the remaining upstream Plasma components below the Wayland-only 6.8 series.
->=kde-plasma/discover-6.8::gentoo
->=kde-plasma/plasma-mimeapps-list-6.8::gentoo

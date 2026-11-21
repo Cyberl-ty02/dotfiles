@@ -1,0 +1,2 @@
+# Darts 0.32h 使用 C++17 已移除的 std::random_shuffle，仅对此包选 C++14。
+CXXFLAGS="${CXXFLAGS} -std=c++14"

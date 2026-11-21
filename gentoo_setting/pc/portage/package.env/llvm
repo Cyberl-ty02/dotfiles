@@ -1,7 +1,0 @@
-llvm-core/clang lowjobs no_lto
-llvm-core/lld lowjobs no_lto
-llvm-core/lldb lowjobs no_lto
-llvm-core/llvm lowjobs no_lto
-llvm-runtimes/clang-runtime lowjobs no_lto
-llvm-runtimes/compiler-rt lowjobs no_lto
-llvm-runtimes/openmp lowjobs no_lto

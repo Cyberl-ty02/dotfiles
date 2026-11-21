@@ -3,6 +3,12 @@
 本目录保存不能由用户级 chezmoi 直接部署的 Gentoo 系统策略，以及用于重建
 机器的说明和角色清单。仓库根目录才是 PC/WSL 共用的 chezmoi source。
 
+PC 默认方案现为 [`pc/`](pc/) 中的 **musl／LLVM／OpenRC** 配置，已经真机启动。
+旧 glibc PC 配置不再并行维护，可从 Git 历史或本地归档标签
+`archive/glibc-pc-before-musl-promotion` 找回；恢复配置不等于恢复旧系统数据。
+WSL 配置独立保留，不能把 musl PC 配置直接应用到 WSL。
+安装与迁移正文统一在博客，目录说明只保留部署入口、补丁边界和验收状态。
+
 ## 软件源同步的 locale
 
 PC/WSL 各自的 `eix-sync.conf` 部署到 `/etc/eix-sync.conf`。其中的 eix

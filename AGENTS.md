@@ -1,0 +1,52 @@
+# Repository guidance
+
+For the Gentoo musl/LLVM migration, start with
+`gentoo_setting/pc/README.md`, then its
+`world-migration.tsv`, `portage/repository-baseline.tsv`, and relevant
+`patchsets/*/README.md`. These are the consolidated public records.
+
+On the experiment PC, read `/var/tmp/musl-pc-lab-20261113/phase4/CHECKPOINT.md`
+before resuming operations. Its latest phase section identifies the candidate,
+active worker, job results, logs, and remaining work. Older sections are history.
+If that private checkpoint is absent, inspect the current environment; do not
+assume an experimental root or authorization process exists on another machine.
+
+The current migration targets Dragonwell Standard 21 for every JVM. Keep musl
+host and private glibc application runtimes distinct; do not fall back to a
+bundled JDK 25. The tested Java IDE alternative and its remaining acceptance
+limits are recorded in the experiment README.
+
+- Keep musl Portage `package.*` entries in ascending 0–9/a–z order by package
+  atom, ignoring leading version operators; retain the relative order of identical
+  selectors and their attached comments. Sort independent env keys and repository
+  sections likewise. Preserve make.conf dependency/group order and mirror priority;
+  verify effective settings before applying reordered configuration.
+- Prefer package/slot or affected-version ranges over exact release pins for
+  routine Portage rules. Do not pin Neomacs live source commits by default. Keep
+  verified baselines as historical evidence; check patches before reuse, skip
+  identical upstream fixes, and stop on incompatible patches. Retain JVM 21 policy
+  and coordinated kernel/driver/signing constraints until their upgrade gates pass.
+- The user promotes musl/LLVM to the default PC configuration in
+  `gentoo_setting/pc/`. Consolidate accepted migration work onto `main`, preserve
+  unrelated remote main/Windows changes, then retire other local/remote branches.
+  Keep necessary old histories recoverable as local archive tags; do not maintain
+  a duplicate glibc PC configuration. Put install narrative in the blog and concise
+  operational guidance in the relevant configuration root README. Do not add
+  scattered milestone/cache reports. Blog deployment requires a separate explicit
+  decision; merging main must not deploy it implicitly.
+- Maintain versioned source/repository patches against recorded baselines;
+  prefer the existing repositories instead of adding another overlay. Record
+  application order, validation limits, and conditions for removing each patch.
+- Verify worker identity, live process state, scope, and pending requests before
+  queueing a task. A status file alone does not prove a process is alive. Reuse
+  an existing bounded authorization where valid; never run concurrent Portage
+  writers against one root. New phases may require local Polkit verification.
+- Keep build, installation, isolated GUI/input, real hardware, old user data,
+  and boot/rollback acceptance distinct. Do not report a preview as an install.
+  Inspect failures before restarting a large build or weakening its sandbox.
+- Preserve the original root, boot entries, databases, signing keys and user
+  profiles until the corresponding migration and rollback steps are verified.
+  Publish no private keys, credentials, resolver contents or raw screenshots.
+- Update the existing public records and private checkpoint after a milestone,
+  including exact commits, unfinished tasks and any running jobs. Avoid adding
+  scattered temporary reports. Check the blog's own `AGENTS.md` before editing it.

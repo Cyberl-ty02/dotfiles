@@ -1,0 +1,6 @@
+# Git 传输兼容选项；不固定 live 包提交，源码补丁仍须检查适用性。
+CARGO_NET_GIT_FETCH_WITH_CLI="true"
+EGIT_CLONE_TYPE="single"
+GIT_CONFIG_COUNT="1"
+GIT_CONFIG_KEY_0="http.version"
+GIT_CONFIG_VALUE_0="HTTP/1.1"

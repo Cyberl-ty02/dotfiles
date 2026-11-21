@@ -1,0 +1,4 @@
+# 模块必须与此内核构建树配套；升级时同步核验版本、签名及 initramfs。
+# 签名路径继承 make.conf，编译保留普通用户及沙箱。
+KERNEL_DIR="/lib/modules/7.2.14-musl-x64v3/build"
+MAKEOPTS="-j4 -l8"

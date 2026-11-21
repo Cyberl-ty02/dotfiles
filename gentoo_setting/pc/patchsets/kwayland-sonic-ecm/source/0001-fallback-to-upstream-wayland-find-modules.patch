@@ -1,0 +1,247 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -54,6 +54,13 @@
+ set_package_properties(Wayland PROPERTIES
+                        TYPE REQUIRED
+                       )
++
++# SonicDE ECM omits Wayland-only find modules. Keep this fallback build-local.
++# Automatically stop using it when both upstream modules are installed again.
++if(NOT EXISTS "${ECM_FIND_MODULE_DIR}/FindWaylandScanner.cmake" OR
++   NOT EXISTS "${ECM_FIND_MODULE_DIR}/FindWaylandProtocols.cmake")
++    list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/compat-wayland")
++endif()
+ 
+ find_package(WaylandScanner)
+ 
+--- /dev/null
++++ b/cmake/compat-wayland/FindWaylandScanner.cmake
+@@ -0,0 +1,185 @@
++# SPDX-FileCopyrightText: 2012-2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
++#
++# SPDX-License-Identifier: BSD-3-Clause
++
++#[=======================================================================[.rst:
++FindWaylandScanner
++------------------
++
++Try to find wayland-scanner.
++
++If the wayland-scanner executable is not in your PATH, you can provide
++an alternative name or full path location with the ``WaylandScanner_EXECUTABLE``
++variable.
++
++This will define the following variables:
++
++``WaylandScanner_FOUND``
++    True if wayland-scanner is available.
++
++``WaylandScanner_EXECUTABLE``
++    The wayland-scanner executable.
++
++If ``WaylandScanner_FOUND`` is TRUE, it will also define the following imported
++target:
++
++``Wayland::Scanner``
++    The wayland-scanner executable.
++
++This module provides the following functions to generate C protocol
++implementations:
++
++  - ``ecm_add_wayland_client_protocol``
++  - ``ecm_add_wayland_server_protocol``
++
++::
++
++  ecm_add_wayland_client_protocol(<target>
++                                  PROTOCOL <xmlfile>
++                                  BASENAME <basename>
++                                  [PRIVATE_CODE])
++
++  ecm_add_wayland_client_protocol(<source_files_var>
++                                  PROTOCOL <xmlfile>
++                                  BASENAME <basename>
++                                  [PRIVATE_CODE])
++
++Generate Wayland client protocol files from ``<xmlfile>`` XML
++definition for the ``<basename>`` interface and append those files
++to ``<source_files_var>`` or ``<target>``.
++
++``PRIVATE_CODE`` instructs wayland-scanner to hide marshalling code
++from the compiled DSO for use in other DSOs. The default is to
++export this code.
++
++::
++
++  ecm_add_wayland_server_protocol(<target>
++                                  PROTOCOL <xmlfile>
++                                  BASENAME <basename>
++                                  [PRIVATE_CODE])
++
++  ecm_add_wayland_server_protocol(<source_files_var>
++                                  PROTOCOL <xmlfile>
++                                  BASENAME <basename>
++                                  [PRIVATE_CODE])
++
++Generate Wayland server protocol files from ``<xmlfile>`` XML
++definition for the ``<basename>`` interface and append those files
++to ``<source_files_var>`` or ``<target>``.
++
++``PRIVATE_CODE`` instructs wayland-scanner to hide marshalling code
++from the compiled DSO for use in other DSOs. The default is to
++export this code.
++
++Since 1.4.0.
++#]=======================================================================]
++
++cmake_policy(VERSION 3.16)
++
++include(ECMFindModuleHelpers)
++
++ecm_find_package_version_check(WaylandScanner)
++
++# Find wayland-scanner
++find_program(WaylandScanner_EXECUTABLE NAMES wayland-scanner)
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(WaylandScanner
++    FOUND_VAR
++        WaylandScanner_FOUND
++    REQUIRED_VARS
++        WaylandScanner_EXECUTABLE
++)
++
++mark_as_advanced(WaylandScanner_EXECUTABLE)
++
++if(NOT TARGET Wayland::Scanner AND WaylandScanner_FOUND)
++    add_executable(Wayland::Scanner IMPORTED)
++    set_target_properties(Wayland::Scanner PROPERTIES
++        IMPORTED_LOCATION "${WaylandScanner_EXECUTABLE}"
++    )
++endif()
++
++include(FeatureSummary)
++set_package_properties(WaylandScanner PROPERTIES
++    URL "https://wayland.freedesktop.org/"
++    DESCRIPTION "Executable that converts XML protocol files to C code"
++)
++
++function(ecm_add_wayland_client_protocol target_or_sources_var)
++    # Parse arguments
++    set(options PRIVATE_CODE)
++    set(oneValueArgs PROTOCOL BASENAME)
++    cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "" ${ARGN})
++
++    if(ARGS_UNPARSED_ARGUMENTS)
++        message(FATAL_ERROR "Unknown keywords given to ecm_add_wayland_client_protocol(): \"${ARGS_UNPARSED_ARGUMENTS}\"")
++    endif()
++
++    get_filename_component(_infile ${ARGS_PROTOCOL} ABSOLUTE)
++    set(_client_header "${CMAKE_CURRENT_BINARY_DIR}/wayland-${ARGS_BASENAME}-client-protocol.h")
++    set(_code "${CMAKE_CURRENT_BINARY_DIR}/wayland-${ARGS_BASENAME}-protocol.c")
++    if(ARGS_PRIVATE_CODE)
++        set(_code_type private-code)
++    else()
++        set(_code_type public-code)
++    endif()
++
++    set_source_files_properties(${_client_header} GENERATED)
++    set_source_files_properties(${_code} GENERATED)
++    set_property(SOURCE ${_client_header} ${_code} PROPERTY SKIP_AUTOMOC ON)
++
++    add_custom_command(OUTPUT "${_client_header}"
++        COMMAND ${WaylandScanner_EXECUTABLE} client-header ${_infile} ${_client_header}
++        DEPENDS ${_infile} VERBATIM)
++
++    add_custom_command(OUTPUT "${_code}"
++        COMMAND ${WaylandScanner_EXECUTABLE} ${_code_type} ${_infile} ${_code}
++        DEPENDS ${_infile} ${_client_header} VERBATIM)
++
++    if (TARGET ${target_or_sources_var})
++        target_sources(${target_or_sources_var} PRIVATE "${_client_header}" "${_code}")
++    else()
++        list(APPEND ${target_or_sources_var} "${_client_header}" "${_code}")
++        set(${target_or_sources_var} ${${target_or_sources_var}} PARENT_SCOPE)
++    endif()
++endfunction()
++
++
++function(ecm_add_wayland_server_protocol target_or_sources_var)
++    # Parse arguments
++    set(options PRIVATE_CODE)
++    set(oneValueArgs PROTOCOL BASENAME)
++    cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "" ${ARGN})
++
++    if(ARGS_UNPARSED_ARGUMENTS)
++        message(FATAL_ERROR "Unknown keywords given to ecm_add_wayland_server_protocol(): \"${ARGS_UNPARSED_ARGUMENTS}\"")
++    endif()
++
++    if(ARGS_PRIVATE_CODE)
++        set(_private_code_option PRIVATE_CODE)
++    endif()
++
++    ecm_add_wayland_client_protocol(${target_or_sources_var}
++                                    PROTOCOL ${ARGS_PROTOCOL}
++                                    BASENAME ${ARGS_BASENAME}
++                                    ${_private_code_option})
++
++    get_filename_component(_infile ${ARGS_PROTOCOL} ABSOLUTE)
++    set(_server_header "${CMAKE_CURRENT_BINARY_DIR}/wayland-${ARGS_BASENAME}-server-protocol.h")
++    set(_server_code "${CMAKE_CURRENT_BINARY_DIR}/wayland-${ARGS_BASENAME}-protocol.c")
++    set_property(SOURCE ${_server_header} ${_server_code} PROPERTY SKIP_AUTOMOC ON)
++    set_source_files_properties(${_server_header} GENERATED)
++
++    add_custom_command(OUTPUT "${_server_header}"
++        COMMAND ${WaylandScanner_EXECUTABLE} server-header ${_infile} ${_server_header}
++        DEPENDS ${_infile} VERBATIM)
++
++    if (TARGET ${target_or_sources_var})
++        target_sources(${target_or_sources_var} PRIVATE "${_server_header}")
++    else()
++        list(APPEND ${target_or_sources_var} "${_server_header}")
++        set(${target_or_sources_var} ${${target_or_sources_var}} PARENT_SCOPE)
++    endif()
++endfunction()
+--- /dev/null
++++ b/cmake/compat-wayland/FindWaylandProtocols.cmake
+@@ -0,0 +1,40 @@
++# SPDX-FileCopyrightText: 2019 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
++#
++# SPDX-License-Identifier: BSD-3-Clause
++
++#[=======================================================================[.rst:
++FindWaylandProtocols
++--------------------
++
++Try to find wayland-protocols on a Unix system.
++
++This will define the following variables:
++
++``WaylandProtocols_FOUND``
++    True if (the requested version of) wayland-protocols is available
++``WaylandProtocols_VERSION``
++    The version of wayland-protocols
++``WaylandProtocols_DATADIR``
++    The wayland protocols data directory
++#]=======================================================================]
++
++cmake_policy(VERSION 3.16)
++
++find_package(PkgConfig QUIET)
++pkg_check_modules(PKG_wayland_protocols QUIET wayland-protocols)
++
++set(WaylandProtocols_VERSION ${PKG_wayland_protocols_VERSION})
++pkg_get_variable(WaylandProtocols_DATADIR wayland-protocols pkgdatadir)
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(WaylandProtocols
++    FOUND_VAR WaylandProtocols_FOUND
++    REQUIRED_VARS WaylandProtocols_DATADIR
++    VERSION_VAR WaylandProtocols_VERSION
++)
++
++include(FeatureSummary)
++set_package_properties(WaylandProtocols PROPERTIES
++    DESCRIPTION "Specifications of extended Wayland protocols"
++    URL "https://wayland.freedesktop.org/"
++)

@@ -1,0 +1,56 @@
+# 条目按包原子 0–9、a–z 升序排列；排序忽略前导版本运算符，同一原子保留覆盖顺序。
+*/*::sonicde ~amd64
+*/*::xlibre ~amd64
+app-admin/chezmoi ~amd64
+=app-editors/neomacs-9999 **
+app-misc/yazi ~amd64
+app-shells/thefuck ~amd64
+app-text/typst ~amd64
+dev-build/xmake ~amd64
+
+# Dragonwell Standard 21 LTS 允许同 slot 后续维护版本。
+dev-java/dragonwell-bin:21::gentoo-zh ~amd64
+dev-lang/bun-bin ~amd64
+
+# 允许官方 platformdirs 后续测试版本，不固定 stage3 的旧版本。
+dev-python/platformdirs::gentoo ~amd64
+dev-util/clinfo ~amd64
+
+# CUDA Clang device-only headers/libdevice; no host runtime.
+dev-util/cuda-clang-device-headers ~amd64
+
+# CUDA core archives + existing Flatpak SDK, not host glibc/compiler.
+dev-util/cuda-sdk-flatpak::gentoo-zh ~amd64
+dev-util/pixi ~amd64
+
+# LLVM 的 libgcc ABI shim，避免安装原生 GCC。
+llvm-runtimes/libgcc ~amd64
+media-fonts/harmonyos-sans::gentoo-zh ~amd64
+media-fonts/nerdfonts ~amd64
+media-gfx/krita ~amd64
+net-im/telegram-desktop ~amd64
+net-proxy/flclash-bin::gentoo-zh ~amd64
+net-wireless/iwd ~amd64
+
+# GNU 用户态替代工具先并行安装；不覆盖系统核心命令。
+sys-apps/toybox ~amd64
+sys-apps/uutils-coreutils ~amd64
+sys-apps/uutils-findutils ~amd64
+
+# Exact GSP firmware data for the accepted open NVIDIA modules.
+sys-firmware/nvidia-gsp-firmware::gentoo-zh ~amd64
+sys-kernel/gentoo-kernel-modprep ~amd64
+sys-kernel/xanmod-kernel::gentoo-zh ~amd64
+sys-libs/gcompat ~amd64
+sys-libs/kpmcore ~amd64
+sys-libs/libucontext ~amd64
+sys-libs/musl-cxx-runtime ~amd64
+
+# Private NVIDIA musl loader/core user-space experiment.
+sys-libs/nvidia-musl-compat::gentoo-zh ~amd64
+virtual/dist-kernel::gentoo-zh ~amd64
+
+# Exact open modules for the accepted musl kernel; no user-space driver.
+x11-drivers/nvidia-drivers::gentoo ~amd64
+x11-drivers/nvidia-userspace-musl::gentoo-zh ~amd64
+x11-misc/nvidia-modprobe ~amd64

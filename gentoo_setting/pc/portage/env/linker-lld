@@ -1,0 +1,5 @@
+# 内核使用 LLD；LTO 由 Kconfig 选择，不继承用户态 bitcode 选项。
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+LD="ld.lld"
+LDFLAGS="-fuse-ld=lld -Wl,-O1 -Wl,--as-needed"
