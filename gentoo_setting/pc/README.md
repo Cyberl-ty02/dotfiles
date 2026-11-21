@@ -68,6 +68,10 @@ Secure Boot 材料在目标机器本地生成，见 `kernel/secureboot/README.md
 普通软件更新及保留库重建已通过，SonicDE 6.8.2／Qt 6.11.3 已真机启动。
 字体、Neomacs、Codex／VSCodium、独立 root Zsh 与 VSCodium 原生 Zsh 入口已验证。
 CUDA/NVML、NVCC/CMake/CTest 和 GPU 数学回读通过，设备权限保持 root:video 0660。
+VSCodium 启动器同时为 Chromium 和 Node 扩展转发调用 shell 的 HTTP(S) 代理，
+按进程启用 `NODE_USE_ENV_PROXY`，不硬编码代理或关闭证书验证。已有编辑器实例
+不会因再次运行 codium 而继承新环境；需要完整退出所有窗口后从启用代理的 shell
+重新启动。Actions 提交不存在与本机 API 连接超时应分开诊断，不能为消除误报改用浮动 tag。
 新系统 PostgreSQL 18.6 的只读元数据核验仅见默认三个数据库，postgres 库用户关系、
 自定义函数与大对象计数为零；不能据此代替其他数据库逐库审计或原库恢复验收。
 
