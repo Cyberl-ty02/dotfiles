@@ -7,7 +7,7 @@
 | 补丁组 | 适用范围 | 当前状态 | 移除条件 |
 | --- | --- | --- | --- |
 | [Sonic 图像编辑](sonic-quick-image-editor/) | 0.7.0.1；SonicDE overlay `a5e6600f3dbd67b02ca61a095e036c8a908fe0cc` | 全新 musl 根使用配方补丁和用户源码补丁编译安装通过 | 配方声明 Highway，源码改用可用的 CMake 包 |
-| [Sonic Terminal 最小化](sonic-terminal/) | 26.08.3；回补上游 75ba4c38 | 源码校验、严格应用／撤回、正常沙箱重建及真机最小化／恢复通过 | 新发布包含等价修复且最小化、恢复回归通过；版本补丁目录自动失效 |
+| [Sonic Terminal 窗口与绘制](sonic-terminal/) | 26.08.3；上游 75ba4c38 与本地透明间隙修复 | 严格应用／撤回、正常沙箱重建、最小化／恢复、八组 ARGB 及真实启动项检查通过 | 新发布含等价修复且窗口／透明绘制回归通过；版本补丁目录自动失效 |
 | [Sonic 登录管理器](sonic-login-manager/) | 6.8.0.3／6.8.2 源码验收基线；包级目录不锁版本 | 应用/撤回检查及 musl/Clang 编译安装通过 | 头文件直接包含 POSIX 类型定义 |
 | [ClamTk 翻译目录](clamtk-6.18/) | 6.18-r2 源码 | 独立应用/撤回、用户补丁重建和私有显示中文界面通过 | 程序显式绑定正确的 gettext 目录 |
 | [KWayland 与 SonicDE ECM](kwayland-sonic-ecm/) | KWayland 6.7.6、SonicDE ECM 6.31.0 验收基线 | Manifest、补丁精确预检、CMake 配置及正常 Portage 沙箱安装通过 | 系统重新提供两个 Wayland 查找模块时自动跳过回退；上游接口修复并重建通过后删除 |

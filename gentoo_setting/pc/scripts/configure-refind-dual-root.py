@@ -71,12 +71,32 @@ def main():
                 pairs.append((release, kernel.name, initrd.name))
         if not pairs or args.require_kernel and args.require_kernel not in [p[0] for p in pairs]:
             raise ValueError('No complete required kernel/initramfs pair; leave current configuration intact')
+        icon = boot / 'EFI/refind/icons/os_gentoo.png'
+        if icon.is_symlink() or not icon.is_file() or icon.read_bytes()[:8] != b'\x89PNG\r\n\x1a\n':
+            raise ValueError('Install the bundled rEFInd Gentoo PNG icon before rendering the menu')
+        # Earlier root-layout preparation left the same include without markers.
+        # Adopt only that known menu and its musl-only exclusion, preserving all
+        # unrelated scan options and manual entries.
+        if BEGIN not in original and menu_file.exists() and menu_file.read_text().startswith(HEADER):
+            include = r'(?im)^include[ \t]+/EFI/Gentoo/musl\.conf[ \t]*\r?\n?'
+            if len(re.findall(include, base)) > 1:
+                raise ValueError('Duplicate unmarked musl menu includes need review')
+            if re.search(include, base):
+                base = re.sub(include, '', base)
+                legacy = r'(?im)^dont_scan_files[ \t]+\+[ \t]+([^\r\n]+)\r?\n?'
+                def adopt_exclusions(match):
+                    names = [name.strip() for name in match.group(1).split(',')]
+                    if names and all(re.fullmatch(r'vmlinuz-[A-Za-z0-9._+-]+', name) and '-musl-' in name for name in names):
+                        excluded.extend(names)
+                        return ''
+                    return match.group(0)
+                base = re.sub(legacy, adopt_exclusions, base)
         menu = HEADER
         for release, kernel, initrd in pairs:
-            menu += f'\nmenuentry "Gentoo musl ({release})" {{\n    loader /{kernel}\n    initrd /{initrd}\n    options "{options}"\n    ostype Linux\n    submenuentry "Debug" {{\n        add_options "rd.debug rd.shell"\n    }}\n}}\n'
+            menu += f'\nmenuentry "Gentoo musl ({release})" {{\n    icon /EFI/refind/icons/os_gentoo.png\n    loader /{kernel}\n    initrd /{initrd}\n    options "{options}"\n    ostype Linux\n    submenuentry "Debug" {{\n        add_options "rd.debug rd.shell"\n    }}\n}}\n'
         newline = '\r\n' if '\r\n' in original else '\n'
         separator = '' if base.endswith(newline * 2) else newline if base.endswith(newline) else newline * 2
-        block = newline.join([BEGIN, 'dont_scan_files + ' + ','.join(sorted(excluded)), 'include /EFI/Gentoo/musl.conf', END, ''])
+        block = newline.join([BEGIN, 'dont_scan_files + ' + ','.join(sorted(set(excluded))), 'include /EFI/Gentoo/musl.conf', END, ''])
         updated = base + separator + block
         if menu_file.exists() and not menu_file.read_text().startswith(HEADER):
             raise ValueError('Existing menu is not owned by this helper')

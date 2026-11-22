@@ -5,6 +5,10 @@
 *.toml text eol=lf
 **/world_packages.txt text eol=lf
 gentoo_setting/** text eol=lf
+# Binary assets must override the Gentoo tree's text rule.
+*.png binary
+# Unified patches contain whitespace-only context lines; validate applied source.
+gentoo_setting/pc/patchsets/**/*.patch whitespace=-blank-at-eol
 windows_setting/dot_bash_profile text eol=lf
 windows_setting/dot_gitconfig.tmpl text eol=lf
 windows_setting/dot_wslconfig text eol=crlf

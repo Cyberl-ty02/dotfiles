@@ -1,0 +1,3 @@
+# 用 kwriteconfig6 合并这一项，不整文件覆盖已有会话记录。
+[General]
+loginMode=emptySession

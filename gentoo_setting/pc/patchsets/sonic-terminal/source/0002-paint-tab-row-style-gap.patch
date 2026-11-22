@@ -1,0 +1,47 @@
+From: Local Sonic Terminal compatibility maintenance
+Subject: Paint window chrome and the compat pane's top style edge
+Upstream-Status: Not submitted; scoped to the validated 26.08.3 QML layout
+
+Compat style gaps expose the desktop beside tabs, at the QML header boundary,
+and at the top device-pixel edge of a single pane. Paint only window chrome
+and that style edge below terminal content, retaining the pane opacity.
+
+diff --git a/src/qml/Main.qml b/src/qml/Main.qml
+--- a/src/qml/Main.qml
++++ b/src/qml/Main.qml
+@@ -163,6 +163,35 @@
+         }
+     }
+ 
++    // Paint chrome in window coordinates: a style gap can also sit between
++    // the QML header and the compat central widget, outside contentItem itself.
++    // Keep the actual terminal surfaces clear for their profile opacity.
++    Item {
++        parent: root.contentItem.parent
++        anchors.fill: parent
++        z: -1
++        clip: true
++        visible: paneTree.shownPanesGeometry.height > 0
++        readonly property real panesTop: paneTree.centralGeometry.y + paneTree.shownPanesGeometry.y
++        readonly property real panesBottom: panesTop + paneTree.shownPanesGeometry.height
++
++        Rectangle {
++            x: paneTree.centralGeometry.x
++            width: central.width
++            // The facade's top style edge can be inside the pane's first
++            // device pixel. Cover that edge, below the terminal content.
++            height: Math.max(0, parent.panesTop + 1 / Screen.devicePixelRatio)
++            color: Kirigami.Theme.backgroundColor
++        }
++        Rectangle {
++            x: paneTree.centralGeometry.x
++            y: parent.panesBottom
++            width: central.width
++            height: Math.max(0, parent.height - y)
++            color: Kirigami.Theme.backgroundColor
++        }
++    }
++
+     // The compat central widget's place, in this content item: the hidden bars have the QML
+     // bars' extents, and plugin docks keep their room there.
+     Item {

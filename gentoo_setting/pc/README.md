@@ -75,6 +75,23 @@ VSCodium 启动器同时为 Chromium 和 Node 扩展转发调用 shell 的 HTTP(
 Sonic Terminal 26.08.3 已回补上游最小化修复，新窗口的最小化／恢复与最大化状态
 保持回归通过，见 `patchsets/sonic-terminal/`。旧终端任务不自动关闭，新开独立
 窗口可使用 `konsole --separate`；已有进程仍需方便时正常退出后再开。
+标签行及页眉／容器边界漏出壁纸的透明间隙也已修复。显示／隐藏标签栏、顶部／
+底部与普通／半透明八组 ARGB 检查，以及真实 desktop 启动项和新标签检查通过，
+终端内部透明度保留；同样见该补丁组，不全局改为不透明。
+不希望开机恢复上次的终端、编辑器和 FlClash 窗口时，以桌面用户运行：
+
+```sh
+kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
+```
+
+`desktop/ksmserverrc` 只给出这一项模板，不整文件覆盖已有会话资料。配置已在本机
+核对，下一次登录仍需实测；不会关闭当前窗口或禁用用户明确设置的自启动服务。
+
+rEFInd 的 Gentoo 菜单由 `scripts/configure-refind-dual-root.py` 显式引用自带的
+Gentoo 图标，内核更新后仍保留该设置。可选 Ventoy 卷标图标与来源见
+`kernel/refind-icons/`；使用 rEFInd 原生扫描，不修改 USB、Windows 或固件 BootOrder。
+图标和菜单已配置，真实启动画面与外接介质仍需下次开机验收。
+
 新系统 PostgreSQL 18.6 的只读元数据核验仅见默认三个数据库，postgres 库用户关系、
 自定义函数与大对象计数为零；不能据此代替其他数据库逐库审计或原库恢复验收。
 
