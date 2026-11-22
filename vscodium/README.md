@@ -37,9 +37,13 @@ gentoo_setting/scripts/sync-vscodium.sh --apply
 Windows 在更新本仓库后，用 PowerShell 执行；不需要运行完整系统 bootstrap：
 
 ```powershell
-.\vscodium\sync-extensions.ps1
-.\vscodium\sync-extensions.ps1 -Apply
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\vscodium\sync-extensions.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\vscodium\sync-extensions.ps1 -Apply
 ```
+
+上述命令仅为该进程允许执行仓库脚本，适用于未签名脚本被 RemoteSigned 拦截的情况，
+不会修改系统执行策略。Windows 的 `extensions.autoUpdate` 使用当前编辑器要求的
+字符串 `"on"`，而不是旧版布尔值。
 
 同步先处理已排除项，再补回期望功能。卸载一个包可能连带卸载成员，因此脚本会
 重新读取有效索引，不用过时列表判断“已经安装”。安装只依照明确清单，禁止包
@@ -49,6 +53,11 @@ Windows 在更新本仓库后，用 PowerShell 执行；不需要运行完整系
 Windows 的 `bootstrap.ps1 -InstallEditorExtensions` 调用同一入口，`-DryRun`
 在该扩展步骤只预览。Windows 实机安装仍需在 Windows 执行和验收；Linux 不离线改写
 Windows 系统盘。共享清单不包含账号、授权或插件内部状态。
+
+Windows 已在 VSCodium 1.143.17232 上执行安装同步并通过清单复核，用户设置的
+chezmoi 差异为空；Oracle Java 27.0.1 已安装，`JAVA_HOME` 对应的 Dragonwell
+Standard 21 已核验。此项仅确认安装与配置，重载后的 Java 编译、调试、测试及
+其他语言 GUI 功能仍需分别验收。
 
 ## Java21 与 Flatpak 边界
 

@@ -130,7 +130,8 @@ chezmoi apply
 
 Chezmoi's generated config records `windows_setting` as its source directory,
 so the short `chezmoi apply` command works from any directory. Use
-`chezmoi diff` before applying when reviewing upstream changes.
+`chezmoi --no-pager diff` before applying when reviewing upstream changes; this
+also avoids depending on a Unix pager such as `cat` on Windows.
 
 ## PowerShell 5.1
 

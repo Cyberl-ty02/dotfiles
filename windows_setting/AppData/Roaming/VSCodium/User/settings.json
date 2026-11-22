@@ -107,7 +107,7 @@
     "editor.unicodeHighlight.invisibleCharacters": true,
     "editor.unicodeHighlight.nonBasicASCII": false,
     "extensions.autoCheckUpdates": true,
-    "extensions.autoUpdate": true,
+    "extensions.autoUpdate": "on",
     "files.autoGuessEncoding": true,
     "files.eol": "\n",
     "files.insertFinalNewline": true,

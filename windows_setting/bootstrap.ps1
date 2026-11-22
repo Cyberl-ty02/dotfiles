@@ -106,7 +106,7 @@ Invoke-NativeCommand -FilePath $chezmoi.Source -ArgumentList ($commonArguments +
 ))
 
 if ($DryRun) {
-    Invoke-NativeCommand -FilePath $chezmoi.Source -ArgumentList ($commonArguments + @("diff"))
+    Invoke-NativeCommand -FilePath $chezmoi.Source -ArgumentList ($commonArguments + @("--no-pager", "diff"))
     Write-Host "Dry run complete; no managed files were changed."
     exit 0
 }
