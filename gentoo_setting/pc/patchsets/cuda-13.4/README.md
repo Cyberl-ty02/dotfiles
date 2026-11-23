@@ -2,8 +2,8 @@
 
 `source/0001-musl-host-math.patch` 保留本轮原始补丁，针对解包 SDK 根目录中的
 `include/crt/math_functions.hpp`，将八处 glibc 私有数学入口替换为 Clang builtin。
-本轮原生 musl/Clang/libc++ 的最小 CUDA kernel 已在 RTX 4060 上通过。
-这不代表完整 CUDA SDK、所有数学边界或 PyTorch 已验收。
+最初的原生 musl/Clang/libc++ 最小 CUDA kernel 已在 RTX 4060 上通过。
+该最小程序不能代表完整 CUDA SDK 或所有数学边界；后续专项检查见文末。
 
 这是零上下文补丁，只用于已核对版本与内容的本轮 CRT 头文件：
 
@@ -95,14 +95,13 @@ GPU 使用当前宿主已加载的 620.70.06 模块；新 musl 内核尚未启�
 普通用户编译及 GPU 回读；上游已有等价包时先卸载本精确包，再撤回此新增配方补丁。
 用户缓存确认不用后另行清理，不手删 Portage 已登记文件。
 
-## 完整工具链仍待完成的部分
+## 核心入口的边界
 
 旧成功程序虽使用 musl ELF、Clang 和 libc++，仍结合静态 cudart 与 gcompat 调用
 NVIDIA 用户态驱动，并非完全不需要兼容层。官方 ptxas、fatbinary、nvlink、NVCC
 是 glibc ELF；动态 cudart 还依赖 glibc 版 C++ 运行库，不能直接作为原生 musl 库安装。
-新内核的模块与 GSP 已单独打包验签，但原生 NVIDIA 用户态仍须打包验收。
-上述托管入口只解决核心 NVCC／cudart；RDC、cuBLAS／cuDNN、PyTorch、数学边界
-与真实生产负载不在本轮验收范围。
+上述托管入口本身只提供核心 NVCC／cudart，不安装完整数学库或 Python 生态。
+原生驱动与后续数学栈的独立验收见下文；不能因此推断全部数学边界与真实生产负载。
 
 升级时重新核对组件版本、布局、许可证、头文件哈希及 Clang 强制头依赖；上游提供
 等价支持后复验并移除补丁。已安装时先由 Portage 卸载精确数据包，再撤回仓库补丁，
@@ -112,4 +111,44 @@ NVIDIA 用户态驱动，并非完全不需要兼容层。官方 ptxas、fatbina
 2026-11-19 真机复验：当前7.2.14-musl-x64v3、620.70.06和UVM已实际加载，
 原生私有CUDA驱动与NVML、托管NVCC/CMake/CTest及RTX4060计算均通过。
 32项sinf最大绝对误差5.96e-8。旧“仅在原glibc宿主运行”的限制由此补齐；
-完整数学库/PyTorch、长时间生产负载、PRIME/显示/休眠/功耗及启动权限策略仍单列验收。
+数学库／PyTorch 的后续检查见下节；长时间生产负载与 PRIME／显示／休眠／功耗
+仍按具体场景验收。
+
+## 私有 Python GPU 环境
+
+系统级 Flatpak SDK 和 Portage 的 `cuda-sdk` 在新机 chroot 阶段准备；以下命令在
+真实桌面登录后以普通用户执行。复用已有 SDK 的 glibc Python，用标准 venv／pip
+管理应用依赖，不新增 overlay，不向 musl 宿主安装另一套 glibc／GCC／Python 库。
+这部分由 pip 管理，不能误称 Portage 已登记所有 wheel。
+
+在本仓库根目录运行：
+
+```sh
+# 先检查官方 CUDA 13.0 二进制包依赖图，再实际安装。
+sh gentoo_setting/pc/scripts/cuda-python.sh --setup --dry-run
+sh gentoo_setting/pc/scripts/cuda-python.sh --setup
+# 合成数学检查；可选最多600秒的有限负载，达到80°C即停止。
+sh gentoo_setting/pc/scripts/cuda-python.sh --check --seconds 600
+sh gentoo_setting/pc/scripts/cuda-python.sh --run -c 'import torch; print(torch.cuda.is_available())'
+```
+
+联网安装时继承调用 shell 的 HTTP(S) 代理，不记录地址或凭据；只接受二进制包，
+不因缺 wheel 临时构建 GCC／其他工具链。默认环境在用户 XDG 数据目录的
+`gentoo-gpu/.venv`；可用绝对路径 `CUDA_PYTHON_HOME` 为项目独立设置工作目录，
+不会自动向 SDK 开放其他项目。默认运行无网络，需要时显式设置
+`CUDA_SDK_NETWORK=1`。SDK Python 次版本变化时重建 venv，不能复用旧解释器链接。
+不要在宿主执行 `.venv/bin/python` 或 `source .venv/bin/activate`。
+
+核心 NVCC 使用13.4工具包，Python 应用使用 wheel 声明的 CUDA13.0运行库；入口
+只从 `LD_LIBRARY_PATH` 去掉前者的 `lib64`，保留 Flatpak NVIDIA 驱动路径，避免
+混用。升级时重新检查此布局、依赖图、驱动兼容性和最小计算，不能把移除整个
+`LD_LIBRARY_PATH` 当作修复，否则会丢失 `libcuda.so.1`。
+
+2026-11-23 实测基线：SDK Python3.14.9／glibc2.44，PyTorch2.14.1+cu130、
+NumPy2.5.4、cuDNN9.24；矩阵、FFT、线性求解、卷积、反向传播、稀疏运算、独立
+cuRAND 设备输出和 NumPy 回读通过，`pip check` 无损坏依赖。另用核心 NVCC 的
+`-arch=sm_89 -rdc=true` 编译两个翻译单元，设备链接与32项 GPU 回读通过。
+1024阶矩阵、每轮50ms间隔的600秒循环完成11,774次，最高46°C，峰值张量分配
+23.3MiB；未混入核心工具包库。此为有限负载，不是满载、长期稳定性或性能基准。
+多 GPU／NCCL、NVSHMEM、GPUDirect、全部数学边界和具体生产模型仍按实际需要验证；
+依赖安装不代表这些功能已测试。上述版本是历史验收证据，安装脚本不锁死该版本。

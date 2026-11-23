@@ -33,7 +33,7 @@ dev-lang/bun-bin	原生已装	dev-lang/bun-bin-1.4.4	安装已核对；运行及
 dev-lang/rust-bin	原生已装	dev-lang/rust-bin-1.98.1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-python/uv	原生已装	dev-python/uv-0.13.4-r1	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/clinfo	原生已装	dev-util/clinfo-3.1.26.09.26	安装已核对；运行及旧数据按迁移验收范围检查
-dev-util/nvidia-cuda-toolkit	原生数据层及托管核心 SDK 已安装／完整套件待补齐	dev-util/cuda-clang-device-headers-13.4.1 + dev-util/cuda-sdk-flatpak-13.4.1	原生 PTX、托管 NVCC/CMake/CTest/GPU sinf 通过；SDK 内已有 GCC16.2，未向宿主安装 GCC/glibc；新 musl 内核 CUDA/NVML 与托管 GPU 计算已通过；完整数学库/PyTorch/长期负载待验收
+dev-util/nvidia-cuda-toolkit	原生数据层／托管核心 SDK／私有 Python 数学栈已安装	dev-util/cuda-clang-device-headers-13.4.1 + dev-util/cuda-sdk-flatpak-13.4.1；SDK 内 venv/pip 管理 PyTorch	原生 PTX、NVCC/CMake/CTest/GPU sinf、RDC 跨文件链接通过；SDK 已有 GCC16.2，宿主无 GCC/glibc；新内核 CUDA/NVML 及 PyTorch/cuBLAS/cuFFT/cuSOLVER/cuDNN/cuSPARSE/cuRAND/NumPy 合成检查通过；600秒带间隔有限负载通过，不代表长期生产／多 GPU／GPUDirect
 dev-util/pixi	原生已装	dev-util/pixi-0.84.2	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/pkgconf	原生已装	dev-util/pkgconf-3.0.7	安装已核对；运行及旧数据按迁移验收范围检查
 dev-util/vulkan-tools	原生已装	dev-util/vulkan-tools-1.4.357.0	安装已核对；运行及旧数据按迁移验收范围检查
