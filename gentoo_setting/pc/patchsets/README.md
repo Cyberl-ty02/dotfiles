@@ -19,11 +19,11 @@
 | [Neomacs musl 兼容](neomacs-aacf292/) | 上游 aacf292；Gentoo live 配方 | 编译兼容、栈段测量及配方修复；完整引导、安装、SQLite、GUI 和 Rime 输入通过 | 上游覆盖对应源码与安装修复后，重新验收 |
 | [Dragonwell Standard 21 LTS](dragonwell-21.0.13/) | 21.0.13.0.13+9，amd64 musl；现有 Gentoo-Zh/Gentoo 仓库 | 原生安装及编译／中文检查通过；可选同版私有 glibc 构建也由该包管理，不注册第二个 VM，无原生 GCC/glibc | 上游提供等价 Standard musl 配方、Java 21 provider 与所需私有运行时后复验 |
 | [Firefox ESR 153.7](firefox-153.7/) | Gentoo 固定基线，官方配方与语言包回补 | 精确应用／撤回与新版无 GCC 依赖预演通过；musl Rust 宿主脚本加载修复后正常沙箱安装及离线中文渲染通过 | 基线含对应安全版本且 Rust／LLVM helper 已统一后复验 |
-| [FlClash 私有 glibc 前端](flclash-private-runtime/) | 0.9.3 验收基线，现有 Gentoo-Zh；FDO 26.08／Standard 21 | 正常沙箱安装、受保护 AOT/Core、私有 JNI／托盘、GUI 代理启停和 TUN TCP 隔离验证通过；真机授权及网络仍待 | 上游提供等价 musl 界面／配方及权限路线后复验 |
-| [CUDA 数学调用、数据包与托管核心 SDK](cuda-13.4/) | CUDA 13.4 CRT 及已有 Gentoo-Zh 内两个版本固定配方 | 原生 PTX、托管 NVCC/CMake/CTest/GPU 数学通过；新内核已启动，完整数学库/PyTorch 未验收 | 官方支持本目标或已有等价包；按对应路线分别复验撤回 |
+| [FlClash 私有 glibc 前端](flclash-private-runtime/) | 0.9.3 验收基线，现有 Gentoo-Zh；FDO 26.08／Standard 21 | 正常沙箱安装、受保护 AOT/Core、私有 JNI／托盘、GUI 代理启停和隔离 TUN TCP 通过；用户已确认真机 TUN 日常正常 | 上游提供等价 musl 界面／配方及权限路线后复验 |
+| [CUDA 数学调用、数据包与托管核心 SDK](cuda-13.4/) | CUDA 13.4 核心／Clang 数据层，独立 SDK venv 管理 CUDA13.0 Python 库 | 新内核 CUDA/NVML、NVCC/CMake/CTest/RDC、八项 PyTorch 数学及600秒有限负载通过；不等于长期生产或多 GPU 验收 | 官方支持本目标或已有等价包；按对应路线分别复验撤回 |
 | [gcompat 加载器路径](gcompat-1.1.0/) | GURU gcompat 1.1.0 ebuild | 配方草案；对应手工路径已验证，完整 ebuild 未验收 | 配方提供正确的 amd64 加载器路径且完成安装验证 |
 
-优先读取各组 README，再决定是否应用。后两组保留原有零上下文补丁内容，不自动
+优先读取各组 README，再决定是否应用。CUDA／gcompat 组保留原有零上下文补丁内容，不自动
 推广到其他版本。NVIDIA 私有加载器／核心库已按现有仓库补丁正常安装并通过普通用户 GPU 检查；完整显示会话仍待验收。
 
 上游同步后先检查本地 `git diff`、目标配方及源码，再检查补丁是否已合入或失效。
@@ -35,7 +35,8 @@ musl 已为默认 PC 方案；真实会话、硬件与业务操作的验收边�
 
 [NVIDIA 620.70.06 模块、GSP 与私有核心用户态](nvidia-620.70.06/)分别针对已有 Gentoo／Gentoo-Zh：
 五模块公钥验签、四固件载荷校验、私有前缀 EGL/CUDA/NVML 及可选 DDX/GLX 正常安装通过；
-无 GPU dummy 会话／加载通过，XLibre 自带 NVIDIA ABI 特例，完整显示与新内核启动仍待验收。
+新内核已真机启动，XLibre 桌面与日常使用已人工确认。PRIME、外接显示、休眠等具体场景
+仍按需要验证；无 GPU dummy 会话结果不代替这些测试。
 
 ## 随上游升级维护
 

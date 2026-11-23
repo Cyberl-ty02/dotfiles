@@ -43,7 +43,7 @@ release、Unicode 数据、127 个预载及 1,516 个 Lisp 文件的完整引导
 其记录的 modules 子仓库 `f054be8fcdd2a0446eb8259d76dd4f6f76acc0b7`。
 这些是测试基线，不是日常版本锁。普通用户完整 sync、正式目录 GUI 与 TTY 的
 Doom 开始页／主题、SPC 文件与缓冲区命令、Evil 编辑、Corfu／Vertico／Magit／Org
-加载通过；root 的独立配置、框架、插件和 TTY 同样通过，不执行 kl 可写的代码。
+加载通过；root 的独立配置、框架、插件和 TTY 同样通过，不执行普通用户可写的代码。
 doctor 识别33个模块与106个包；已补齐 Discount、静态 ShellCheck，仅留可选
 Symbola 提示。没有关闭检查、安装 GCC 或运行原生编译来消除提示。
 

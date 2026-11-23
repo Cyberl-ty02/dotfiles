@@ -114,15 +114,24 @@ existing `refind.conf`, refreshes shim and MokManager, signs the installed rEFIn
 binary with the local MOK, and writes it as
 `/boot/EFI/refind/grubx64.efi`, the compatibility filename expected by shim.
 
-Create the firmware entry once, substituting the actual disk and ESP partition:
+Create the firmware entry once, after identifying the mounted ESP. Read its
+parent disk and partition number instead of assuming a particular NVMe name:
 
 ```bash
-sudo efibootmgr --create --disk /dev/nvme0n1 --part 1 \
+esp_source=$(findmnt --noheadings --output SOURCE --mountpoint /boot)
+esp_source=$(readlink -f -- "$esp_source")
+esp_parent=$(lsblk --noheadings --output PKNAME "$esp_source")
+esp_part=$(lsblk --noheadings --output PARTN "$esp_source")
+test -n "$esp_parent" && test -n "$esp_part" || exit 1
+esp_disk="/dev/$esp_parent"
+lsblk "$esp_disk"
+# Review the detected disk and partition before writing the firmware entry.
+sudo efibootmgr --create --disk "$esp_disk" --part "$esp_part" \
   --loader '\EFI\refind\BOOTX64.EFI' --label 'rEFInd Boot Manager' --unicode
 ```
 
-Do not copy the example disk or partition number without checking `lsblk` and
-`findmnt /boot`.
+This example requires a directly mounted partition. Stop and inspect a more
+complex storage layout rather than guessing a parent disk or partition number.
 
 ## Kernel options
 

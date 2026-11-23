@@ -20,9 +20,16 @@ import time
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--user', default='kl')
+    ap.add_argument('--user', help='Source account; defaults to the invoking non-root user')
     ap.add_argument('--apply', action='store_true')
     args = ap.parse_args()
+    if args.user is None:
+        if os.getuid() != 0:
+            args.user = pwd.getpwuid(os.getuid()).pw_name
+        elif os.environ.get('PKEXEC_UID', '').isdigit() and int(os.environ['PKEXEC_UID']) != 0:
+            args.user = pwd.getpwuid(int(os.environ['PKEXEC_UID'])).pw_name
+        else:
+            ap.error('Specify --user for a root/chroot invocation; no account is assumed')
     user = pwd.getpwnam(args.user)
     root = pwd.getpwnam('root')
     if user.pw_uid == 0 or root.pw_dir != '/root':
