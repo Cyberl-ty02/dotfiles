@@ -84,13 +84,14 @@ Sonic Terminal 26.08.3 已回补上游最小化修复，新窗口的最小化／
 kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
 ```
 
-`desktop/ksmserverrc` 只给出这一项模板，不整文件覆盖已有会话资料。配置已在本机
-核对，下一次登录仍需实测；不会关闭当前窗口或禁用用户明确设置的自启动服务。
+`desktop/ksmserverrc` 只给出这一项模板，不整文件覆盖已有会话资料。用户已于
+2026-11-23 人工确认开机体验正常；不会关闭当前窗口或禁用用户明确设置的自启动服务。
 
 rEFInd 的 Gentoo 菜单由 `scripts/configure-refind-dual-root.py` 显式引用自带的
 Gentoo 图标，内核更新后仍保留该设置。可选 Ventoy 卷标图标与来源见
 `kernel/refind-icons/`；使用 rEFInd 原生扫描，不修改 USB、Windows 或固件 BootOrder。
-图标和菜单已配置，真实启动画面与外接介质仍需下次开机验收。
+图标和菜单已配置，用户已人工确认本机开机体验正常；不将其泛化为任意外接介质
+或未知卷标的识别保证。
 
 新系统 PostgreSQL 18.6 的只读元数据核验仅见默认三个数据库，postgres 库用户关系、
 自定义函数与大对象计数为零；不能据此代替其他数据库逐库审计或原库恢复验收。
@@ -98,6 +99,8 @@ Gentoo 图标，内核更新后仍保留该设置。可选 Ventoy 卷标图标�
 用户已确认 Codium 开发、Java Hello World、音视频日常使用、WPS／微信、PostgreSQL
 和 FlClash TUN 暂无异常。本轮还完成 Maven 项目生成／JUnit、完整 Doom／Neomacs GUI 与
 插件加载检查；会议共享、休眠唤醒和完整 CUDA 数学库等按需要单独验收。
+2026-11-23 用户另行确认 Windows 配置同步已完成，可选应用日常使用大致正常。
+这些属于人工使用反馈，不代替逐项专项测试、归档恢复演练或长期负载验收。
 不会自动登录账号、发消息或授予 OAuth 权限。
 
 power-profiles-daemon 已通过官方 OpenRC 脚本启动并加入 default，当前 balanced，

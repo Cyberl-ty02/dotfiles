@@ -51,8 +51,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\vscodium\sync-extensio
 硬依赖与运行时，不能靠强制卸载压过依赖错误。默认预览不修改编辑器。
 
 Windows 的 `bootstrap.ps1 -InstallEditorExtensions` 调用同一入口，`-DryRun`
-在该扩展步骤只预览。Windows 实机安装仍需在 Windows 执行和验收；Linux 不离线改写
-Windows 系统盘。共享清单不包含账号、授权或插件内部状态。
+在该扩展步骤只预览。用户已于2026-11-23人工确认 Windows 配置同步完成；以后新机
+仍需在 Windows 执行和验收，Linux 不离线改写 Windows 系统盘。共享清单不包含
+账号、授权或插件内部状态，不据此声称每个扩展的全部功能均已测试。
 
 Windows 已在 VSCodium 1.143.17232 上执行安装同步并通过清单复核，用户设置的
 chezmoi 差异为空；Oracle Java 27.0.1 已安装，`JAVA_HOME` 对应的 Dragonwell
