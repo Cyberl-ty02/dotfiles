@@ -1,0 +1,17 @@
+--- a/eclass/ninja-utils.eclass
++++ b/eclass/ninja-utils.eclass
+@@ -144,7 +144,13 @@
+ 		OFF) ;;
+ 		*) v="-v"
+ 	esac
+-	set -- "${NINJA}" ${v} $(get_NINJAOPTS) "$@"
++	local ninja_cmd="${NINJA}"
++	# Keep NINJA_DEPEND and jobserver detection tied to the original implementation.
++	if [[ ${XMAKE_PORTAGE_BRIDGE} == yes && ${NINJA} == ninja &&
++		-x ${EPREFIX}/usr/local/libexec/portage-xmake/ninja ]]; then
++		ninja_cmd="${EPREFIX}/usr/local/libexec/portage-xmake/ninja"
++	fi
++	set -- "${ninja_cmd}" ${v} $(get_NINJAOPTS) "$@"
+ 	echo "$@" >&2
+ 	"$@" || die -n "${*} failed"
+ }

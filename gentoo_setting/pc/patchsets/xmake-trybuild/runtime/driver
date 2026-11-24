@@ -1,0 +1,23 @@
+#!/bin/sh
+# Portage-only preference; backend execution is never retried after a failure.
+tool=${0##*/}
+case "$tool" in
+    make)
+        backend=/usr/bin/gmake
+        [ -x "$backend" ] || backend=/usr/bin/make
+        # A Lua subprocess must not consume a pipe jobserver's inherited FDs.
+        case "${MAKEFLAGS-}" in
+            *--jobserver-auth=[0-9]*|*--jobserver-fds=*) exec "$backend" "$@" ;;
+        esac
+        ;;
+    ninja) backend=/usr/bin/ninja ;;
+    *) echo "Unsupported Portage xmake entry: $tool" >&2; exit 64 ;;
+esac
+# stage3 bootstrap, standalone probes, and explicit per-package exceptions.
+if [ "${XMAKE_PORTAGE_BRIDGE-no}" != yes ] || [ -z "${T-}" ] || [ ! -x /usr/bin/xmake ]; then
+    exec "$backend" "$@"
+fi
+export XMAKE_GLOBALDIR="$T/xmake-portage-global"
+export XMAKE_COLORTERM=nocolor XMAKE_STATS=false
+if [ "$(id -u)" = 0 ]; then export XMAKE_ROOT=y; fi
+exec /usr/bin/xmake lua "${0%/*}/backend.lua" "$tool" "$@"

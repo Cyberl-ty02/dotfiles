@@ -33,6 +33,8 @@ WSL 保持独立配置；旧 glibc PC 配置不再并行维护，可从 Git 历�
 ```sh
 # 默认只检查补丁与当前仓库兼容性；确认后显式添加 --apply。
 python3 scripts/restore-repository-patches.py
+# 预览可撤销的 Portage xmake 优先入口；审核后使用 --apply。
+python3 scripts/configure-portage-xmake.py
 # 先预览 locale 配置；musl 不使用 glibc locale-gen。
 bash scripts/configure-locale.sh --lang zh_CN.UTF-8 --timezone Asia/Shanghai --dry-run
 # 使用脚本的系统级安装模式，适用于 chroot；逐项失败时停止检查。
@@ -58,10 +60,13 @@ Secure Boot 材料在目标机器本地生成，见 `kernel/secureboot/README.md
 - LLVM 的归档和二进制工具已在登录环境生效；`AS="clang -c"` 不改为处理 LLVM IR
   的 `llvm-as`。Bash、GNU make／autotools、binutils 及私有 SDK 的 GNU ABI 依赖
   仍分别保留；无原生 GCC／glibc 不等于整机零 GNU。
-- 日常自有 C/C++ 项目优先使用 xmake；Portage 按各包上游构建系统执行，
-  不设置 `MAKE=xmake`、不覆盖 make/gmake。2026-11-24 定向 depclean 预演中，
+- 日常自有 C/C++ 项目优先使用 xmake；Portage 保留各包上游构建系统，
+  可用 `scripts/configure-portage-xmake.py --apply` 部署兼容优先入口；
+  不设置 `MAKE=xmake`、不覆盖系统 make/gmake，bootstrap 与核心链保留例外。2026-11-24 定向 depclean 预演中，
   GNU Make、BSD make、CMake、Meson、Ninja 均仍被需要，没有卸载项。
   xmake 的 LLVM 项目模板与 Makefile 转接修复见 [xmake 补丁组](patchsets/xmake-trybuild/)。
+  本机兼容策略已启用；QtSerialPort 的真实 Portage 暂存 A/B 与两项上游测试、
+  tree 的 Make 暂存构建及运行通过。不等同于整个 world 验收，也未证明提速／省空间。
 - 日常 emerge 优先复用本机 binpkg，并检查 USE／依赖变化；不默认启用 ccache。
   新补丁及工具链／编译参数变更后的重建显式使用 `--usepkg=n`，不能假定旧包
   自动感知源码补丁或编译参数。普通更新先预演 `--update --deep --newuse @world`，

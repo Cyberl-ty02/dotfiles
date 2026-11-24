@@ -11,7 +11,7 @@
 | [Sonic 登录管理器](sonic-login-manager/) | 6.8.0.3／6.8.2 源码验收基线；包级目录不锁版本 | 应用/撤回检查及 musl/Clang 编译安装通过 | 头文件直接包含 POSIX 类型定义 |
 | [ClamTk 翻译目录](clamtk-6.18/) | 6.18-r2 源码 | 独立应用/撤回、用户补丁重建和私有显示中文界面通过 | 程序显式绑定正确的 gettext 目录 |
 | [KWayland 与 SonicDE ECM](kwayland-sonic-ecm/) | KWayland 6.7.6、SonicDE ECM 6.31.0 验收基线 | Manifest、补丁精确预检、CMake 配置及正常 Portage 沙箱安装通过 | 系统重新提供两个 Wayland 查找模块时自动跳过回退；上游接口修复并重建通过后删除 |
-| [xmake Makefile 探测](xmake-trybuild/) | 3.1.2；上游 Lua | 官方归档严格补丁检查、正常沙箱重装及三种文件名构建／清理通过 | 上游显式识别 Makefile 文件名；版本用户补丁自动失效 |
+| [xmake 兼容优先入口](xmake-trybuild/) | 3.1.2 探测源码；Gentoo Ninja eclass 与可选执行器 | 沙箱重装、QtSerialPort 暂存 A/B／两项测试与 tree 的真实 Make 路径通过；保留 bootstrap／核心链例外 | 上游提供等价执行器接口时移除仓库补丁；探测源码修复随版本补丁目录失效 |
 | [lowdown 配置宏](lowdown-3.1.1/) | 3.1.1 源码 | 上游修复回补；应用/撤回及全新根沙箱编译安装通过 | 目标版本包含上游 cc78c692 |
 | [ipset 导出表](ipset-7.24/) | 7.24-r1 源码 | 本地补丁；全新根沙箱编译安装及帮助命令通过 | 上游导出表不再要求不存在的符号 |
 | [nftables 头文件顺序](nftables-1.1.7/) | 1.1.7 源码，启用 xtables | 本地补丁；全新根沙箱编译安装通过 | 上游解决 libc/UAPI Ethernet 定义的包含顺序 |

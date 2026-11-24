@@ -12,3 +12,6 @@ gentoo_setting/pc/patchsets/**/*.patch whitespace=-blank-at-eol
 windows_setting/dot_bash_profile text eol=lf
 windows_setting/dot_gitconfig.tmpl text eol=lf
 windows_setting/dot_wslconfig text eol=crlf
+
+# Tab-indented eclass context is valid inside unified patches.
+gentoo_setting/pc/patchsets/xmake-trybuild/repository/*.patch whitespace=-blank-at-eol,-space-before-tab
