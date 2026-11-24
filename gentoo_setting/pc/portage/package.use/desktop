@@ -71,11 +71,8 @@ sys-kernel/installkernel dracut -refind -efistub -grub -systemd -systemd-boot -u
 # Match FW_LOADER_COMPRESS_ZSTD; dracut assembles the candidate initramfs later.
 sys-kernel/linux-firmware compress-zstd -compress-xz -initramfs -dist-kernel
 =sys-kernel/xanmod-kernel-7.2.14 clang cjk cjk32 -debug modules-sign secureboot
-sys-libs/gcompat libucontext obstack
 sys-libs/zlib minizip
-x11-base/xlibre-server -xvfb
 x11-base/xlibre-server xvfb
-x11-base/xorg-server -xvfb
 x11-base/xorg-server::xlibre xvfb
 
 # Exact open modules for the accepted musl kernel; no user-space driver.
