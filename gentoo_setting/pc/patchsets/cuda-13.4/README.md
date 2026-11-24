@@ -59,7 +59,7 @@ NVCC／核心 cudart 使用原厂文件，无需前述 musl 数学补丁；原�
 ```bash
 # 在本实验目录中；主应用清单仍为原有五项
 bash scripts/install-flatpak-apps.sh --system --cuda-sdk
-emerge --ask =dev-util/cuda-sdk-flatpak-13.4.1::gentoo-zh
+emerge --ask --usepkg=n =dev-util/cuda-sdk-flatpak-13.4.1::gentoo-zh
 ```
 
 脚本可在无桌面 D-Bus 的 root chroot 中重复执行，本轮复用已校验缓存的实测通过，

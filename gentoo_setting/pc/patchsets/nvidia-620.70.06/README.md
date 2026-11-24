@@ -92,7 +92,7 @@ NVIDIA 使用前述同一经 Gentoo Manifest 核对的官方归档。保留各�
 在目标 root chroot 中准备好仓库补丁及本实验的关键词、许可后安装：
 
 ```bash
-emerge --ask =sys-libs/nvidia-musl-compat-1.2.6_p20261115::gentoo-zh \
+emerge --ask --usepkg=n =sys-libs/nvidia-musl-compat-1.2.6_p20261115::gentoo-zh \
   =x11-drivers/nvidia-userspace-musl-620.70.06::gentoo-zh
 ```
 
@@ -156,7 +156,7 @@ XLibre 主版本路径。旧包的本地二进制回退保留。
 在目标 chroot 中合并 USE、按补丁索引逐份检查后，可安装并先只查询路径：
 
 ```bash
-emerge --ask x11-drivers/nvidia-userspace-musl
+emerge --ask --usepkg=n x11-drivers/nvidia-userspace-musl
 nvidia-musl-xorg -showDefaultModulePath
 ```
 

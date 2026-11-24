@@ -19,7 +19,7 @@ Hide 事件再隐藏 QML 窗口。因此进程仍在，窗口却被窗口管理�
 ```sh
 install -Dm0644 patchsets/sonic-terminal/source/0001-keep-minimized-window-managed.patch \
   /etc/portage/patches/sonicde-base/sonic-terminal-26.08.3/0001-keep-minimized-window-managed.patch
-emerge --ask --oneshot sonicde-base/sonic-terminal
+emerge --ask --usepkg=n --oneshot sonicde-base/sonic-terminal
 ```
 
 只对已验证的 26.08.3 部署到版本补丁目录；这是自动失效边界，不锁定包升级。

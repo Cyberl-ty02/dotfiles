@@ -58,6 +58,14 @@ Secure Boot 材料在目标机器本地生成，见 `kernel/secureboot/README.md
 - LLVM 的归档和二进制工具已在登录环境生效；`AS="clang -c"` 不改为处理 LLVM IR
   的 `llvm-as`。Bash、GNU make／autotools、binutils 及私有 SDK 的 GNU ABI 依赖
   仍分别保留；无原生 GCC／glibc 不等于整机零 GNU。
+- 日常自有 C/C++ 项目优先使用 xmake；Portage 按各包上游构建系统执行，
+  不设置 `MAKE=xmake`、不覆盖 make/gmake。2026-11-24 定向 depclean 预演中，
+  GNU Make、BSD make、CMake、Meson、Ninja 均仍被需要，没有卸载项。
+  xmake 的 LLVM 项目模板与 Makefile 转接修复见 [xmake 补丁组](patchsets/xmake-trybuild/)。
+- 日常 emerge 优先复用本机 binpkg，并检查 USE／依赖变化；不默认启用 ccache。
+  新补丁及工具链／编译参数变更后的重建显式使用 `--usepkg=n`，不能假定旧包
+  自动感知源码补丁或编译参数。普通更新先预演 `--update --deep --newuse @world`，
+  不把 `emerge -e` 作为日常维护命令。
 - `package.*` 按包原子升序，忽略前导版本运算符；同一选择器与注释保持顺序。
   make.conf 保持依赖分组与国内镜像优先顺序，不按字母全局重排。
 - 规则优先按包／slot／受影响版本范围；补丁严格预检，已有相同上游修复时跳过，

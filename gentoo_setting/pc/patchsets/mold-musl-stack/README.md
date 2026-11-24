@@ -35,7 +35,7 @@ musl 默认线程栈较小，可由 ELF 的 PT_GNU_STACK 或显式 pthread 属�
 ```bash
 mold_bootstrap_ldflags="$(portageq envvar LDFLAGS | sed 's/-fuse-ld=mold/-fuse-ld=lld/g')"
 LD=ld.lld LDFLAGS="${mold_bootstrap_ldflags}" \
-  emerge --ask --oneshot sys-devel/mold
+  emerge --ask --usepkg=n --oneshot sys-devel/mold
 unset mold_bootstrap_ldflags
 readelf -lW "$(command -v mold)"
 ```

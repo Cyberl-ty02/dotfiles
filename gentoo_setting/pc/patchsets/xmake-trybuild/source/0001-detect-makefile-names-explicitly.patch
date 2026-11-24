@@ -1,0 +1,13 @@
+--- a/xmake/modules/private/action/trybuild/make.lua
++++ b/xmake/modules/private/action/trybuild/make.lua
+@@ -25,7 +25,9 @@
+ 
+ -- detect build-system and configuration file
+ function detect()
+-    return find_file("[mM]akefile", os.curdir())
++    return find_file("GNUmakefile", os.curdir())
++        or find_file("makefile", os.curdir())
++        or find_file("Makefile", os.curdir())
+ end
+ 
+ -- do clean
