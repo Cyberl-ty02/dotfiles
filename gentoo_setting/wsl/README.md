@@ -56,30 +56,29 @@ GCC compatibility environments use their own LTO and language-standard flags.
 
 ## Apply
 
-For the first import, start the distro as root (`wsl.exe -d Gentoo -u root`),
-change to `gentoo_setting/wsl`, and run:
+For the first import, start the distro as root (`wsl.exe -d Gentoo -u root`).
+Initialize the main tree, select `default/linux/amd64/23.0/desktop`, and install Git,
+Clang, LLD, LLVMgold, and mold with the stage4 settings. From this repository root:
 
-```bash
-cp -a /etc/portage "/root/portage-backup-$(date +%Y%m%d-%H%M%S)"
-cp -a portage/. /etc/portage/
+```sh
+python3 gentoo_setting/scripts/deploy-portage.py wsl repos
+python3 gentoo_setting/scripts/deploy-portage.py wsl repos --apply
+LC_ALL=C.UTF-8 emerge --sync
+python3 gentoo_setting/scripts/deploy-portage.py wsl config
+python3 gentoo_setting/scripts/deploy-portage.py wsl config --apply
+emerge --pretend --verbose --update --deep --newuse @world
 ```
 
-The repository uses `kl` as an anonymous public-template identity. Do not copy
-that value over an existing machine blindly: keep the real local account only
-in `/etc/wsl.conf`, or edit a private copy of `wsl.conf` before installing it.
+The helper checks the target profile, keeps the existing main tree sync method,
+and backs up `/etc/portage` before writing. WSL has its own Portage policy and
+receives no musl patches. Use `xargs -a gentoo_setting/wsl/world_packages.txt emerge
+--pretend --verbose --noreplace` to review the optional world selection, then
+install the selected atoms with `emerge --ask`. Follow the
+[WSL setup notes](https://kagaranakaki.top/posts/gentoo-wsl-migration-notes/gentoo-wsl-migration-notes/)
+for the initial import sequence and the desktop/GPU boundaries.
 
-Then:
-
-```bash
-eselect profile show
-if [ -d /var/db/repos/gentoo ] && \
-  ! git -C /var/db/repos/gentoo rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  mv /var/db/repos/gentoo "/var/db/repos/gentoo.rsync-backup-$(date +%Y%m%d-%H%M%S)"
-fi
-emerge --sync
-xargs emerge -av --noreplace < world_packages.txt
-emerge -avuDN @world
-```
+The repository's `wsl.conf` uses `kl` as an anonymous public-template identity.
+Set the actual default account in the target's `/etc/wsl.conf`.
 
 For a new public-template installation, create the anonymous default user before
 restarting WSL if it does not exist:

@@ -5,8 +5,8 @@
 WSL 保持独立配置；旧 glibc PC 配置不再并行维护，可从 Git 历史或本地标签
 `archive/glibc-pc-before-musl-promotion` 找回。
 
-完整安装、兼容运行库、迁移经过与排错放在博客正文：
-[Gentoo musl／LLVM PC 迁移](https://kagaranakaki.top/posts/gentoo-musl-llvm-pc-migration/gentoo-musl-llvm-pc-migration/)。
+从 LiveCD 到首次启动见 [Gentoo musl 安装指南](https://kagaranakaki.top/posts/gentoo-musl/gentoo-musl/)。
+兼容运行库、迁移与排错见 [Gentoo musl 迁移复盘](https://kagaranakaki.top/posts/gentoo-musl-llvm-pc-migration/gentoo-musl-llvm-pc-migration/)。
 本目录只维护可复现配置、脚本、补丁和当前验收边界，不保留逐轮缓存报告。
 
 ## 配置入口
@@ -28,18 +28,30 @@ WSL 保持独立配置；旧 glibc PC 配置不再并行维护，可从 Git 历�
 不把 glibc JDK／应用库加入宿主搜索路径。所有 JVM 均使用 **Dragonwell Standard 21**，
 需要 glibc 的应用使用独立私有运行库或 Flatpak；不回退到捆绑的 JDK 25。
 
-在目标 musl 根内、以本目录为工作目录：
+从 LiveCD 将配置仓库放进目标根的 `/root/dotfiles`。进入 chroot、初始化主树和安装
+Git 后，在仓库根执行以下命令。带 `--apply` 才会写入，写入前会备份目标 `/etc/portage`。
 
 ```sh
-# 默认只检查补丁与当前仓库兼容性；确认后显式添加 --apply。
+python3 gentoo_setting/scripts/deploy-portage.py musl repos
+python3 gentoo_setting/scripts/deploy-portage.py musl repos --apply
+LC_ALL=C.UTF-8 emerge --sync
+cd gentoo_setting/pc
 python3 scripts/restore-repository-patches.py
-# 预览可撤销的 Portage xmake 优先入口；审核后使用 --apply。
-python3 scripts/configure-portage-xmake.py
-# 先预览 locale 配置；musl 不使用 glibc locale-gen。
-bash scripts/configure-locale.sh --lang zh_CN.UTF-8 --timezone Asia/Shanghai --dry-run
-# 使用脚本的系统级安装模式，适用于 chroot；逐项失败时停止检查。
-bash scripts/install-flatpak-apps.sh --system --dry-run
+python3 scripts/restore-repository-patches.py --apply
 ```
+
+仓库配方补丁预检通过后，先在 stage3 原配置下装好 curl、mold 与同槽 LLVMgold。
+按硬件检查 `portage/make.conf`、签名路径和包级规则，再执行：
+
+```sh
+# 仍在 gentoo_setting/pc 内
+python3 ../scripts/deploy-portage.py musl config
+python3 ../scripts/deploy-portage.py musl config --apply
+```
+
+`repos` 只登记 overlay，保留目标主树的同步方式。 `config` 部署构建配置与已登记的
+Portage 用户补丁；保持补丁的包级或版本边界。配方补丁和源码补丁分别处理。
+Locale、可选 xmake 入口、Flatpak、签名与最后的软件预演按博客对应小节执行。
 
 Flatpak 主包以 `scripts/flatpak-apps.txt` 为唯一清单；不要把 Flatpak runtime
 误当作原生 Portage 依赖，两者管理范围不同。Flatpak 下载和系统配置可以在 chroot

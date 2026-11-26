@@ -41,7 +41,8 @@ Git 的姓名与邮箱继续留在未托管的 `~/.gitconfig`；仓库只部署
 1. 安装 Gentoo，建立普通用户和网络；不要直接复制旧机器的 `/etc`。
 2. 安装 Git、chezmoi、doas 与基础 shell 工具。
 3. 克隆本仓库，运行 `scripts/bootstrap-user.sh` 预览用户配置。
-4. 按机器选择 `pc/` 或 `wsl/`，人工比较后部署 Portage 配置。
+4. 新装时按 [musl](pc/#新机安装与-chroot) 或 [WSL](wsl/#apply) 说明预览并部署
+   Portage。glibc 实体机从自己的 stage3 配置开始，见 [glibc 安装指南](https://kagaranakaki.top/posts/gentoo-glibc/gentoo-glibc/)。
 5. PC 使用 `pc/world_packages.txt` 作为当前原生选择入口，先预演并按硬件取舍；
    WSL／共用角色再从 `manifests/` 选择。旧角色清单不能整套代替 musl PC 配置。
    清单本身不会自行安装软件。
