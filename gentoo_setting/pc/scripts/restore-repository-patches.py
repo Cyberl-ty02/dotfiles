@@ -14,8 +14,6 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--repos-root', type=Path, default=Path('/var/db/repos'))
     ap.add_argument('--apply', action='store_true')
-    ap.add_argument('--with-xmake', action='store_true',
-                    help='also preflight the optional xmake executor patch')
     args = ap.parse_args()
     base = Path(__file__).resolve().parent.parent
     groups = {
@@ -56,13 +54,6 @@ def main():
                         ap.error('Unknown rust LLVM inheritance; inspect before applying the historical Firefox adapter')
                 command += ['--patch', str(path)]
         commands.append(command)
-    # Independent executor patch: preserve the already-applied overlapping series.
-    xmake_enabled = (args.repos_root == Path('/var/db/repos') and
-                     Path('/etc/portage/package.env/40-xmake-bridge').is_file())
-    if args.with_xmake or xmake_enabled:
-        commands.append([sys.executable, str(base / 'scripts/apply-patch-if-needed.py'),
-                         '--root', str(args.repos_root / 'gentoo'), '--patch',
-                         str(base / 'patchsets/xmake-trybuild/repository/0001-optional-ninja-executor.patch')])
     for command in commands:
         subprocess.run(command, check=True)
     if args.apply:

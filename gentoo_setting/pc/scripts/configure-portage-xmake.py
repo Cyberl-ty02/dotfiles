@@ -3,7 +3,6 @@
 import argparse
 import os
 from pathlib import Path
-import subprocess
 import sys
 
 MARKER = "# Managed by configure-portage-xmake.py\n"
@@ -28,10 +27,9 @@ def main():
     root = args.root.resolve()
     base = Path(__file__).resolve().parent.parent
     runtime = base / "patchsets/xmake-trybuild/runtime"
-    patch = base / "patchsets/xmake-trybuild/repository/0001-optional-ninja-executor.patch"
-    repo = root / "var/db/repos/gentoo"
     lib = root / "usr/local/libexec/portage-xmake"
     entries = {
+        root / "etc/portage/bashrc": ((runtime / "portage.bashrc").read_bytes(), 0o644),
         root / "etc/portage/package.env/40-xmake-bridge": (POLICY.encode(), 0o644),
         root / "etc/portage/env/xmake-bridge": (ENABLED.encode(), 0o644),
         root / "etc/portage/env/xmake-original": (DISABLED.encode(), 0o644),
@@ -49,19 +47,7 @@ def main():
         temp = path.with_name(path.name + ".xmake-new")
         if temp.exists() or temp.is_symlink():
             ap.error(f"Unexpected temporary path: {temp}")
-    needs_patch = False
-    if not args.remove:
-        if not repo.is_dir():
-            ap.error(f"Sync the official repository first: {repo}")
-        check = ["git", "apply", "--check", str(patch)]
-        if subprocess.run(check, cwd=repo, capture_output=True).returncode:
-            if subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
-                              cwd=repo, capture_output=True).returncode:
-                ap.error("Ninja eclass is incompatible; inspect upstream before deploying")
-        else:
-            needs_patch = True
-    print(("Remove" if args.remove else "Deploy") +
-          f" {len(entries)} managed files; Ninja patch needed: {needs_patch}")
+    print(("Remove" if args.remove else "Deploy") + f" {len(entries)} managed files")
     if not args.apply:
         print("Preview only; add --apply to write.")
         return
@@ -78,8 +64,6 @@ def main():
             if any(Path(os.fsdecode(arg)).name in {"emerge", "ebuild"}
                    for arg in argv[:2]):
                 ap.error("A Portage writer is active; wait before changing executors")
-    if needs_patch:
-        subprocess.run(["git", "apply", str(patch)], cwd=repo, check=True)
     # Executors and envs must exist before the package.env selector becomes active.
     selector = root / "etc/portage/package.env/40-xmake-bridge"
     ordered = [p for p in entries if p != selector] + [selector]

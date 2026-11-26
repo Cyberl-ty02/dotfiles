@@ -123,85 +123,35 @@ emerge --ask --usepkg=n --oneshot dev-build/xmake
 `emerge --pretend --update --deep --newuse @world`，再按需执行。只有工具链／ABI
 迁移等明确需要时才安排完整源码重建，并显式关闭二进制包复用。
 
-## Portage 优先入口：可撤销的兼容策略
+## Portage 优先入口
 
-本策略保留上游构建图，仅将 Portage 的 GNU Make／默认 Ninja 执行器经过 xmake Lua
-转发，不把 CMake、Meson、Qt 或 Kbuild 改写成 xmake.lua。不覆盖 `/usr/bin/make`、
-`/usr/bin/ninja` 或 shell 的同名命令。直接调用 Cargo、CMake 等工具的阶段不会被强行
-包进 xmake；命中本地二进制包时也不需要源码编译。
+常见 Make 和 Ninja 构建通过本地 Portage 配置使用 xmake 转发，GNU Make 和 Ninja
+继续执行上游构建规则。这项配置不修改 Gentoo 主树、eclass、ebuild 或软件包的 USE。
+与编译无关的阶段及绕过 PATH 的绝对路径调用由配方自行处理。
 
-- `runtime/driver` 原样传递 argv，`runtime/backend.lua` 保留后端退出码。
-  xmake 不可用、没有 Portage T、策略被禁用时直接执行原后端；后端已经失败时不自动
-  重试，避免重复执行安装或生成步骤。输出不添加诊断行，以免破坏版本探测。
-- `repository/0001-optional-ninja-executor.patch` 只改变 eninja 的最终执行器选择；
-  `NINJA` 仍为原值，因此 Ninja 的依赖声明、替代实现选择及 jobserver 检查不被清空。
-  仅默认 `NINJA=ninja` 走适配器，其他显式实现保留自己的入口。
-- 自动生成的 package.env 把通用包设为优先转发；Make、xmake、Portage 自身，以及
-  `sys-boot/*`、`sys-kernel/*`、NVIDIA 驱动直接走原后端，保持 bootstrap 和现有联合
-  构建门槛。不要将特例删光后宣称已完成核心链验收。
-- GNU Make 使用 FIFO jobserver 时可转发；继承管道描述符的 jobserver 直接走 GNU
-  Make，避免 Lua 子进程丢失 FD。用户态两种递归 jobserver、版本与失败退出码、带空格
-  路径和目标、并行／负载参数检查均通过。
-
-### 新机与 chroot 部署
-
-官方 stage3 和仓库准备完成、进入目标 chroot 后，以 PC 配置目录为工作目录：
+在 chroot 已有 Python 时，从 PC 配置目录运行：
 
 ```sh
-# 先按主教程准备官方/GURU 仓库和既有包级规则；同步后严格预检。
-python3 scripts/restore-repository-patches.py
-python3 scripts/restore-repository-patches.py --apply
-# 默认只预览；一次部署执行器、环境文件及最后生效的 package.env 选择器。
 python3 scripts/configure-portage-xmake.py
 python3 scripts/configure-portage-xmake.py --apply
-# stage3 尚无 xmake 时前面的执行器自动回退，xmake 本身也明确使用原后端。
-emerge --ask --oneshot dev-build/xmake
 ```
 
-运行中的根需要 root；从 LiveCD 也可用 `--root /mnt/gentoo` 部署到已解包、已同步仓库
-的目标根。写入的运行路径属于目标系统，不保存 LiveCD 路径或本机用户名；不涉及
-设备、网络、启动项或密钥。现有配置文件不同、符号链接目标或上游补丁不兼容时停止，
-不会覆盖未审阅的文件。空目标文件树的预览、部署、重复检查及撤销已经验证；这不
-代替整台新机器安装后的包、桌面和硬件验收。目标需具备 Python、Git 和已同步的官方
-仓库；GNU Make 随 stage3/profile 提供，Ninja 仍由原 eclass 的依赖正常安装。
+xmake 仍是可选项。新机没有 xmake 时，Ninja 保持原搜索路径，Make 转发器直接运行
+GNU Make。引导阶段可以跳过部署。以后首次安装 xmake、更新内核或重建 Portage 自身
+时，已有例外依旧使用原入口。有包自行选择其他后端时也保留该选择。
 
-部署内容为 `/usr/local/libexec/portage-xmake/{make,ninja,backend.lua}`、
-`/etc/portage/env/{xmake-bridge,xmake-original}` 和
-`/etc/portage/package.env/40-xmake-bridge`。已有同名文件不同则停止，不能盲目覆盖。
-临时关闭某个包时，在更具体的 package.env 条目使用 `xmake-original`。
+本地 bashrc 只在编译、测试和安装阶段启用 PATH 入口，兼容脚本保留命令参数和退出码。
+若系统已有自定义 bashrc，部署脚本会停在预检，须先检查并合并其内容。带管道
+jobserver 的 GNU Make 仍绕开 Lua 转发。出现构建错误时保留原始错误与日志。
 
-```sh
-# 撤销本策略，只删除内容仍与脚本一致的六个受管文件。
-python3 scripts/configure-portage-xmake.py --remove --apply
-```
+移除策略使用 `python3 scripts/configure-portage-xmake.py --remove --apply`。
+从旧版迁移时要单独撤销历史 Ninja eclass 补丁。先严格检查反向应用，若文件已经
+是上游版本则跳过。无法确认旧补丁时须核对差异。历史补丁存于 Git，定位提交
+`b489b1b`。正常仓库同步无需重放本地构建器的配置。
 
-恢复脚本只在本机策略已启用或显式传入 `--with-xmake` 时处理这个独立可选补丁组，
-不会让未选择 xmake 的 stage3 引导被这个偏好阻断。外部目标仓库预检可显式添加
-`--with-xmake`。
+2026-11-26 已在标准 Portage 沙箱用本地配置完成 QtSerialPort 和 tree 的暂存
+构建，分别核验 Ninja 和 GNU Make 的实际入口。旧 eclass 补丁已严格撤回。
 
-撤销后 eclass 中的可选钩子因没有启用变量而不生效；同步仓库后用既有恢复脚本严格
-预检，不模糊套用。该 eclass 的本次基线 SHA256 为
-`680dfcc3f446227eec6565ed5efd7cbe3c740d5679bfa9c658b2888d656ba4f8`。
-上游出现等价执行器接口时优先使用它并移除仓库补丁；源码结构不兼容时停止，不强制
-降级或锁死版本。此策略用于入口偏好，不承诺编译加速。
-
-### QtSerialPort 的真实 Portage 对照
-
-QtSerialPort6.11.3 原 ebuild，经 clean/unpack/prepare/configure/compile/test/install
-两套流程，只暂存、没有 merge。原 Ninja 与独立 xmake 转发器两边各通过2项 Qt 上游测试；
-43项暂存文件／符号链接的路径、内容摘要全部相同，当前 QtCore 和 world 摘要未变。
-原路径编译6.833秒，转发路径6.735秒；构建目录6062667／6063131字节。单轮结果未控制
-文件缓存等因素，不能据此宣称提速或节省空间。测试通过也不代表真实串口设备全覆盖。
-
-可部署的通用策略随后也已验收并在本机启用：Portage 有效环境确认普通包启用转发，
-xmake 自身及内核使用原后端；QtSerialPort 再次通过完整暂存构建及两项上游测试，
-43项暂存产物摘要仍完全一致。该轮原路径／兼容路径编译7.034／6.737秒，构建目录
-6061753／6061845字节，同样没有可成立的提速或省空间结论。
-
-GNU Make 路径另以真实 `app-text/tree-2.2.1` ebuild 完成暂存编译／安装，编译日志
-确认调用受管 make 入口；暂存 tree 的版本命令执行成功，原系统 tree 未替换。
-该包 test 阶段没有实际运行上游测试套件，不能把阶段返回0写成测试套件通过。
-
-适配器均为 root 所有，文件644／执行器755；临时包级测试规则及构建树已恢复／清理。
-本轮未 merge QtSerialPort 或 tree，现用 QtCore、world 及原 tree 保持。仍未逐包验证
-整个 world；个别包不兼容时应审计后加入 `xmake-original` 例外，不静默重复失败命令。
+全量复建按清单逐项核对，1353 项均完成合并。其中 774 项合并包的日志
+可见 Make 或 Ninja 转发命令。该数字是日志可观察到的覆盖量，适配器就绪日志
+不计入。原生 xmake 仅做过隔离试验。整机批次采用各包上游构建规则。
