@@ -127,6 +127,9 @@ VSCodium 启动器同时为 Chromium 和 Node 扩展转发调用 shell 的 HTTP(
 按进程启用 `NODE_USE_ENV_PROXY`，不硬编码代理或关闭证书验证。已有编辑器实例
 不会因再次运行 codium 而继承新环境；需要完整退出所有窗口后从启用代理的 shell
 重新启动。Actions 提交不存在与本机 API 连接超时应分开诊断，不能为消除误报改用浮动 tag。
+可选的 Magpie 模型路由与普通 Codex 共用 `~/.codex`，仅在插件后端启动时叠加
+路由，不切换整套用户状态，不改变原生 CLI 默认值。部署、重载和旧独立目录的
+保留边界见 [VSCodium 说明](../../vscodium/README.md#gentoo-codex共享配置与可选-magpie-路由)。
 Sonic Terminal 26.08.3 已回补上游最小化修复，新窗口的最小化／恢复与最大化状态
 保持回归通过，见 `patchsets/sonic-terminal/`。旧终端任务不自动关闭，新开独立
 窗口可使用 `konsole --separate`；已有进程仍需方便时正常退出后再开。
