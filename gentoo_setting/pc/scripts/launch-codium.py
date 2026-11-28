@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Forward the shell proxy to Chromium and Node-based Flatpak extensions."""
+"""Gentoo musl PC launcher for VSCodium Flatpak and the shared Codex home.
+
+Carries the shell proxy into the Flatpak and exposes the local IDE backend
+and optional Magpie staging profile to it.
+"""
 import os
 from pathlib import Path
 import sys
@@ -7,7 +11,23 @@ from urllib.parse import urlsplit
 
 
 def main():
-    command = ['flatpak', 'run']
+    home = Path.home()
+    command = ['flatpak', 'run', f'--filesystem={home / ".codex"}',
+               f'--env=CODEX_HOME={home / ".codex"}',
+               f'--filesystem={home / ".local/bin"}:ro',
+               f'--filesystem={home / ".vscode-oss/extensions"}:ro']
+    staging = home / '.var/app/local.yetone.Magpie/data/codex-staging'
+    if staging.is_dir():
+        command.append(f'--filesystem={staging}:ro')
+    bypass = []
+    for value in (os.environ.get('no_proxy', ''), os.environ.get('NO_PROXY', ''),
+                  'localhost,127.0.0.1,::1'):
+        for entry in value.split(','):
+            entry = entry.strip()
+            if entry and entry not in bypass:
+                bypass.append(entry)
+    for key in ('no_proxy', 'NO_PROXY'):
+        os.environ[key] = ','.join(bypass)
     for key in ('http_proxy', 'https_proxy', 'all_proxy', 'no_proxy',
                 'HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'NO_PROXY'):
         if key in os.environ:

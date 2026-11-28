@@ -98,7 +98,7 @@ Magpie 的 Linux 图形版在 musl PC 上使用用户级 Flatpak `local.yetone.M
   会话数据库、插件、skills 和缓存，不随 Magpie 是否在线切换整个用户目录。
 - `~/.codex/config.toml` 保持普通 Codex 的默认配置。Magpie 仍将模型选择写入自己
   的 `codex-staging/config.toml`；这里仅作为路由来源，不再作为编辑器的 `CODEX_HOME`。
-- 插件启动后端时，`codex-runtime.py`
+- 插件启动后端时，[codex-runtime.py](../gentoo_setting/pc/scripts/codex-runtime.py)
   检查本机网关及已选模型，仅向本次进程叠加模型、provider、网关、可选目录与推理参数。
   模型目录优先使用 Magpie 已生成的文件；否则从本机网关获取，放入只读封存的 Linux
   内存文件。每个新后端读自己的快照，不生成另一份磁盘缓存，也不污染普通模型列表。
@@ -153,10 +153,16 @@ flatpak override --user --filesystem="$HOME/.vscode-oss/extensions:ro" \
   local.yetone.Magpie
 ```
 
-上面是可独立复用的 Flatpak 设置。当前真机另有本地的插件路由适配脚本
-`configure-codex.py` 和 `codex-runtime.py`，以及配套的 `codium` 启动器。
-这次发布只同步文档，脚本还在本机工作树中。仅克隆仓库或执行上面的 Flatpak
-命令不会安装该适配。已经部署的本机设置与入口有备份，位于
+适配位于 [Gentoo PC 脚本目录](../gentoo_setting/pc/scripts)，仅供 Gentoo musl PC 上的
+VSCodium Flatpak 使用。确认上文的认证边界后，从 dotfiles 根目录以桌面用户运行：
+
+```sh
+python3 gentoo_setting/pc/scripts/configure-codex.py
+python3 gentoo_setting/pc/scripts/configure-codex.py --apply
+```
+
+第一条预览部署文件，第二条备份并更新本机启动器和编辑器的后端入口。
+`~/.local/bin` 应在 `/usr/local/bin` 前。原设置与入口的备份位于
 `~/.local/state/codex-runtime-backup/`。
 
 旧 `codex-staging` 中已经产生的会话和重复缓存保持原样，尤其不能在仍有进程使用时

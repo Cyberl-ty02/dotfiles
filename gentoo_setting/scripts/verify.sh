@@ -29,6 +29,18 @@ bash -n "$settings/scripts/upgrade-sonicde.sh"
 bash -n "$repo_root/dot_bashrc"
 zsh -n "$repo_root/dot_zshrc"
 
+echo "Checking Codex launcher Python syntax"
+python3 - "$settings/pc/scripts" <<'PY'
+import ast
+from pathlib import Path
+import sys
+
+root = Path(sys.argv[1])
+for name in ("codex-runtime.py", "configure-codex.py", "launch-codium.py"):
+    path = root / name
+    ast.parse(path.read_text(), filename=str(path))
+PY
+
 if command -v emacs >/dev/null 2>&1; then
   echo "Checking Emacs Lisp delimiters"
   for elisp in "$repo_root"/dot_config/doom/*.el; do
